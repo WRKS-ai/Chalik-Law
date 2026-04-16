@@ -34,6 +34,7 @@ const redirectUrl = `/thank-you/${CONFIG.verticalSlug}`;
   minimalFooter={true}
   noChat={true}
 >
+<meta slot="head" name="robots" content="noindex, nofollow" />
 
 {CONFIG.fbPixelId && (
   <script slot="head" is:inline define:vars={{ pid: CONFIG.fbPixelId }}>
