@@ -716,24 +716,11 @@ const media = [
     @media (max-width: 480px)  { .atty-card { aspect-ratio: 3/4; } }
 
     /* ─── CTA BAND ──────────────────────────────────────────── */
-    .cta-section { position: relative; overflow: hidden; background: var(--navy3); padding: 100px 0; }
-    .cta-photo { position: absolute; inset: 0; background-image: url('/img/about-team.webp'); background-size: cover; background-position: center top; opacity: .07; }
-    /* Warm near-black base — distinct from attorneys navy */
-    .cta-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, #090808 0%, #0c0d10 55%, #050a14 100%); }
-    /* Animated amber/orange warmth — echoes the CTA button */
-    .cta-glow {
-      position: absolute; inset: -20%; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 55% 60% at 75% 50%, rgba(218,96,9,.1) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 45% at 20% 60%, rgba(0,80,160,.1) 0%, transparent 55%);
-      animation: ctaGlowPulse 9s ease-in-out infinite alternate;
-    }
-    @keyframes ctaGlowPulse {
-      from { opacity: .6; transform: scale(1); }
-      to   { opacity: 1; transform: scale(1.07); }
-    }
-    /* Denser stipple for this section */
-    .cta-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 18px 18px; }
+    .cta-section { position: relative; overflow: hidden; background: #f0f4fb; padding: 100px 0; }
+    .cta-photo { display: none; }
+    .cta-overlay { display: none; }
+    .cta-glow { display: none; }
+    .cta-dots { display: none; }
     .cta-inner { position: relative; z-index: 1; }
 
     /* Split layout */
@@ -744,33 +731,32 @@ const media = [
       color: var(--green); display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
     }
     .cta-tag::before { content: ''; width: 20px; height: 2px; background: var(--green); border-radius: 2px; opacity: .8; }
-    .cta-h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 900; letter-spacing: -.04em; color: #fff; line-height: 1.04; margin-bottom: 16px; }
-    .cta-sub { font-size: 18px; color: rgba(255,255,255,.88); line-height: 1.72; margin-bottom: 32px; max-width: 440px; }
+    .cta-h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 900; letter-spacing: -.04em; color: var(--navy); line-height: 1.04; margin-bottom: 16px; }
+    .cta-sub { font-size: 18px; color: #374151; line-height: 1.72; margin-bottom: 32px; max-width: 440px; }
     .cta-bullets { display: flex; flex-direction: column; gap: 12px; }
     .cta-bullet {
       display: flex; align-items: center; gap: 12px;
-      font-size: 18px; font-weight: 600; color: rgba(255,255,255,.92);
+      font-size: 18px; font-weight: 600; color: #1e293b;
     }
     .cta-bullet::before {
       content: ''; width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(0,115,229,.18); border: 1px solid rgba(0,115,229,.4);
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background: rgba(0,115,229,.1); border: 1px solid rgba(0,115,229,.3);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%230073e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
       background-size: 12px; background-repeat: no-repeat; background-position: center;
     }
 
     /* Phone card */
     .cta-card {
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.1);
+      background: #fff;
+      border: 1px solid #d4def0;
       border-radius: 20px; padding: 40px 36px;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 32px 80px rgba(0,0,0,.4), 0 0 0 1px rgba(0,115,229,.1) inset;
+      box-shadow: 0 8px 40px rgba(0,40,100,.1);
       position: relative; overflow: hidden;
       text-align: center;
     }
     .cta-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(96,165,250,.5), transparent);
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--navy), var(--blue));
     }
     .cta-live {
       display: inline-flex; align-items: center; gap: 7px;
@@ -784,11 +770,11 @@ const media = [
     }
     .cta-num {
       font-size: clamp(30px, 3.6vw, 46px); font-weight: 900; letter-spacing: -.04em;
-      color: #fff; display: block; margin-bottom: 6px; line-height: 1.1;
+      color: var(--navy); display: block; margin-bottom: 6px; line-height: 1.1;
       transition: color .15s;
     }
-    .cta-num:hover { color: #60a5fa; }
-    .cta-fine { font-size: 16px; color: rgba(255,255,255,.8); margin-bottom: 28px; display: block; }
+    .cta-num:hover { color: var(--blue); }
+    .cta-fine { font-size: 16px; color: #374151; margin-bottom: 28px; display: block; }
     .btn-band {
       display: flex; align-items: center; justify-content: center; gap: 11px;
       width: 100%; padding: 20px 24px; background: var(--green); color: #0d1a00; border: 0;
@@ -797,7 +783,7 @@ const media = [
       transition: background .2s, transform .15s, box-shadow .2s; text-decoration: none;
     }
     .btn-band:hover { background: #b8df3e; transform: translateY(-2px); box-shadow: 0 20px 52px rgba(162,204,53,.5); }
-    .cta-card-fine { margin-top: 14px; font-size: 16px; color: rgba(255,255,255,.8); line-height: 1.6; }
+    .cta-card-fine { margin-top: 14px; font-size: 16px; color: #374151; line-height: 1.6; }
 
     @media (max-width: 960px) {
       .cta-grid { grid-template-columns: 1fr; gap: 40px; }
