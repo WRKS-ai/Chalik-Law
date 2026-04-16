@@ -611,7 +611,7 @@ const media = [
     }
     @media (max-width: 640px) {
       .testi-feature { border-radius: 14px; }
-      .testi-feat-photo { min-height: 140px; }
+      .testi-feat-photo { display: none; }
       .testi-feat-body { padding: 28px 22px; }
       .testi-feat-quote { font-size: 17px; padding-left: 14px; }
       .testi-row { grid-template-columns: 1fr; gap: 12px; }
@@ -897,7 +897,7 @@ const media = [
     @media (max-width: 640px) { .why-stats { grid-template-columns: 1fr; } }
 
     /* ─── TESTIMONIALS SECTION ──────────────────────────────── */
-    .testi-section { background: #f4f6f9; padding: 96px 0; }
+    .testi-section { background: #f4f6f9; }
     .testi-section .sec-tag { color: var(--green); }
     .testi-section .sec-tag::before { background: var(--green); }
     .testi-sub { font-size: 18px; line-height: 1.72; max-width: 600px; color: #374151; margin-top: 12px; }
@@ -1070,7 +1070,7 @@ const media = [
       {/* Feature card — Jeffrey Howell anchor */}
       <div class="testi-feature rev" data-d="100">
         <div class="testi-feat-photo">
-          <img src="/img/store-aisle.webp" alt="" aria-hidden="true" />
+          <img src="/img/store-aisle.webp" alt="" aria-hidden="true" loading="lazy" />
           <div class="testi-feat-monogram">JH</div>
           <span class="testi-feat-placeholder">Jeffrey Howell, Client</span>
         </div>
