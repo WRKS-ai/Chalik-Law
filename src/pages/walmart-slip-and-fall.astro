@@ -539,6 +539,34 @@ const media = [
       font-size: 13px; color: rgba(255,255,255,.35); letter-spacing: .04em;
     }
 
+    /* Testimonials inline CTA */
+    .testi-cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      margin: 28px 0 24px;
+      padding: 24px 32px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-left: 4px solid var(--green);
+      border-radius: 14px;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .testi-cta-text { display: flex; flex-direction: column; gap: 4px; }
+    .testi-cta-text strong { font-size: 18px; font-weight: 700; color: #fff; }
+    .testi-cta-text span { font-size: 16px; color: rgba(255,255,255,.65); }
+    .testi-cta-btn {
+      display: inline-flex; align-items: center; gap: 9px; flex-shrink: 0;
+      padding: 14px 28px; background: var(--green); color: #0d1a00; border: 0;
+      border-radius: 10px; font-size: 17px; font-weight: 700;
+      text-decoration: none; white-space: nowrap;
+      box-shadow: 0 6px 24px rgba(162,204,53,.35);
+      transition: background .2s, transform .15s;
+    }
+    .testi-cta-btn:hover { background: #b8df3e; transform: translateY(-2px); }
+    @media (max-width: 640px) {
+      .testi-cta { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 20px; }
+      .testi-cta-btn { width: 100%; justify-content: center; }
+    }
+
     /* Mini glass cards row */
     .testi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .testi-mini {
@@ -1073,6 +1101,18 @@ const media = [
             Verified review
           </div>
         </div>
+      </div>
+
+      {/* Testimonials CTA */}
+      <div class="testi-cta rev" data-d="80">
+        <div class="testi-cta-text">
+          <strong>Ready to find out what your case is worth?</strong>
+          <span>The call is free. You pay nothing unless we win.</span>
+        </div>
+        <a href={phoneHref} class="testi-cta-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call {phone}
+        </a>
       </div>
 
       {/* Supporting testimonials */}
