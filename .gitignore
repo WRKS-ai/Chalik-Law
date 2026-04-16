@@ -6,7 +6,18 @@ dist/
 .env.local
 .vercel-token
 
-# Large unused source images
+# Original source images (webp versions used in production)
 public/img/hero-grocery.jpg
 public/img/placeholder-man.jpg
 public/img/placeholder-store.jpg
+public/img/store-aisle.jpg
+public/img/hero-walmart.jpg
+public/img/about-team-cutout.png
+public/img/about-team.jpg
+public/img/att-jason.jpg
+public/img/att-debi.jpg
+public/img/att-lorgia.jpg
+public/img/att-suzy.jpg
+public/img/hero-bg.jpg
+public/img/team-recent.jpg
+public/img/top-100-badge.png
