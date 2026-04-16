@@ -1,0 +1,1086 @@
+---
+interface Props {
+  calendarId: string;
+  provider?: 'ghl' | 'calendly';
+  slotDuration?: number;
+  redirectUrl: string;
+  meetingName?: string;
+  passName?: boolean;
+  theme?: 'dark' | 'light';
+}
+
+const {
+  calendarId: CALENDAR_ID,
+  provider: PROVIDER = 'ghl',
+  slotDuration: SLOT_DURATION = 45,
+  redirectUrl: REDIRECT_URL,
+  meetingName: MEETING_NAME = 'Discovery Call',
+  passName: PASS_NAME = false,
+  theme: THEME = 'dark',
+} = Astro.props;
+---
+
+<style is:global>
+/* ── WIDGET SHELL ───────────────────────────────────────── */
+@keyframes cal-spin{to{transform:rotate(360deg)}}
+
+.cal-widget{
+  background:#111111;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  overflow:hidden;
+  width:100%;
+  font-family:var(--sans,'DM Sans',system-ui,sans-serif);
+}
+.cal-step{display:none}
+
+/* ── LOADING ────────────────────────────────────────────── */
+.cal-loading{
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;padding:80px 24px;
+}
+.cal-spinner{
+  width:28px;height:28px;
+  border:2px solid rgba(149,80,255,.2);
+  border-top-color:#9550ff;
+  border-radius:50%;
+  animation:cal-spin .7s linear infinite;
+}
+.cal-loading-text{font-size:14px;color:#bdbdbd}
+
+/* ── SHARED: CIRCULAR BACK BUTTON ───────────────────────── */
+.back-circle-btn{
+  width:40px;height:40px;
+  background:transparent;
+  border:1.5px solid rgba(255,255,255,.3);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+  flex-shrink:0;
+}
+.back-circle-btn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.55)}
+.back-circle-btn svg{
+  width:18px;height:18px;fill:none;stroke:#9550ff;
+  stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ── SHARED: INFO BOX ───────────────────────────────────── */
+.cal-info-box{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;
+  padding:14px 16px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.cal-info-row{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:16px;color:#bdbdbd;
+  line-height:1.8;
+}
+.cal-info-row svg{
+  width:16px;height:16px;flex-shrink:0;margin-top:1px;
+  fill:none;stroke:rgba(189,189,189,.6);
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ─────────────────────────────────────────────────────────
+   STEP 1 — CALENDAR PICKER
+   ───────────────────────────────────────────────────────── */
+.cal-header{
+  padding:24px 22px 0;
+}
+.cal-header-title{
+  font-size:22px;font-weight:700;color:var(--t0);
+  letter-spacing:-.02em;margin-bottom:18px;
+  line-height:1.3;
+}
+
+.cal-body{
+  padding:24px 22px 8px;
+}
+
+/* Month nav */
+.cal-month-nav{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  margin-bottom:16px;
+}
+.cal-month-label{
+  font-size:16px;font-weight:700;color:#bdbdbd;letter-spacing:-.01em;
+}
+.cal-nav-btn{
+  background:rgba(255,255,255,.06);
+  border:none;border-radius:50%;
+  color:rgba(189,189,189,.7);cursor:pointer;
+  width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,color .15s;padding:0;
+}
+.cal-nav-btn:hover:not(:disabled){background:rgba(255,255,255,.14);color:#fff}
+.cal-nav-btn:disabled{opacity:.2;cursor:default}
+.cal-nav-btn svg{
+  width:15px;height:15px;fill:none;stroke:currentColor;
+  stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* Weekday headers */
+.cal-weekdays{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  margin-bottom:4px;
+}
+.cal-weekday{
+  text-align:center;font-size:14px;font-weight:600;
+  color:#bdbdbd;padding:4px 0;
+  letter-spacing:.02em;
+}
+@media(max-width:600px){
+  .cal-weekday{font-size:13px}
+}
+
+/* Day grid */
+.cal-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:14px 0;
+}
+@media(min-width:600px){
+  .cal-grid{gap:18px 0}
+}
+.cal-day{
+  width:40px;height:40px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:500;border-radius:50%;
+  cursor:default;color:rgba(255,255,255,.55);
+  transition:background .12s,color .12s;user-select:none;
+}
+@media(max-width:600px){
+  .cal-day{width:35px;height:35px;font-size:16px}
+}
+.cal-day.today{color:rgba(255,255,255,.55);font-weight:700}
+.cal-day.available{
+  color:#9550ff;cursor:pointer;font-weight:600;
+  background:rgba(149,80,255,.1);
+}
+.cal-day.available:hover{background:rgba(149,80,255,.38);color:#c49fff}
+.cal-day.selected{background:#9550ff !important;color:#000 !important;font-weight:700;cursor:pointer}
+.cal-day.selected:hover{background:#a567ff !important}
+
+/* Timezone section on step 1 */
+.cal-tz-section{
+  padding:4px 22px 20px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   STEP 2 — SLOT PICKER
+   ───────────────────────────────────────────────────────── */
+.slots-top{
+  padding:20px 22px 0;
+  display:grid;grid-template-columns:40px 1fr 40px;align-items:flex-start;
+}
+.slots-day-block{
+  text-align:center;
+}
+.slots-day-name{
+  font-size:22px;font-weight:700;color:var(--t0);letter-spacing:-.02em;
+  line-height:1.1;
+}
+.slots-day-date{
+  font-size:14px;color:rgba(189,189,189,.85);margin-top:3px;
+}
+
+.slots-tz-section{
+  padding:16px 22px 0;
+}
+.slots-tz-label{
+  font-size:14px;font-weight:600;color:rgba(255,255,255,.5);
+  letter-spacing:.01em;
+}
+
+/* ── Custom TZ picker ── */
+.tz-selector{position:relative;display:inline-block}
+.tz-label{
+  font-size:14px;font-weight:600;color:rgba(189,189,189,.8);
+  margin-bottom:4px;
+}
+.tz-trigger{
+  display:flex;align-items:center;gap:7px;
+  cursor:pointer;user-select:none;
+  padding:5px 10px 5px 6px;border-radius:6px;
+  min-width:290px;
+  white-space:nowrap;
+  /* hover handled via JS .hovered class */
+}
+.tz-trigger.hovered{background:rgba(255,255,255,.05)}
+.tz-trigger svg:first-child{
+  width:14px;height:14px;flex-shrink:0;fill:none;
+  stroke:rgba(189,189,189,.5);stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.tz-trigger-val{
+  font-size:14px;color:#bdbdbd;
+  /* no flex:1 — caret sits right after text */
+}
+.tz-caret{
+  width:13px;height:13px;flex-shrink:0;fill:none;
+  stroke:#9550ff;stroke-width:2.5;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .15s;
+  /* no margin-left:auto — caret is snug to text */
+}
+.tz-caret.open{transform:rotate(180deg)}
+.tz-panel{
+  position:absolute;left:0;right:auto;z-index:200;
+  min-width:100%;width:max-content;
+  background:#1d1d1d;border:1px solid rgba(255,255,255,.12);
+  border-radius:6px;overflow:hidden;
+  max-height:260px;overflow-y:auto;
+  top:calc(100% + 4px);
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+}
+.tz-dropup .tz-panel{
+  top:auto;
+  bottom:calc(100% + 4px);
+  box-shadow:0 -6px 24px rgba(0,0,0,.5);
+}
+.tz-opt{
+  padding:10px 16px;font-size:14px;color:#bdbdbd;
+  cursor:pointer;transition:background .1s;
+  font-family:var(--sans,'DM Sans',system-ui,sans-serif);
+  white-space:nowrap;
+}
+.tz-opt:hover{background:rgba(149,80,255,.3);color:#fff}
+.tz-opt.active{background:rgba(149,80,255,.45);color:#fff}
+
+.slots-heading-section{
+  padding:24px 22px 8px;
+  text-align:center;
+}
+.slots-main-heading{
+  font-size:16px;font-weight:700;color:#bdbdbd;
+  margin-bottom:4px;
+}
+.slots-duration{
+  font-size:14px;color:rgba(189,189,189,.8);
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.slots-duration svg{
+  width:12px;height:12px;flex-shrink:0;fill:none;
+  stroke:rgba(255,255,255,.4);stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+
+.slots-list-wrap{
+  padding:10px 22px 28px;
+  display:flex;flex-direction:column;gap:8px;
+}
+/* ── Two-phase slot selection ── */
+.slot-item{
+  display:grid;
+  grid-template-columns:1fr 0px;
+  gap:0;
+  transition:grid-template-columns .22s cubic-bezier(.4,0,.2,1),
+             gap .22s cubic-bezier(.4,0,.2,1);
+}
+.slot-item.selected{
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.slot-btn{
+  width:100%;padding:13px 16px;
+  background:transparent;
+  border:1px solid rgba(149,80,255,.75);
+  border-radius:6px;
+  color:#a678ff;font-size:16px;font-weight:600;
+  cursor:pointer;text-align:center;
+  transition:background .18s,border-color .18s,color .18s;
+  font-family:inherit;
+}
+.slot-btn:hover{background:rgba(149,80,255,.18);border-color:#9550ff;color:#c49fff}
+/* selected: same text/bg as inactive — no visual change on the time button itself */
+.slot-item.selected .slot-btn,.slot-item.selected .slot-btn:focus{color:#a678ff;background:rgba(149,80,255,.18);border-color:rgba(149,80,255,.75);cursor:pointer}
+.slot-item.selected .slot-btn:hover{color:#c49fff;background:rgba(149,80,255,.32);border-color:#9550ff}
+.slot-confirm-btn{
+  overflow:hidden;
+  background:#9550ff;border:none;border-radius:6px;
+  color:#fff;font-size:15px;font-weight:700;
+  cursor:pointer;white-space:nowrap;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:3px;
+  opacity:0;pointer-events:none;
+  transition:opacity .15s ease;
+  padding:0;
+}
+.slot-confirm-btn svg{
+  width:14px;height:14px;fill:none;stroke:currentColor;
+  stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
+  flex-shrink:0;
+}
+.slot-item.selected .slot-confirm-btn{
+  opacity:1;pointer-events:auto;
+}
+.slot-confirm-btn:hover{background:#a567ff}
+.slots-empty{
+  font-size:14px;color:rgba(189,189,189,.8);text-align:center;padding:24px 0;
+}
+
+/* ─────────────────────────────────────────────────────────
+   STEP 3 — CONTACT FORM
+   ───────────────────────────────────────────────────────── */
+.form-top{
+  padding:20px 22px 0;
+  display:flex;flex-direction:column;align-items:flex-start;gap:18px;
+}
+.form-title{
+  font-size:22px;font-weight:700;color:var(--t0);
+  letter-spacing:-.02em;line-height:1.3;
+}
+
+.form-info-wrap{
+  padding:16px 22px 0;
+}
+
+.form-details-heading{
+  padding:18px 22px 14px;
+  font-size:16px;font-weight:700;color:#bdbdbd;
+  letter-spacing:-.01em;
+}
+
+.form-body{
+  padding:0 22px 28px;
+}
+
+.cal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.cal-field label{
+  font-size:16px;font-weight:600;color:#bdbdbd;
+}
+.cal-field input{
+  background:#ffffff;
+  border:1px solid #d0d5dd;
+  border-radius:6px;color:#111827;font-size:16px;
+  padding:12px 14px;outline:none;
+  transition:border-color .15s;
+  width:100%;box-sizing:border-box;font-family:inherit;
+}
+.cal-field input:focus{border-color:#9550ff}
+.cal-field input::placeholder{color:#6b7280}
+
+.cal-submit-btn{
+  width:100%;padding:14px 24px;
+  background:#9550ff;border:none;border-radius:6px;
+  color:#fff;font-size:16px;font-weight:600;
+  cursor:pointer;font-family:inherit;letter-spacing:-.01em;
+  transition:background .15s,transform .1s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:36px;
+}
+.cal-submit-btn:hover:not(:disabled){background:#a567ff;transform:translateY(-1px)}
+.cal-submit-btn:disabled{opacity:.6;cursor:default;transform:none}
+.cal-submit-btn .btn-spinner{
+  width:15px;height:15px;
+  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+  border-radius:50%;animation:cal-spin .7s linear infinite;display:none;
+}
+.cal-submit-btn.loading .btn-spinner{display:block}
+.cal-error{margin-top:12px;font-size:13px;color:#ff6b6b;text-align:center;display:none}
+
+/* ─────────────────────────────────────────────────────────
+   STEP 4 — REDIRECT SPINNER
+   ───────────────────────────────────────────────────────── */
+.cal-confirm-wrap{
+  padding:80px 28px;
+  display:flex;align-items:center;justify-content:center;
+}
+.cal-redirect-spinner{
+  width:32px;height:32px;
+  border:2.5px solid rgba(149,80,255,.2);
+  border-top-color:#9550ff;
+  border-radius:50%;
+  animation:cal-spin .75s linear infinite;
+}
+
+/* ─────────────────────────────────────────────────────────
+   LIGHT THEME OVERRIDES
+   ───────────────────────────────────────────────────────── */
+.cal-widget.light{background:#ffffff;border:1px solid rgba(0,0,0,.1)}
+.cal-widget.light .cal-loading-text{color:#888888}
+.cal-widget.light .cal-spinner{border-color:rgba(149,80,255,.2);border-top-color:#9550ff}
+.cal-widget.light .back-circle-btn{border-color:rgba(0,0,0,.15)}
+.cal-widget.light .back-circle-btn:hover{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.3)}
+.cal-widget.light .cal-info-box{border-color:rgba(0,0,0,.1)}
+.cal-widget.light .cal-info-row{color:#666666}
+.cal-widget.light .cal-info-row svg{stroke:rgba(0,0,0,.35)}
+.cal-widget.light .cal-month-label{color:#222222}
+.cal-widget.light .cal-nav-btn{background:rgba(0,0,0,.04);color:rgba(0,0,0,.45)}
+.cal-widget.light .cal-nav-btn:hover:not(:disabled){background:rgba(0,0,0,.09);color:#000}
+.cal-widget.light .cal-weekday{color:#888888}
+.cal-widget.light .cal-day{color:rgba(0,0,0,.3)}
+.cal-widget.light .cal-day.today{color:rgba(0,0,0,.3);font-weight:700}
+.cal-widget.light .tz-trigger.hovered{background:rgba(0,0,0,.04)}
+.cal-widget.light .tz-trigger svg:first-child{stroke:rgba(0,0,0,.35)}
+.cal-widget.light .tz-trigger-val{color:#444444}
+.cal-widget.light .tz-caret{stroke:#9550ff}
+.cal-widget.light .tz-panel{background:#f7f7f8;border-color:rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.cal-widget.light .tz-opt{color:#444444}
+.cal-widget.light .tz-opt:hover{background:rgba(149,80,255,.15);color:#333}
+.cal-widget.light .tz-opt.active{background:rgba(149,80,255,.2);color:#333}
+.cal-widget.light .slots-day-date{color:rgba(0,0,0,.5)}
+.cal-widget.light .slots-tz-label{color:rgba(0,0,0,.5)}
+.cal-widget.light .slots-main-heading{color:#444444}
+.cal-widget.light .slots-duration{color:rgba(0,0,0,.45)}
+.cal-widget.light .slots-duration svg{stroke:rgba(0,0,0,.3)}
+.cal-widget.light .slots-empty{color:rgba(0,0,0,.45)}
+.cal-widget.light .form-details-heading{color:#444444}
+.cal-widget.light .cal-field label{color:#444444}
+</style>
+
+<div class:list={["cal-widget", { light: THEME === 'light' }]} id="cal-widget">
+
+  <!-- Loading -->
+  <div class="cal-loading" id="cal-loading">
+    <div class="cal-spinner"></div>
+    <span class="cal-loading-text">Loading availability…</span>
+  </div>
+
+  <!-- ── Step 1: Calendar picker ── -->
+  <div class="cal-step" id="step-pick">
+
+    <div class="cal-header">
+      <div class="cal-header-title" id="pick-title"></div>
+      <div class="cal-info-box">
+        <div class="cal-info-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="pick-duration"></span>
+        </div>
+        <div class="cal-info-row" id="pick-date-row" style="display:none">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="pick-date-text"></span>
+        </div>
+        <div class="cal-info-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span id="pick-tz-text"></span>
+        </div>
+        <div class="cal-info-row" id="pick-desc-row" style="display:none">
+          <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <span id="pick-desc-text"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-body">
+      <div class="cal-month-nav">
+        <button class="cal-nav-btn" id="prev-month" aria-label="Previous month" disabled>
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="cal-month-label" id="month-label"></span>
+        <button class="cal-nav-btn" id="next-month" aria-label="Next month">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="cal-weekdays">
+        <span class="cal-weekday">Sun</span>
+        <span class="cal-weekday">Mon</span>
+        <span class="cal-weekday">Tue</span>
+        <span class="cal-weekday">Wed</span>
+        <span class="cal-weekday">Thu</span>
+        <span class="cal-weekday">Fri</span>
+        <span class="cal-weekday">Sat</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+
+    <div class="cal-tz-section">
+      <div class="tz-selector tz-dropup" id="tz-picker-step1">
+        <div class="tz-label">Time zone</div>
+        <div class="tz-trigger">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span class="tz-trigger-val" id="tz-val-step1"></span>
+          <svg class="tz-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="tz-panel" id="tz-panel-step1" style="display:none"></div>
+      </div>
+    </div>
+
+  </div><!-- /step-pick -->
+
+  <!-- ── Step 2: Slot picker ── -->
+  <div class="cal-step" id="step-slots">
+
+    <div class="slots-top">
+      <button class="back-circle-btn" id="slots-back-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="slots-day-block">
+        <div class="slots-day-name" id="slots-day-name"></div>
+        <div class="slots-day-date" id="slots-day-date"></div>
+      </div>
+    </div>
+
+    <div class="slots-tz-section">
+      <div class="tz-selector" id="tz-picker-step2">
+        <div class="tz-label">Time zone</div>
+        <div class="tz-trigger">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span class="tz-trigger-val" id="tz-val-step2"></span>
+          <svg class="tz-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="tz-panel" id="tz-panel-step2" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="slots-heading-section">
+      <div class="slots-main-heading">Choose Time Slot</div>
+      <div class="slots-duration">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="slots-dur-label"></span>
+      </div>
+    </div>
+
+    <div class="slots-list-wrap" id="slots-list"></div>
+
+  </div><!-- /step-slots -->
+
+  <!-- ── Step 3: Contact form ── -->
+  <div class="cal-step" id="step-form">
+
+    <div class="form-top">
+      <button class="back-circle-btn" id="form-back-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="form-title" id="form-title-text"></div>
+    </div>
+
+    <div class="form-info-wrap">
+      <div class="cal-info-box">
+        <div class="cal-info-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="form-duration"></span>
+        </div>
+        <div class="cal-info-row">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="form-selected-time"></span>
+        </div>
+        <div class="cal-info-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span id="form-tz"></span>
+        </div>
+        <div class="cal-info-row" id="form-desc-row" style="display:none">
+          <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <span id="form-desc"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-details-heading">Enter Details</div>
+
+    <div class="form-body">
+      <form id="booking-form" novalidate>
+        <div class="cal-field">
+          <label for="f-first">First name <span style="color:#ff6b6b">*</span></label>
+          <input type="text" id="f-first" name="firstName" required autocomplete="given-name" placeholder="First name">
+        </div>
+        <div class="cal-field">
+          <label for="f-last">Last name <span style="color:#ff6b6b">*</span></label>
+          <input type="text" id="f-last" name="lastName" required autocomplete="family-name" placeholder="Last name">
+        </div>
+        <div class="cal-field">
+          <label for="f-email">Email <span style="color:#ff6b6b">*</span></label>
+          <input type="email" id="f-email" name="email" required autocomplete="email" placeholder="Email">
+        </div>
+        <div class="cal-field">
+          <label for="f-phone">Phone <span style="color:#ff6b6b">*</span></label>
+          <input type="tel" id="f-phone" name="phone" autocomplete="tel" placeholder="Phone">
+        </div>
+        <button type="submit" class="cal-submit-btn" id="submit-btn">
+          <span class="btn-spinner"></span>
+          <span class="btn-label">Schedule Meeting</span>
+        </button>
+        <div class="cal-error" id="form-error"></div>
+      </form>
+    </div>
+
+  </div><!-- /step-form -->
+
+  <!-- ── Step 4: Redirect spinner ── -->
+  <div class="cal-step" id="step-confirm">
+    <div class="cal-confirm-wrap">
+      <div class="cal-redirect-spinner"></div>
+    </div>
+  </div>
+
+</div><!-- /cal-widget -->
+
+<script define:vars={{ CALENDAR_ID, SLOT_DURATION, REDIRECT_URL, MEETING_NAME, PASS_NAME }}>
+(function () {
+
+  /* ── Timezone helpers ── */
+  function getTzOffset(tz) {
+    const d = new Date();
+    const utc  = new Date(d.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const local = new Date(d.toLocaleString('en-US', { timeZone: tz }));
+    const diff  = Math.round((local - utc) / 60000);
+    const sign  = diff >= 0 ? '+' : '-';
+    const h = Math.floor(Math.abs(diff) / 60);
+    const m = Math.abs(diff) % 60;
+    return `GMT${sign}${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+  }
+  function getTzShort(tz) {
+    try {
+      return new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'short' })
+        .formatToParts(new Date())
+        .find(p => p.type === 'timeZoneName')?.value || '';
+    } catch { return ''; }
+  }
+  function fmtTzFull(tz) {
+    const short = getTzShort(tz);
+    const name  = tz.replace(/_/g,' ');
+    return short ? `${getTzOffset(tz)} ${name} (${short})` : `${getTzOffset(tz)} ${name}`;
+  }
+  function fmtTzShortDisplay(tz) {
+    const short = getTzShort(tz);
+    return short ? `${tz.replace(/_/g,' ')} (${short})` : tz.replace(/_/g,' ');
+  }
+
+  /* ── Timezone options ── */
+  const TZ_OPTIONS = [
+    'Pacific/Honolulu','America/Anchorage','America/Los_Angeles',
+    'America/Denver','America/Phoenix','America/Chicago',
+    'America/New_York','America/Halifax','America/Sao_Paulo',
+    'Europe/London','Europe/Paris','Europe/Helsinki',
+    'Asia/Dubai','Asia/Kolkata','Asia/Bangkok',
+    'Asia/Singapore','Asia/Tokyo','Australia/Sydney',
+  ];
+
+  const detectedTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
+  let tz = detectedTz;
+
+  /* ── Custom TZ picker factory ── */
+  function buildTzPicker(wrapperId) {
+    const wrap    = document.getElementById(wrapperId);
+    const trigger = wrap.querySelector('.tz-trigger');
+    const caret   = wrap.querySelector('.tz-caret');
+    const panel   = wrap.querySelector('.tz-panel');
+    const valSpan = wrap.querySelector('[id^="tz-val-"]');
+    let isOpen    = false;
+
+    const allVals = TZ_OPTIONS.includes(tz) ? TZ_OPTIONS : [tz, ...TZ_OPTIONS];
+    allVals.forEach(val => {
+      const d = document.createElement('div');
+      d.className = 'tz-opt';
+      d.textContent = fmtTzFull(val);
+      d.dataset.val = val;
+      if (val === tz) d.classList.add('active');
+      d.addEventListener('click', e => { e.stopPropagation(); close(); onTzChange(val); });
+      panel.appendChild(d);
+    });
+
+    function close() {
+      panel.style.display='none'; caret.classList.remove('open');
+      isOpen=false; trigger.classList.remove('hovered');
+    }
+    function open()  {
+      panel.style.display='block'; caret.classList.add('open'); isOpen=true;
+      const active = panel.querySelector('.tz-opt.active');
+      if (active) active.scrollIntoView({ block:'nearest' });
+    }
+    trigger.addEventListener('click', e => { e.stopPropagation(); isOpen ? close() : open(); });
+    trigger.addEventListener('mouseenter', () => trigger.classList.add('hovered'));
+    trigger.addEventListener('mouseleave', () => trigger.classList.remove('hovered'));
+
+    function setValue(v) {
+      valSpan.textContent = fmtTzFull(v);
+      panel.querySelectorAll('.tz-opt').forEach(o => o.classList.toggle('active', o.dataset.val === v));
+    }
+    setValue(tz);
+    return { setValue, close };
+  }
+
+  const tzPicker1 = buildTzPicker('tz-picker-step1');
+  const tzPicker2 = buildTzPicker('tz-picker-step2');
+  document.addEventListener('click', () => { tzPicker1.close(); tzPicker2.close(); });
+
+  /* ── State ── */
+  const todayDate = new Date(); todayDate.setHours(0,0,0,0);
+  let curYear     = todayDate.getFullYear();
+  let curMonth    = todayDate.getMonth();
+  let slotsCache  = {};
+  let selectedDate = null;
+  let selectedSlot = null;
+  let selectedSlotTimes = [];
+  let meetingDuration = SLOT_DURATION;
+  let calDescription  = '';
+  let calName         = MEETING_NAME;
+
+  /* ── DOM refs ── */
+  const $loading      = document.getElementById('cal-loading');
+  const $stepPick     = document.getElementById('step-pick');
+  const $stepSlots    = document.getElementById('step-slots');
+  const $stepForm     = document.getElementById('step-form');
+  const $stepConf     = document.getElementById('step-confirm');
+  const $grid         = document.getElementById('cal-grid');
+  const $monthLbl     = document.getElementById('month-label');
+  const $prevBtn      = document.getElementById('prev-month');
+  const $nextBtn      = document.getElementById('next-month');
+  const $pickTitle    = document.getElementById('pick-title');
+  const $pickDur      = document.getElementById('pick-duration');
+  const $pickDateRow  = document.getElementById('pick-date-row');
+  const $pickDateTxt  = document.getElementById('pick-date-text');
+  const $pickTzTxt    = document.getElementById('pick-tz-text');
+  const $pickDescRow  = document.getElementById('pick-desc-row');
+  const $pickDescTxt  = document.getElementById('pick-desc-text');
+  const $slotsDayName = document.getElementById('slots-day-name');
+  const $slotsDayDate = document.getElementById('slots-day-date');
+  const $slotsDurLbl  = document.getElementById('slots-dur-label');
+  const $slotsList    = document.getElementById('slots-list');
+  const $slotsBackBtn = document.getElementById('slots-back-btn');
+  const $formTitleTxt = document.getElementById('form-title-text');
+  const $formDuration = document.getElementById('form-duration');
+  const $formSelTime  = document.getElementById('form-selected-time');
+  const $formTz       = document.getElementById('form-tz');
+  const $formDescRow  = document.getElementById('form-desc-row');
+  const $formDesc     = document.getElementById('form-desc');
+  const $formBackBtn  = document.getElementById('form-back-btn');
+  const $form         = document.getElementById('booking-form');
+  const $submitBtn    = document.getElementById('submit-btn');
+  const $btnLabel     = $submitBtn.querySelector('.btn-label');
+  const $formErr      = document.getElementById('form-error');
+  const $confTime     = document.getElementById('confirm-time');
+
+  /* ── Pre-fill from URL params (e.g. from VSL funnel) ── */
+  (function prefill() {
+    const sp = new URLSearchParams(window.location.search);
+    const name  = sp.get('name')  || '';
+    const email = sp.get('email') || '';
+    const phone = sp.get('phone') || '';
+    if (name) {
+      const parts = name.split(' ');
+      const first = parts[0] || '';
+      const last  = parts.slice(1).join(' ') || '';
+      document.getElementById('f-first').value = first;
+      document.getElementById('f-last').value  = last;
+    }
+    if (email) document.getElementById('f-email').value = email;
+    if (phone) document.getElementById('f-phone').value = phone;
+  })();
+
+  /* ── Steps ── */
+  const allSteps = [$loading, $stepPick, $stepSlots, $stepForm, $stepConf];
+  function showStep(el) {
+    allSteps.forEach(s => s.style.display = 'none');
+    el.style.display = 'block';
+  }
+
+  /* ── Formatters ── */
+  function fmtMonth(y, m) {
+    return new Date(y, m, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  }
+  function fmtDayName(dateStr) {
+    const [y,mo,d] = dateStr.split('-').map(Number);
+    return new Date(y, mo-1, d).toLocaleString('en-US', { weekday: 'long' });
+  }
+  function fmtDayDate(dateStr) {
+    const [y,mo,d] = dateStr.split('-').map(Number);
+    return new Date(y, mo-1, d).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+  function fmtDayShort(dateStr) {
+    const [y,mo,d] = dateStr.split('-').map(Number);
+    return new Date(y, mo-1, d).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  function fmtTime(iso) {
+    return new Date(iso).toLocaleTimeString('en-US', {
+      hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz
+    });
+  }
+  function fmtDateTime(iso) {
+    return new Date(iso).toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz
+    });
+  }
+  function fmtSlotRange(iso) {
+    const start = fmtTime(iso);
+    const endMs = new Date(iso).getTime() + meetingDuration * 60000;
+    const end   = fmtTime(new Date(endMs).toISOString());
+    return `${start} - ${end}`;
+  }
+
+  /* ── Update timezone displays ── */
+  function updateTzDisplays() {
+    const shortDisp = fmtTzShortDisplay(tz);
+    $pickTzTxt.textContent = shortDisp;
+    $formTz.textContent    = shortDisp;
+    tzPicker1.setValue(tz);
+    tzPicker2.setValue(tz);
+  }
+
+  /* ── Fetch calendar info ── */
+  async function fetchCalendarInfo() {
+    try {
+      const r = await fetch(`/api/${PROVIDER}-calendar-info?calendarId=${CALENDAR_ID}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return await r.json();
+    } catch (e) {
+      console.warn('Calendar info fetch failed:', e.message);
+      return null;
+    }
+  }
+
+  /* ── Fetch slots ── */
+  async function fetchSlots(y, m) {
+    const key = `${y}-${m}-${tz}`;
+    if (slotsCache[key]) return slotsCache[key];
+    try {
+      const r = await fetch(
+        `/api/${PROVIDER}-slots?calendarId=${CALENDAR_ID}&year=${y}&month=${m+1}&timezone=${encodeURIComponent(tz)}`
+      );
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const data = await r.json();
+      slotsCache[key] = data.slots || {};
+    } catch (e) {
+      console.error('Slots fetch error:', e.message);
+      slotsCache[key] = {};
+    }
+    return slotsCache[key];
+  }
+
+  /* ── Render grid ── */
+  function renderGrid(y, m, slots) {
+    $monthLbl.textContent = fmtMonth(y, m);
+    $prevBtn.disabled = (y === todayDate.getFullYear() && m === todayDate.getMonth());
+    $grid.innerHTML = '';
+    const firstDow    = new Date(y, m, 1).getDay();
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+    const pad = n => String(n).padStart(2,'0');
+    for (let i = 0; i < firstDow; i++) {
+      $grid.appendChild(Object.assign(document.createElement('div'), { className: 'cal-day' }));
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr  = `${y}-${pad(m+1)}-${pad(d)}`;
+      const date     = new Date(y, m, d);
+      const isToday  = date.getTime() === todayDate.getTime();
+      const hasSlots = Array.isArray(slots[dateStr]) && slots[dateStr].length > 0;
+      const isSel    = dateStr === selectedDate;
+      const el = document.createElement('div');
+      el.className  = 'cal-day';
+      el.textContent = d;
+      if (isSel)         el.classList.add('selected');
+      else if (hasSlots) el.classList.add('available');
+      else if (isToday)  el.classList.add('today');
+      if (hasSlots) el.addEventListener('click', () => selectDay(dateStr, slots[dateStr]));
+      $grid.appendChild(el);
+    }
+  }
+
+  /* ── Select day → optionally navigate to slots step ── */
+  function selectDay(dateStr, slotTimes, navigate = true) {
+    selectedDate      = dateStr;
+    selectedSlotTimes = slotTimes;
+
+    $pickDateTxt.textContent = fmtDayShort(dateStr);
+    $pickDateRow.style.display = 'flex';
+
+    const key = `${curYear}-${curMonth}-${tz}`;
+    renderGrid(curYear, curMonth, slotsCache[key] || {});
+
+    if (!navigate) return;
+
+    $slotsDayName.textContent = fmtDayName(dateStr);
+    $slotsDayDate.textContent = fmtDayDate(dateStr);
+    $slotsDurLbl.textContent  = `Duration : ${meetingDuration} Mins`;
+
+    renderSlotList(slotTimes);
+    showStep($stepSlots);
+  }
+
+  function renderSlotList(slotTimes) {
+    $slotsList.innerHTML = '';
+    if (!slotTimes || slotTimes.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'slots-empty';
+      p.textContent = 'No times available.';
+      $slotsList.appendChild(p);
+      return;
+    }
+    let activeItem = null;
+    slotTimes.forEach(iso => {
+      const item = document.createElement('div');
+      item.className = 'slot-item';
+
+      const btn = document.createElement('button');
+      btn.className   = 'slot-btn';
+      btn.textContent = fmtTime(iso);
+
+      const confirmBtn = document.createElement('button');
+      confirmBtn.className = 'slot-confirm-btn';
+      confirmBtn.innerHTML = 'Next<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>';
+
+      btn.addEventListener('click', () => {
+        if (item.classList.contains('selected')) {
+          // Double-tap: go straight to form
+          selectSlot(iso);
+          return;
+        }
+        if (activeItem && activeItem !== item) {
+          activeItem.classList.remove('selected');
+        }
+        item.classList.add('selected');
+        activeItem = item;
+      });
+
+      confirmBtn.addEventListener('click', () => selectSlot(iso));
+
+      item.appendChild(btn);
+      item.appendChild(confirmBtn);
+      $slotsList.appendChild(item);
+    });
+  }
+
+  /* ── Select slot → go to form step ── */
+  function selectSlot(iso) {
+    selectedSlot = iso;
+    $formTitleTxt.textContent = calName;
+    $formDuration.textContent = `${meetingDuration} Mins`;
+    $formSelTime.textContent  = `${fmtSlotRange(iso)}, ${fmtDayShort(selectedDate)}`;
+    $formTz.textContent       = fmtTzShortDisplay(tz);
+    if (calDescription) {
+      $formDesc.textContent    = calDescription;
+      $formDescRow.style.display = 'flex';
+    }
+    $formErr.style.display = 'none';
+    $submitBtn.disabled    = false;
+    $submitBtn.classList.remove('loading');
+    $btnLabel.textContent  = 'Schedule Meeting';
+    showStep($stepForm);
+  }
+
+  /* ── Month nav ── */
+  async function goToMonth(y, m) {
+    curYear = y; curMonth = m;
+    selectedDate = null;
+    $pickDateRow.style.display = 'none';
+    $grid.innerHTML = '';
+    $monthLbl.textContent = fmtMonth(y, m);
+    const slots = await fetchSlots(y, m);
+    renderGrid(y, m, slots);
+  }
+
+  $prevBtn.addEventListener('click', () => {
+    let y = curYear, m = curMonth - 1;
+    if (m < 0) { m = 11; y--; }
+    goToMonth(y, m);
+  });
+  $nextBtn.addEventListener('click', () => {
+    let y = curYear, m = curMonth + 1;
+    if (m > 11) { m = 0; y++; }
+    goToMonth(y, m);
+  });
+
+  /* ── Back buttons ── */
+  $slotsBackBtn.addEventListener('click', () => {
+    showStep($stepPick);
+  });
+  $formBackBtn.addEventListener('click', () => {
+    if (selectedDate && selectedSlotTimes.length) {
+      renderSlotList(selectedSlotTimes);
+    }
+    showStep($stepSlots);
+  });
+
+  /* ── Timezone change ── */
+  function onTzChange(newTz) {
+    tz = newTz;
+    slotsCache = {};
+    selectedDate = null;
+    selectedSlotTimes = [];
+    $pickDateRow.style.display = 'none';
+    updateTzDisplays();
+    goToMonth(curYear, curMonth);
+    showStep($stepPick);
+  }
+
+  /* ── Form submit ── */
+  $form.addEventListener('submit', async e => {
+    e.preventDefault();
+    $formErr.style.display = 'none';
+    const firstName = $form.firstName.value.trim();
+    const lastName  = $form.lastName.value.trim();
+    const email     = $form.email.value.trim();
+    const phone     = $form.phone.value.trim();
+    if (!firstName || !lastName || !email) {
+      $formErr.textContent   = 'Please enter your first name, last name, and email.';
+      $formErr.style.display = 'block';
+      return;
+    }
+    $submitBtn.disabled = true;
+    $submitBtn.classList.add('loading');
+    $btnLabel.textContent = 'Booking…';
+    try {
+      const res = await fetch(`/api/${PROVIDER}-book`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          calendarId: CALENDAR_ID, firstName, lastName,
+          email, phone, startTime: selectedSlot,
+          slotDuration: meetingDuration, timezone: tz,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'Booking failed');
+      if (typeof fbq === 'function') fbq('track', 'Schedule');
+      showStep($stepConf);
+      requestAnimationFrame(() => {
+        let url = REDIRECT_URL;
+        if (PASS_NAME) {
+          const name = [firstName, lastName].filter(Boolean).join(' ');
+          if (name) url += '?name=' + encodeURIComponent(name);
+        }
+        window.location.href = url;
+      });
+    } catch (err) {
+      console.error('Booking error:', err);
+      $formErr.textContent   = 'Something went wrong — please try again.';
+      $formErr.style.display = 'block';
+      $submitBtn.disabled    = false;
+      $submitBtn.classList.remove('loading');
+      $btnLabel.textContent  = 'Schedule Meeting';
+    }
+  });
+
+  /* ── Init ── */
+  showStep($loading);
+  (async () => {
+    let y = curYear, m = curMonth;
+    // Fire calendar info + first month's slots in parallel — neither depends on the other
+    const [calInfo, slots0] = await Promise.all([
+      fetchCalendarInfo(),
+      fetchSlots(y, m)
+    ]);
+
+    if (calInfo && calInfo.name) {
+      calName         = calInfo.name;
+      meetingDuration = calInfo.slotDuration || SLOT_DURATION;
+      calDescription  = calInfo.description || '';
+    }
+
+    $pickTitle.textContent = calName;
+    $pickDur.textContent   = `${meetingDuration} Mins`;
+    if (calDescription) {
+      $pickDescTxt.textContent   = calDescription;
+      $pickDescRow.style.display = 'flex';
+    }
+    updateTzDisplays();
+
+    let slots = slots0;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const hasAny = Object.values(slots).some(s => Array.isArray(s) && s.length > 0);
+      if (hasAny || attempt === 2) {
+        curYear = y; curMonth = m;
+        renderGrid(y, m, slots);
+        const firstDate = Object.keys(slots).sort()
+          .find(d => Array.isArray(slots[d]) && slots[d].length > 0);
+        if (firstDate) selectDay(firstDate, slots[firstDate], false);
+        showStep($stepPick);
+        return;
+      }
+      m++; if (m > 11) { m = 0; y++; }
+      slots = await fetchSlots(y, m);
+    }
+  })();
+
+})();
+</script>

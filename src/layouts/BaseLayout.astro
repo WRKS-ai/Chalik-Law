@@ -1,0 +1,79 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  minimalNav?: boolean;
+  minimalFooter?: boolean;
+  noChat?: boolean;
+}
+
+const {
+  title,
+  description = '',
+  canonical = '',
+  minimalNav = false,
+  minimalFooter = false,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  {canonical  && <link rel="canonical" href={canonical} />}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <slot name="head" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #ffffff;
+      color: #0d0d0d;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button { font-family: inherit; }
+
+    /* Nav */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e8e8e8;
+    }
+    #nav-bg { position: absolute; inset: 0; z-index: -1; }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 48px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 800; letter-spacing: -.02em;
+      color: #1B2A4A; text-decoration: none;
+    }
+    .nav-logo span { color: #2563EB; }
+    .nav-minimal .nav-inner { justify-content: center; }
+    .nav-minimal .nav-logo { pointer-events: none; cursor: default; }
+    @media (max-width: 640px) { .nav-inner { padding: 0 20px; } }
+  </style>
+</head>
+<body class:list={[{ 'nav-minimal': minimalNav }]}>
+
+  <nav id="nav">
+    <div id="nav-bg"></div>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/chalik-logo.svg" alt="Chalik and Chalik Injury and Accident Lawyers" style="height:44px;width:auto;display:block" /></a>
+    </div>
+  </nav>
+
+  <slot />
+
+</body>
+</html>

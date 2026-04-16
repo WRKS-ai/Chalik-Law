@@ -1,0 +1,482 @@
+---
+// PAGE 1 - VSL + FORM
+// Route: /catalyst/slip-and-fall
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const CONFIG = {
+  metaTitle:    "Watch This Before Your Free Consultation | Chalik and Chalik",
+  metaDesc:     "Florida Walmart slip and fall victims: watch this short video then request your free case review.",
+  clientDomain: "https://chaliklaw.com",
+  verticalSlug: "slip-and-fall",
+  clientName:   "Chalik and Chalik",
+  fbPixelId:    "",
+
+  vimeoPreconnect: true,
+
+  // Headline
+  eyebrow:   "Florida Walmart Slip and Fall Victims:",
+  h1Part1:   "We Win Your Case,",
+  h1Accent:  "or You Don't Pay",
+  h1Part2:   "a Dime.",
+  // Video
+  vimeoId: "PLACEHOLDER",
+
+  // CTA
+  ctaBtnText: "Contact Us Now",
+  ctaHint:    "Free consultation. No fee unless we win.",
+
+  // Form Step 1 (qualification questions)
+  step1Title: "Tell us about your case",
+  step1Sub:   "Answer two quick questions so we can review your situation.",
+
+  fallTimingOptions: [
+    { value: "within-2-years",    label: "Within the last 2 years" },
+    { value: "2-to-4-years",      label: "2 to 4 years ago" },
+    { value: "more-than-4-years", label: "More than 4 years ago" },
+  ],
+
+  medicalCareOptions: [
+    { value: "yes-er",     label: "Yes, ER or ambulance" },
+    { value: "yes-doctor", label: "Yes, saw a doctor" },
+    { value: "not-yet",    label: "Not yet" },
+  ],
+
+  // Form Step 2 (contact info)
+  step2Title: "Get your free case review",
+  step2Sub:   "Enter your contact info and we will be in touch shortly.",
+  namePlaceholder:  "Jane Smith",
+  emailPlaceholder: "jane@example.com",
+  phonePlaceholder: "(555) 555-5555",
+  submitBtnText:    "Get My Free Case Review",
+  submitHint:       "No fee unless we win.",
+
+  year: new Date().getFullYear(),
+};
+---
+
+<BaseLayout
+  title={CONFIG.metaTitle}
+  description={CONFIG.metaDesc}
+  canonical={`${CONFIG.clientDomain}/catalyst/${CONFIG.verticalSlug}`}
+  minimalNav={true}
+  minimalFooter={true}
+  noChat={true}
+>
+
+{CONFIG.vimeoPreconnect && (
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
+    <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
+    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+    <link rel="dns-prefetch" href="https://player.vimeo.com" />
+    <link rel="dns-prefetch" href="https://i.vimeocdn.com" />
+    <link rel="dns-prefetch" href="https://f.vimeocdn.com" />
+  </Fragment>
+)}
+
+{CONFIG.fbPixelId && (
+  <script slot="head" is:inline define:vars={{ pid: CONFIG.fbPixelId }}>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init',pid);fbq('track','PageView');
+  </script>
+)}
+
+<style is:global>
+:root{
+  --bg:#ffffff;--bg1:#f7f7f8;--bg2:#eeeeef;
+  --t0:#0d0d0d;--t1:#444444;--t2:#888888;
+  --pu:#1a3a6b;--pu3:#2563EB;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sans:'Inter',system-ui,sans-serif;
+}
+#nav-bg{display:none!important}
+#nav{position:static!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.nav-minimal .nav-inner{justify-content:center;border:0;background:transparent;padding:28px 0}
+.nav-minimal .nav-logo{margin:0;pointer-events:none;cursor:default}
+
+html,body{overflow-x:hidden;max-width:100vw}
+.vsl-page{min-height:100vh;display:flex;flex-direction:column;width:100%;max-width:100%}
+.vsl-wrap{flex:1;width:100%;max-width:1180px;margin:0 auto;padding:32px 56px 56px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:1024px){.vsl-page{min-height:auto}.vsl-wrap{display:block;padding:32px 32px 60px}}
+@media(max-width:640px){.vsl-wrap{padding:24px 24px 60px}}
+
+.vsl-eyebrow{display:inline-flex;align-self:center;align-items:center;gap:10px;font-size:22px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pu3);margin-bottom:20px;max-width:100%;flex-wrap:wrap;justify-content:center}
+.vsl-eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--pu3);box-shadow:0 0 8px rgba(37,99,235,.8);animation:pulse 2.5s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.55)}}
+.vsl-h1{font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.06;letter-spacing:-.038em;color:var(--t0);margin:14px 0 50px;overflow-wrap:break-word;word-break:break-word}
+.vsl-h1 em{font-style:normal;font-size:1.06em;color:var(--pu3)}
+
+.vsl-video{position:relative;width:100%;max-width:1140px;margin:0 auto 50px;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000 center/cover no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.vsl-video iframe{position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);border:0;z-index:0}
+.vsl-click-catch{position:absolute;left:0;right:0;top:0;bottom:140px;z-index:1;cursor:pointer;display:none}
+.vsl-click-catch.active{display:block}
+@media(max-width:1024px){.vsl-click-catch.active{top:40px;bottom:80px}}
+.vsl-video-overlay{position:absolute;inset:-4px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer;background:transparent;transition:opacity .3s var(--ease)}
+.vsl-video-overlay.hidden{opacity:0;pointer-events:none}
+.vsl-overlay-txt{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px}
+.vsl-overlay-txt svg{width:18px;height:18px}
+@media(max-width:640px){.vsl-overlay-txt{font-size:12px}}
+
+@media(max-width:640px){
+  .vsl-eyebrow::before{display:none}
+  .vsl-eyebrow{display:block;width:100%;font-size:16px;letter-spacing:.12em;text-align:center;margin-bottom:20px}
+  .vsl-h1{margin:0 0 16px;font-size:clamp(22px,6vw,30px);width:100%}
+  .vsl-subline{margin-bottom:24px}
+  .vsl-video{margin-bottom:28px}
+}
+@media(max-width:480px){
+  .vsl-h1{font-size:clamp(20px,5.5vw,24px)}
+  .vsl-wrap{padding:20px 20px 60px}
+}
+@media(max-width:1024px){.vsl-eyebrow{justify-content:center;text-align:center}}
+
+.vsl-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:26px 64px;min-width:360px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--pu),var(--pu3));color:#fff;font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 14px 40px rgba(37,99,235,.4)}
+.vsl-cta-btn:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(37,99,235,.55)}
+.vsl-cta-btn svg{width:22px;height:22px}
+.vsl-cta-hint{margin-top:16px;font-size:12px;color:var(--t2);letter-spacing:.04em;font-weight:500}
+@media(max-width:640px){
+  .vsl-cta-btn{min-width:0;width:100%;padding:22px 28px;font-size:19px}
+  .vsl-cta-btn svg{width:20px;height:20px}
+}
+
+/* Modal */
+.vsl-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .2s}
+.vsl-modal.open{display:flex;opacity:1}
+.vsl-modal-card{position:relative;width:100%;max-width:540px;background:var(--bg);border:1px solid rgba(0,0,0,.1);border-radius:18px;padding:38px 36px 32px;text-align:left;box-shadow:0 20px 60px rgba(0,0,0,.15);transform:translateY(12px);transition:transform .25s var(--ease);max-height:calc(100vh - 48px);overflow-y:auto}
+.vsl-modal.open .vsl-modal-card{transform:translateY(0)}
+.vsl-modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);color:var(--t0);font-family:var(--sans);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;padding:0;line-height:1}
+.vsl-modal-close:hover{background:rgba(0,0,0,.1);transform:rotate(90deg)}
+@media(max-width:640px){.vsl-modal-card{padding:30px 22px 26px}}
+
+.vsl-prog{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-right:38px}
+.vsl-prog-bar{flex:1;height:5px;background:rgba(0,0,0,.08);border-radius:100px;overflow:hidden}
+.vsl-prog-fill{height:100%;width:50%;background:linear-gradient(90deg,var(--pu),var(--pu3));border-radius:100px;transition:width .3s var(--ease)}
+.vsl-prog-txt{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--t2);white-space:nowrap}
+
+.vsl-cta-h{font-size:24px;font-weight:700;line-height:1.1;letter-spacing:-.02em;color:var(--t0);margin:0 0 8px}
+.vsl-cta-sub{font-size:15px;color:var(--t1);line-height:1.6;margin:0 0 22px}
+
+.vsl-step{display:none;flex-direction:column;gap:14px}
+.vsl-step.active{display:flex}
+
+.vsl-form{display:flex;flex-direction:column;gap:14px}
+.vsl-field{display:flex;flex-direction:column;gap:7px}
+.vsl-field label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--t2)}
+.vsl-field input{appearance:none;background:var(--bg1);border:1px solid rgba(0,0,0,.15);color:var(--t0);font-family:var(--sans);font-size:16px;padding:14px 16px;border-radius:10px;outline:none;transition:border-color .15s,background .15s}
+.vsl-field input::placeholder{color:var(--t2)}
+.vsl-field input:focus{border-color:var(--pu3);background:#fff}
+
+.vsl-q-label{font-size:13px;font-weight:700;color:var(--t0);margin-bottom:2px}
+.vsl-radio-group{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.vsl-radio{position:relative;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 16px;background:var(--bg1);border:1px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;transition:all .15s;font-size:15px;font-weight:500;color:var(--t0)}
+.vsl-radio:hover{border-color:rgba(37,99,235,.5);background:#eff4ff}
+.vsl-radio input{position:absolute;opacity:0;pointer-events:none}
+.vsl-radio .vsl-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(0,0,0,.3);position:relative;flex-shrink:0;transition:all .15s}
+.vsl-radio input:checked + .vsl-dot{border-color:var(--pu3)}
+.vsl-radio input:checked + .vsl-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--pu3)}
+.vsl-radio:has(input:checked){border-color:var(--pu3);background:rgba(37,99,235,.06)}
+
+.vsl-step-actions{display:flex;gap:10px;margin-top:10px}
+.vsl-submit{flex:1;padding:16px 22px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--pu),var(--pu3));color:#fff;font-family:var(--sans);font-size:15px;font-weight:700;letter-spacing:-.005em;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 8px 24px rgba(37,99,235,.35)}
+.vsl-submit:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(37,99,235,.5)}
+.vsl-submit:disabled{opacity:.6;cursor:wait;transform:none}
+.vsl-back{padding:16px 22px;border:1px solid rgba(0,0,0,.15);border-radius:12px;background:transparent;color:var(--t1);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.vsl-back:hover{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.25);color:var(--t0)}
+.vsl-submit-hint{margin-top:10px;font-size:12px;color:var(--t2);text-align:center;letter-spacing:.04em}
+.vsl-error{margin-top:10px;color:#d93025;font-size:13px;text-align:center;display:none}
+
+body.vsl-locked{overflow:hidden}
+
+.pg-foot{padding:24px 0;border-top:1px solid rgba(0,0,0,.1)}
+.pg-foot-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1200px;margin:0 auto;padding:0 56px;width:100%}
+.pg-foot-legal{font-size:12px;color:rgba(0,0,0,.5)}
+.pg-foot-links{display:flex;align-items:center;gap:20px}
+.pg-foot-links a{font-size:12px;color:rgba(0,0,0,.5);text-decoration:none;transition:color .15s}
+.pg-foot-links a:hover{color:var(--t0)}
+@media(max-width:1024px){.pg-foot-inner{padding:0 32px}}
+@media(max-width:760px){.pg-foot-inner{padding:0 24px}}
+</style>
+
+<div class="vsl-page">
+<section class="vsl-wrap">
+  <span class="vsl-eyebrow">{CONFIG.eyebrow}</span>
+  <h1 class="vsl-h1">{CONFIG.h1Part1} <em>{CONFIG.h1Accent}</em> {CONFIG.h1Part2}</h1>
+
+  <div class="vsl-video">
+    <iframe
+      id="vsl-vimeo"
+      src={`https://player.vimeo.com/video/${CONFIG.vimeoId}?autoplay=1&muted=1&loop=1&controls=1&playsinline=1&dnt=1&badge=0&byline=0&title=0&speed=0&color=2563EB&airplay=0&chromecast=0&pip=0&vimeo_logo=0&share=0&like=0&watchlater=0`}
+      allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+      allowfullscreen
+      playsinline
+      webkit-playsinline
+      title="Case Review Video"
+      loading="eager"
+    ></iframe>
+    <div class="vsl-click-catch" id="vsl-click-catch" aria-hidden="true"></div>
+    <div class="vsl-video-overlay" id="vsl-video-overlay" role="button" tabindex="0" aria-label="Play video with sound">
+      <span class="vsl-overlay-txt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        Click To Play With Sound
+      </span>
+    </div>
+  </div>
+
+  <button type="button" class="vsl-cta-btn" id="vsl-open">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    {CONFIG.ctaBtnText}
+  </button>
+  <p class="vsl-cta-hint">{CONFIG.ctaHint}</p>
+</section>
+
+<!-- MODAL -->
+<div class="vsl-modal" id="vsl-modal" role="dialog" aria-modal="true" aria-labelledby="vsl-modal-title">
+  <div class="vsl-modal-card">
+    <button type="button" class="vsl-modal-close" id="vsl-close" aria-label="Close">&#x2715;</button>
+
+    <div class="vsl-prog">
+      <div class="vsl-prog-bar"><div class="vsl-prog-fill" id="vsl-prog-fill"></div></div>
+      <span class="vsl-prog-txt" id="vsl-prog-txt">Step 1 of 2</span>
+    </div>
+
+    <form id="vsl-form" class="vsl-form" novalidate>
+
+      <!-- STEP 1: Qualification questions -->
+      <div class="vsl-step active" data-step="1">
+        <h2 class="vsl-cta-h" id="vsl-modal-title">{CONFIG.step1Title}</h2>
+        <p class="vsl-cta-sub">{CONFIG.step1Sub}</p>
+
+        <div>
+          <p class="vsl-q-label">When did the fall happen?</p>
+          <div class="vsl-radio-group">
+            {CONFIG.fallTimingOptions.map(opt => (
+              <label class="vsl-radio">
+                <span>{opt.label}</span>
+                <input type="radio" name="fallTiming" value={opt.value} />
+                <span class="vsl-dot"></span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p class="vsl-q-label">Did you get medical care for your injuries?</p>
+          <div class="vsl-radio-group">
+            {CONFIG.medicalCareOptions.map(opt => (
+              <label class="vsl-radio">
+                <span>{opt.label}</span>
+                <input type="radio" name="medicalCare" value={opt.value} />
+                <span class="vsl-dot"></span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="vsl-step-actions">
+          <button type="button" class="vsl-submit" id="vsl-next">Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Contact info -->
+      <div class="vsl-step" data-step="2">
+        <h2 class="vsl-cta-h">{CONFIG.step2Title}</h2>
+        <p class="vsl-cta-sub">{CONFIG.step2Sub}</p>
+
+        <div class="vsl-field">
+          <label for="vsl-name">Full Name</label>
+          <input id="vsl-name" name="name" type="text" required autocomplete="name" placeholder={CONFIG.namePlaceholder} />
+        </div>
+        <div class="vsl-field">
+          <label for="vsl-email">Email</label>
+          <input id="vsl-email" name="email" type="email" required autocomplete="email" placeholder={CONFIG.emailPlaceholder} />
+        </div>
+        <div class="vsl-field">
+          <label for="vsl-phone">Phone Number</label>
+          <input id="vsl-phone" name="phone" type="tel" required autocomplete="tel" placeholder={CONFIG.phonePlaceholder} />
+        </div>
+
+        <div class="vsl-step-actions">
+          <button type="button" class="vsl-back" id="vsl-back">Back</button>
+          <button type="submit" class="vsl-submit">{CONFIG.submitBtnText}</button>
+        </div>
+        <p class="vsl-submit-hint">{CONFIG.submitHint}</p>
+      </div>
+
+      <div id="vsl-err" class="vsl-error">Something went wrong. Please try again.</div>
+    </form>
+  </div>
+</div>
+
+<footer class="pg-foot">
+  <div class="pg-foot-inner">
+    <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik. All Rights Reserved.</p>
+    <div class="pg-foot-links">
+      <a href="/privacy-policy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script src="https://player.vimeo.com/api/player.js" is:inline></script>
+<script is:inline>
+(function(){
+  var iframe  = document.getElementById('vsl-vimeo');
+  var overlay = document.getElementById('vsl-video-overlay');
+  var catcher = document.getElementById('vsl-click-catch');
+  if (!iframe || !overlay || !catcher) return;
+
+  var activated = false;
+  var player = null;
+
+  function initPlayer(){
+    if (player) return;
+    if (!window.Vimeo) return;
+    try { player = new Vimeo.Player(iframe); } catch(e){}
+  }
+  initPlayer();
+  if (!player) { iframe.addEventListener('load', initPlayer, { once: true }); }
+
+  function activate(){
+    if (activated) return;
+    activated = true;
+    overlay.classList.add('hidden');
+    if (player) {
+      player.setVolume(1);
+      player.setCurrentTime(0);
+      player.setLoop(false);
+      player.play();
+    }
+    catcher.classList.add('active');
+  }
+
+  var lastTap = 0, lastSide = '', tapTimeout = null;
+  catcher.addEventListener('click', function(e){
+    if (!player) return;
+    var rect = catcher.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width;
+    var side = x < 0.3 ? 'left' : x > 0.7 ? 'right' : 'center';
+    var now = Date.now();
+    if (side === 'center') {
+      player.getPaused().then(function(p){ if(p) player.play(); else player.pause(); }).catch(function(){});
+      return;
+    }
+    if (now - lastTap < 400 && side === lastSide) {
+      clearTimeout(tapTimeout);
+      player.getCurrentTime().then(function(t){ player.setCurrentTime(Math.max(0, t + (side==='left'?-10:10))).catch(function(){}); }).catch(function(){});
+      lastTap = 0;
+    } else {
+      lastTap = now; lastSide = side;
+      tapTimeout = setTimeout(function(){ lastTap = 0; }, 400);
+    }
+  });
+
+  overlay.addEventListener('click', activate);
+  overlay.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); } });
+})();
+</script>
+
+<script is:inline>
+(function(){
+  var modal    = document.getElementById('vsl-modal');
+  var openBtn  = document.getElementById('vsl-open');
+  var closeBtn = document.getElementById('vsl-close');
+  var form     = document.getElementById('vsl-form');
+  var err      = document.getElementById('vsl-err');
+  var nextBtn  = document.getElementById('vsl-next');
+  var backBtn  = document.getElementById('vsl-back');
+  var progFill = document.getElementById('vsl-prog-fill');
+  var progTxt  = document.getElementById('vsl-prog-txt');
+  var steps    = form.querySelectorAll('.vsl-step');
+  var TOTAL    = steps.length;
+  var current  = 1;
+
+  function openModal(){
+    modal.classList.add('open');
+    document.body.classList.add('vsl-locked');
+    setTimeout(function(){ var f=form.querySelector('.vsl-step.active input'); if(f) f.focus(); }, 120);
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.classList.remove('vsl-locked');
+  }
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&modal.classList.contains('open')) closeModal(); });
+
+  function showStep(n){
+    current = n;
+    steps.forEach(function(s){ s.classList.toggle('active', Number(s.dataset.step)===n); });
+    progFill.style.width = (n/TOTAL*100)+'%';
+    progTxt.textContent  = 'Step '+n+' of '+TOTAL;
+    err.style.display    = 'none';
+    modal.querySelector('.vsl-modal-card').scrollTop = 0;
+  }
+
+  function validateEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  nextBtn.addEventListener('click', function(){
+    var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
+    var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
+    if (!fallTiming)  { err.textContent='Please answer both questions.'; err.style.display='block'; return; }
+    if (!medicalCare) { err.textContent='Please answer both questions.'; err.style.display='block'; return; }
+    showStep(2);
+  });
+
+  backBtn.addEventListener('click', function(){ showStep(1); });
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    err.style.display = 'none';
+
+    var name        = form.name.value.trim();
+    var email       = form.email.value.trim();
+    var phone       = form.phone.value.trim();
+    var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
+    var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
+
+    if (!name||!email||!phone){ err.textContent='Please fill in every field.'; err.style.display='block'; return; }
+    if (!validateEmail(email)){ err.textContent='Please enter a valid email address.'; err.style.display='block'; return; }
+    if (phone.replace(/\D/g,'').length<7){ err.textContent='Please enter a valid phone number.'; err.style.display='block'; return; }
+
+    var btn = form.querySelector('.vsl-step[data-step="2"] .vsl-submit');
+    var orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Submitting...';
+
+    try {
+      var res = await fetch('/api/submit-funnel-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name:name, email:email, phone:phone, fallTiming:fallTiming, medicalCare:medicalCare, vertical:'slip-and-fall' })
+      });
+      var data = await res.json().catch(function(){ return {}; });
+
+      if (!res.ok) {
+        btn.disabled=false; btn.textContent=orig;
+        err.textContent=data.error||'Something went wrong. Please try again.';
+        err.style.display='block'; return;
+      }
+
+      if (data.qualified) {
+        var params = new URLSearchParams();
+        if (name)  params.set('name',  name);
+        if (email) params.set('email', email);
+        if (phone) params.set('phone', phone);
+        window.location.href = '/booking/slip-and-fall?'+params.toString();
+      } else {
+        window.location.href = '/catalyst/unqualified-slip-and-fall';
+      }
+    } catch(ex) {
+      btn.disabled=false; btn.textContent=orig;
+      err.textContent='Network error. Please try again.';
+      err.style.display='block';
+      console.error(ex);
+    }
+  });
+
+  showStep(1);
+})();
+</script>
+
+</BaseLayout>

@@ -1,0 +1,445 @@
+---
+// PAGE 3 - THANK YOU (QUALIFIED / POST-BOOKING)
+// Route: /thank-you/slip-and-fall
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const CONFIG = {
+  metaTitle:    "You're Booked | Chalik and Chalik",
+  clientDomain: "https://chaliklaw.com",
+  verticalSlug: "slip-and-fall",
+  clientName:   "Chalik and Chalik",
+  fbPixelId:    "",
+
+  discLabel:    "Important: Your Call is Not Confirmed Yet",
+  h1Part1:      "Hey",
+  h1Part2:      "we will be in touch shortly to confirm your consultation.",
+  videoSub:     "A member of our team will call you to confirm your appointment and answer any questions you have.",
+
+  vimeoId: "PLACEHOLDER",
+
+  presenterName:  "Chalik and Chalik",
+  presenterTitle: "Florida Personal Injury Attorneys",
+
+  caseStudyLabel: "Client Result",
+  caseH3Part1:    "$100M+ recovered",
+  caseH3Accent:   "for our clients.",
+  caseBody:       "For over 30 years, Chalik and Chalik has fought to recover maximum compensation for injury victims across Florida. We handle every case personally and never settle for less than you deserve.",
+  caseQuote:      "They came to my home the same day I called, and I never had to worry about anything. They handled everything and got me more than I expected.",
+  caseClientName: "Florida Client",
+  caseClientRole: "Slip and Fall Victim",
+
+  stats: [
+    { num: "$100M+",  label: "Recovered for clients" },
+    { num: "30+",     label: "Years of experience" },
+    { num: "5,000+",  label: "Cases handled" },
+  ],
+
+  coverH2Part1:   "What we will",
+  coverH2Accent:  "cover",
+  coverH2Part2:   "on your consultation",
+  coverSub:       "Come prepared to share the details of your accident. The more we know, the better we can evaluate your case.",
+  coverItems: [
+    "A full review of your accident and how it happened",
+    "An honest assessment of your case and your legal options",
+    "How Florida slip and fall law applies to your specific situation",
+    "The next steps to pursue the compensation you deserve",
+  ],
+
+  callTitle: "Free Consultation with Chalik and Chalik",
+  year: new Date().getFullYear(),
+};
+---
+
+<BaseLayout
+  title={CONFIG.metaTitle}
+  description=""
+  canonical=""
+  noChat={true}
+>
+<meta slot="head" name="robots" content="noindex, nofollow" />
+<link slot="head" rel="preconnect" href="https://player.vimeo.com" crossorigin />
+<link slot="head" rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
+<link slot="head" rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+<link slot="head" rel="dns-prefetch" href="https://player.vimeo.com" />
+<link slot="head" rel="dns-prefetch" href="https://i.vimeocdn.com" />
+<link slot="head" rel="dns-prefetch" href="https://f.vimeocdn.com" />
+
+{CONFIG.fbPixelId && (
+  <script slot="head" is:inline define:vars={{ pid: CONFIG.fbPixelId }}>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init',pid);fbq('track','PageView');fbq('track','Schedule');
+  </script>
+)}
+
+<style is:global>
+:root{
+  --bg:#ffffff;--bg1:#f7f7f8;--bg2:#eeeeef;
+  --t0:#0d0d0d;--t1:#444444;--t2:#888888;
+  --pu:#1a3a6b;--pu3:#2563EB;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sans:'Inter',system-ui,sans-serif;
+}
+.container{max-width:1200px;margin:0 auto;padding:0 56px}
+@media(max-width:1024px){.container{padding:0 32px}}
+@media(max-width:760px){.container{padding:0 24px}}
+.lbl{font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pu3)}
+.rev{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
+.rev.in{opacity:1;transform:translateY(0)}
+@media(max-width:760px){.rev{opacity:1;transform:none;transition:none}}
+
+.vid-disc-label{font-size:22px;letter-spacing:.16em;font-weight:700;text-transform:uppercase;color:#d93025;margin:0 0 14px}
+@media(max-width:640px){.vid-disc-label{font-size:16px;letter-spacing:.12em}}
+
+/* VIDEO CONFIRM */
+.vid-confirm{padding:160px 24px 100px;text-align:center}
+.vid-confirm-inner{max-width:760px;margin:0 auto}
+.vid-presenter{
+  position:absolute;top:calc(100% + 14px);left:0;z-index:10;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:7px 14px 7px 7px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(0,0,0,.1);
+  border-radius:100px;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+.vid-presenter-photo{width:34px;height:34px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(0,0,0,.12)}
+.vid-presenter-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
+.vid-presenter-photo.initials{
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(37,99,235,.1);font-size:14px;font-weight:700;color:var(--pu3);
+}
+.vid-presenter-text{text-align:left}
+.vid-presenter-name{font-size:16px;font-weight:700;color:var(--t0);line-height:1.2}
+.vid-presenter-title{font-size:14px;color:var(--t2);line-height:1.3}
+.vid-confirm-h1{font-size:clamp(28px,4vw,52px);font-weight:700;letter-spacing:-.03em;line-height:1.08;color:var(--t0);margin:0 0 14px}
+.vid-confirm-sub{font-size:16px;color:var(--t1);line-height:1.6;margin:0 0 36px}
+.vid-embed-wrap{position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.1);border-radius:12px}
+.vid-embed-frame{border-radius:12px;overflow:hidden}
+@media(max-width:760px){.vid-confirm{padding:116px 20px 80px}}
+
+.call-time-pill{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:100px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);font-size:14px;font-weight:600;color:var(--t0);margin-bottom:24px}
+.call-time-pill svg{width:15px;height:15px;stroke:var(--pu3);stroke-width:1.5;fill:none;flex-shrink:0}
+.cal-buttons{margin:16px auto 0;max-width:460px}
+.cal-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);margin-bottom:12px}
+.cal-btns-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cal-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s}
+.cal-btn:hover{opacity:.8}
+.cal-btn-google{background:#f7f7f8;border:1px solid rgba(0,0,0,.12);color:var(--t0)}
+.cal-btn-ical{background:rgba(37,99,235,.08);color:var(--t0);border:1px solid rgba(37,99,235,.2)}
+
+/* CASE STUDY */
+.case-section{padding:80px 0;border-top:1px solid rgba(0,0,0,.08)}
+.case-inner{
+  background:var(--bg1);border:1px solid rgba(0,0,0,.07);border-radius:24px;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.case-content{padding:64px 60px;border-right:1px solid rgba(0,0,0,.07)}
+.case-lbl{display:block;margin-bottom:20px}
+.case-h3{font-size:clamp(26px,3.2vw,38px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:20px}
+.case-h3 em{font-size:1.04em;color:var(--pu3)}
+.case-body{font-size:16px;color:var(--t1);line-height:1.78;margin-bottom:32px}
+.case-client{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:12px;background:var(--bg2);border:1px solid rgba(0,0,0,.06)}
+.case-client-photo{width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(37,99,235,.1)}
+.case-client-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
+.case-client-photo.initials{display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--pu3)}
+.case-client-name{font-size:14px;font-weight:600;color:var(--t0)}
+.case-client-role{font-size:11.5px;color:rgba(0,0,0,.45);margin-top:2px}
+.case-stats{padding:64px 60px;display:flex;flex-direction:column;justify-content:center;gap:40px}
+.case-stat-num{font-size:clamp(40px,5vw,60px);font-weight:700;letter-spacing:-.03em;line-height:1;background:linear-gradient(135deg,#2563eb,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.case-stat-label{font-size:14px;color:var(--t1)}
+.case-divider{height:1px;background:rgba(0,0,0,.07)}
+@media(max-width:760px){
+  .case-section{padding:50px 0}
+  .case-inner{grid-template-columns:1fr}
+  .case-content{padding:32px 24px;border-right:none;border-bottom:1px solid rgba(0,0,0,.07)}
+  .case-stats{padding:32px 24px}
+}
+
+/* WHAT WE WILL COVER */
+.cover-section{padding:80px 0;border-top:1px solid rgba(0,0,0,.08)}
+.cover-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.cover-text .lbl{display:block;margin-bottom:16px}
+.cover-h2{font-size:clamp(24px,3vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.06;margin-bottom:16px}
+.cover-h2 em{font-size:1.04em;color:var(--pu3)}
+.cover-sub{font-size:16px;color:var(--t1);line-height:1.75}
+.cover-list{display:flex;flex-direction:column;gap:16px}
+.cover-item{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:14px;background:var(--bg1);border:1px solid rgba(0,0,0,.06);transition:border-color .2s}
+.cover-item:hover{border-color:rgba(37,99,235,.2)}
+.cover-check{width:24px;height:24px;border-radius:50%;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cover-check svg{width:11px;height:11px;stroke:var(--pu3);stroke-width:2.5;fill:none}
+.cover-item-text{font-size:16px;color:var(--t1);line-height:1.55}
+@media(max-width:760px){
+  .cover-section{padding:50px 0}
+  .cover-inner{grid-template-columns:1fr;gap:40px}
+}
+
+/* FOOTER */
+.pg-foot{padding:24px 0;border-top:1px solid rgba(0,0,0,.1)}
+.pg-foot-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1200px;margin:0 auto;padding:0 56px;width:100%}
+.pg-foot-legal{font-size:12px;color:rgba(0,0,0,.5)}
+.pg-foot-links{display:flex;align-items:center;gap:20px}
+.pg-foot-links a{font-size:12px;color:rgba(0,0,0,.5);text-decoration:none;transition:color .15s}
+.pg-foot-links a:hover{color:var(--t0)}
+@media(max-width:760px){.pg-foot-inner{padding:0 24px;flex-direction:column;text-align:center}}
+</style>
+
+<!-- VIDEO CONFIRM -->
+<section class="vid-confirm">
+  <div class="vid-confirm-inner">
+    <p class="vid-disc-label">{CONFIG.discLabel}</p>
+    <h1 class="vid-confirm-h1">{CONFIG.h1Part1}<span id="js-vid-name"></span>, {CONFIG.h1Part2}</h1>
+    <p class="vid-confirm-sub">{CONFIG.videoSub}</p>
+
+    <div id="call-time-wrap" style="display:none;margin-bottom:20px">
+      <div class="call-time-pill">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span id="js-call-time"></span>
+      </div>
+    </div>
+
+    <div class="vid-embed-wrap">
+      <div class="vid-embed-frame">
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe
+            id="guide-vimeo"
+            src={`https://player.vimeo.com/video/${CONFIG.vimeoId}?autoplay=1&muted=1&loop=1&controls=1&playsinline=1&dnt=1&badge=0&byline=0&title=0&speed=0&color=2563EB&airplay=0&chromecast=0&pip=0&vimeo_logo=0&share=0&like=0&watchlater=0`}
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            allowfullscreen playsinline webkit-playsinline
+            title="Pre-Consultation Video"
+            loading="eager"
+            style="position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);border:0;z-index:0"
+          ></iframe>
+          <div id="guide-click-catch" style="position:absolute;left:0;right:0;top:0;bottom:140px;z-index:1;cursor:pointer;display:none"></div>
+          <div id="guide-overlay" style="position:absolute;inset:-4px;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,.3);transition:opacity .3s" role="button" tabindex="0" aria-label="Play video with sound">
+            <span style="font-family:'Inter',system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              Click To Play With Sound
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-presenter">
+        <div class="vid-presenter-photo initials">
+          {CONFIG.presenterName.charAt(0)}
+        </div>
+        <div class="vid-presenter-text">
+          <div class="vid-presenter-name">{CONFIG.presenterName}</div>
+          <div class="vid-presenter-title">{CONFIG.presenterTitle}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-buttons" id="cal-buttons" style="display:none;margin-top:28px">
+      <p class="cal-label">Add to your calendar</p>
+      <div class="cal-btns-row">
+        <a id="gcal-link" class="cal-btn cal-btn-google" href="#" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Google Calendar
+        </a>
+        <a id="ical-link" class="cal-btn cal-btn-ical" href="#" download="call.ics">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Apple / iCal
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section class="case-section">
+  <div class="container">
+    <div class="case-inner">
+      <div class="case-content">
+        <span class="lbl case-lbl rev">{CONFIG.caseStudyLabel}</span>
+        <h3 class="case-h3 rev" data-d="60">{CONFIG.caseH3Part1} <em>{CONFIG.caseH3Accent}</em></h3>
+        <p class="case-body rev" data-d="100">{CONFIG.caseBody}</p>
+        <blockquote class="rev" data-d="130" style="margin:0 0 24px;padding:16px 20px;background:rgba(0,0,0,.03);border-left:2px solid rgba(37,99,235,.4);border-radius:0 10px 10px 0;font-size:15px;color:var(--t1);line-height:1.7;font-style:italic">"{CONFIG.caseQuote}"</blockquote>
+        <div class="case-client rev" data-d="150">
+          <div class="case-client-photo initials">
+            {CONFIG.caseClientName.charAt(0)}
+          </div>
+          <div>
+            <div class="case-client-name">{CONFIG.caseClientName}</div>
+            <div class="case-client-role">{CONFIG.caseClientRole}</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-stats">
+        {CONFIG.stats.map((stat, i) => (
+          <>
+            {i > 0 && <div class="case-divider"></div>}
+            <div class="case-stat rev" data-d={String(80 + i * 40)}>
+              <div class="case-stat-num">{stat.num}</div>
+              <div class="case-stat-label">{stat.label}</div>
+            </div>
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE WILL COVER -->
+<section class="cover-section">
+  <div class="container">
+    <div class="cover-inner">
+      <div class="cover-text">
+        <span class="lbl rev">Your Free Consultation</span>
+        <h2 class="cover-h2 rev" data-d="80">{CONFIG.coverH2Part1} <em>{CONFIG.coverH2Accent}</em> {CONFIG.coverH2Part2}</h2>
+        <p class="cover-sub rev" data-d="140">{CONFIG.coverSub}</p>
+      </div>
+      <div class="cover-list">
+        {CONFIG.coverItems.map((item, i) => (
+          <div class="cover-item rev" data-d={String(i * 40)}>
+            <div class="cover-check">
+              <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="cover-item-text">{item}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="pg-foot">
+  <div class="pg-foot-inner">
+    <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik. All Rights Reserved.</p>
+    <div class="pg-foot-links">
+      <a href="/privacy-policy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://player.vimeo.com/api/player.js" is:inline></script>
+<script is:inline>
+(function(){
+  var iframe  = document.getElementById('guide-vimeo');
+  var overlay = document.getElementById('guide-overlay');
+  var catcher = document.getElementById('guide-click-catch');
+  if (!iframe || !overlay || !catcher) return;
+
+  var activated = false;
+  var player = null;
+
+  function initPlayer(){
+    if (player) return;
+    if (!window.Vimeo) return;
+    try { player = new Vimeo.Player(iframe); } catch(e){}
+  }
+  initPlayer();
+  if (!player) { iframe.addEventListener('load', initPlayer, { once: true }); }
+
+  var mq = window.matchMedia('(max-width:1024px)');
+  function adjustCatcher(){ if(mq.matches){catcher.style.top='40px';catcher.style.bottom='80px';}else{catcher.style.top='0';catcher.style.bottom='140px';} }
+  adjustCatcher(); mq.addEventListener('change', adjustCatcher);
+
+  function activate(){
+    if (activated) return;
+    activated = true;
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    if (!player) initPlayer();
+    if (player) {
+      player.setVolume(1);
+      player.setCurrentTime(0);
+      player.setLoop(false);
+      player.play();
+    }
+    catcher.style.display = 'block';
+  }
+
+  overlay.addEventListener('click', activate);
+  overlay.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); } });
+
+  var lastTap=0, lastSide='', tapTimeout=null;
+  catcher.addEventListener('click', function(e){
+    if (!player) initPlayer();
+    if (!player) return;
+    var rect=catcher.getBoundingClientRect();
+    var x=(e.clientX-rect.left)/rect.width;
+    var side=x<0.3?'left':x>0.7?'right':'center';
+    var now=Date.now();
+    if(side==='center'){player.getPaused().then(function(p){if(p)player.play();else player.pause();}).catch(function(){});return;}
+    if(now-lastTap<400&&side===lastSide){clearTimeout(tapTimeout);player.getCurrentTime().then(function(t){player.setCurrentTime(Math.max(0,t+(side==='left'?-10:10))).catch(function(){});}).catch(function(){});lastTap=0;}
+    else{lastTap=now;lastSide=side;tapTimeout=setTimeout(function(){lastTap=0;},400);}
+  });
+})();
+</script>
+
+<script is:inline define:vars={{ callTitle: CONFIG.callTitle, clientName: CONFIG.clientName }}>
+(function(){
+  var p = new URLSearchParams(window.location.search);
+  var name     = p.get('name')  || '';
+  var startISO = p.get('start') || '';
+  var endISO   = p.get('end')   || '';
+  var loc      = p.get('loc')   || 'Phone';
+
+  if (name) {
+    var firstName = name.split(' ')[0];
+    var nameEl = document.getElementById('js-vid-name');
+    if (nameEl) nameEl.textContent = ' ' + firstName + ',';
+  }
+
+  if (startISO) {
+    var startDate = new Date(startISO);
+    var endDate   = endISO ? new Date(endISO) : new Date(startDate.getTime() + 30 * 60 * 1000);
+
+    var timeStr = startDate.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' })
+                + ' at '
+                + startDate.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', timeZoneName:'short' });
+
+    var callTimeEl = document.getElementById('js-call-time');
+    if (callTimeEl) callTimeEl.textContent = timeStr;
+    var callTimeWrap = document.getElementById('call-time-wrap');
+    if (callTimeWrap) callTimeWrap.style.display = '';
+
+    function toCalDate(d){ return d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''); }
+    var s = toCalDate(startDate), e = toCalDate(endDate);
+    var title   = callTitle + ' with ' + clientName;
+    var details = 'Come prepared with details about your accident.' + (loc ? ' Join here: ' + loc : '');
+
+    var gcalUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      + '&text='     + encodeURIComponent(title)
+      + '&dates='    + s + '/' + e
+      + '&details='  + encodeURIComponent(details)
+      + '&location=' + encodeURIComponent(loc);
+    var gcalLink = document.getElementById('gcal-link');
+    if (gcalLink) gcalLink.href = gcalUrl;
+
+    var ics = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Chalik Funnel//EN',
+      'BEGIN:VEVENT',
+      'DTSTART:'+s,'DTEND:'+e,
+      'SUMMARY:'+title,
+      'DESCRIPTION:'+details.replace(/,/g,'\\,'),
+      'LOCATION:'+loc,
+      'END:VEVENT','END:VCALENDAR'
+    ].join('\r\n');
+    var icalLink = document.getElementById('ical-link');
+    if (icalLink) icalLink.href = 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
+
+    var calButtons = document.getElementById('cal-buttons');
+    if (calButtons) calButtons.style.display = '';
+  }
+})();
+</script>
+
+<script is:inline>
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var d = +(e.target.dataset.d || 0);
+      setTimeout(function(){ e.target.classList.add('in'); }, d);
+      io.unobserve(e.target);
+    });
+  }, { threshold:.07, rootMargin:'0px 0px -36px 0px' });
+  document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</BaseLayout>
