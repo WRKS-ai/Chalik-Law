@@ -57,6 +57,9 @@ const CONFIG = {
   noChat={true}
 >
 <meta slot="head" name="robots" content="noindex, nofollow" />
+<link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+<link slot="head" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link slot="head" href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Source+Sans+3:wght@400;600;700;900&display=swap" rel="stylesheet" />
 <link slot="head" rel="preconnect" href="https://player.vimeo.com" crossorigin />
 <link slot="head" rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
 <link slot="head" rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
@@ -75,14 +78,35 @@ const CONFIG = {
 :root{
   --bg:#ffffff;--bg1:#f7f7f8;--bg2:#eeeeef;
   --t0:#0d0d0d;--t1:#444444;--t2:#888888;
-  --pu:#1a3a6b;--pu3:#2563EB;
+  --navy:#003861;--navy2:#002347;--navy3:#001529;
+  --green:#a2cc35;--blue:#0073e5;
   --ease:cubic-bezier(.4,0,.2,1);
-  --sans:'Inter',system-ui,sans-serif;
+  --sans:'Source Sans 3',system-ui,sans-serif;
 }
+#nav-bg{display:none!important}
+#nav{display:none!important}
+
+.c-header{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.06)}
+.c-header-inner{display:flex;align-items:center;gap:20px;height:72px;max-width:1200px;margin:0 auto;padding:0 48px}
+.c-header-logo{flex-shrink:0}
+.c-header-logo img{height:60px;width:auto;display:block}
+.c-header-funnel{flex:1;display:flex;align-items:center;justify-content:flex-end}
+.c-header-approved{display:flex;align-items:center;gap:10px;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;font-size:17px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;white-space:nowrap}
+.c-header-approved::before{content:'';width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--green);box-shadow:0 0 8px var(--green);animation:hdr-blink 2s ease-in-out infinite}
+@keyframes hdr-blink{0%,100%{opacity:1}50%{opacity:.3}}
+.c-header-approved-sm{display:none}
+@media(max-width:640px){
+  .c-header-inner{padding:0 20px;height:64px}
+  .c-header-logo img{height:50px}
+  .c-header-approved{display:none}
+  .c-header-approved-sm{display:flex;align-items:center;gap:6px;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;white-space:nowrap}
+  .c-header-approved-sm::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--green);box-shadow:0 0 6px var(--green);animation:hdr-blink 2s ease-in-out infinite}
+}
+
 .container{max-width:1200px;margin:0 auto;padding:0 56px}
 @media(max-width:1024px){.container{padding:0 32px}}
 @media(max-width:760px){.container{padding:0 24px}}
-.lbl{font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pu3)}
+.lbl{font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-family:'Open Sans Condensed','Source Sans 3',sans-serif}
 .rev{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
 .rev.in{opacity:1;transform:translateY(0)}
 @media(max-width:760px){.rev{opacity:1;transform:none;transition:none}}
@@ -91,7 +115,7 @@ const CONFIG = {
 @media(max-width:640px){.vid-disc-label{font-size:16px;letter-spacing:.12em}}
 
 /* VIDEO CONFIRM */
-.vid-confirm{padding:160px 24px 100px;text-align:center}
+.vid-confirm{padding:140px 24px 100px;text-align:center}
 .vid-confirm-inner{max-width:760px;margin:0 auto}
 .vid-presenter{
   position:absolute;top:calc(100% + 14px);left:0;z-index:10;
@@ -107,7 +131,7 @@ const CONFIG = {
 .vid-presenter-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
 .vid-presenter-photo.initials{
   display:flex;align-items:center;justify-content:center;
-  background:rgba(37,99,235,.1);font-size:14px;font-weight:700;color:var(--pu3);
+  background:rgba(162,204,53,.12);font-size:14px;font-weight:700;color:var(--navy);
 }
 .vid-presenter-text{text-align:left}
 .vid-presenter-name{font-size:16px;font-weight:700;color:var(--t0);line-height:1.2}
@@ -116,17 +140,17 @@ const CONFIG = {
 .vid-confirm-sub{font-size:16px;color:var(--t1);line-height:1.6;margin:0 0 36px}
 .vid-embed-wrap{position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.1);border-radius:12px}
 .vid-embed-frame{border-radius:12px;overflow:hidden}
-@media(max-width:760px){.vid-confirm{padding:116px 20px 80px}}
+@media(max-width:760px){.vid-confirm{padding:100px 20px 80px}}
 
-.call-time-pill{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:100px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);font-size:14px;font-weight:600;color:var(--t0);margin-bottom:24px}
-.call-time-pill svg{width:15px;height:15px;stroke:var(--pu3);stroke-width:1.5;fill:none;flex-shrink:0}
+.call-time-pill{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:100px;background:rgba(0,56,97,.06);border:1px solid rgba(0,56,97,.15);font-size:14px;font-weight:600;color:var(--t0);margin-bottom:24px}
+.call-time-pill svg{width:15px;height:15px;stroke:var(--navy);stroke-width:1.5;fill:none;flex-shrink:0}
 .cal-buttons{margin:16px auto 0;max-width:460px}
 .cal-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);margin-bottom:12px}
 .cal-btns-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .cal-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s}
 .cal-btn:hover{opacity:.8}
 .cal-btn-google{background:#f7f7f8;border:1px solid rgba(0,0,0,.12);color:var(--t0)}
-.cal-btn-ical{background:rgba(37,99,235,.08);color:var(--t0);border:1px solid rgba(37,99,235,.2)}
+.cal-btn-ical{background:rgba(0,56,97,.06);color:var(--t0);border:1px solid rgba(0,56,97,.15)}
 
 /* CASE STUDY */
 .case-section{padding:80px 0;border-top:1px solid rgba(0,0,0,.08)}
@@ -137,16 +161,16 @@ const CONFIG = {
 .case-content{padding:64px 60px;border-right:1px solid rgba(0,0,0,.07)}
 .case-lbl{display:block;margin-bottom:20px}
 .case-h3{font-size:clamp(26px,3.2vw,38px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:20px}
-.case-h3 em{font-size:1.04em;color:var(--pu3)}
+.case-h3 em{font-size:1.04em;color:var(--blue)}
 .case-body{font-size:16px;color:var(--t1);line-height:1.78;margin-bottom:32px}
 .case-client{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:12px;background:var(--bg2);border:1px solid rgba(0,0,0,.06)}
 .case-client-photo{width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:rgba(37,99,235,.1)}
 .case-client-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
-.case-client-photo.initials{display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--pu3)}
+.case-client-photo.initials{display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--navy)}
 .case-client-name{font-size:14px;font-weight:600;color:var(--t0)}
 .case-client-role{font-size:11.5px;color:rgba(0,0,0,.45);margin-top:2px}
 .case-stats{padding:64px 60px;display:flex;flex-direction:column;justify-content:center;gap:40px}
-.case-stat-num{font-size:clamp(40px,5vw,60px);font-weight:700;letter-spacing:-.03em;line-height:1;background:linear-gradient(135deg,#2563eb,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.case-stat-num{font-size:clamp(40px,5vw,60px);font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--navy);margin-bottom:6px}
 .case-stat-label{font-size:14px;color:var(--t1)}
 .case-divider{height:1px;background:rgba(0,0,0,.07)}
 @media(max-width:760px){
@@ -161,13 +185,13 @@ const CONFIG = {
 .cover-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 .cover-text .lbl{display:block;margin-bottom:16px}
 .cover-h2{font-size:clamp(24px,3vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.06;margin-bottom:16px}
-.cover-h2 em{font-size:1.04em;color:var(--pu3)}
+.cover-h2 em{font-size:1.04em;color:var(--green)}
 .cover-sub{font-size:16px;color:var(--t1);line-height:1.75}
 .cover-list{display:flex;flex-direction:column;gap:16px}
 .cover-item{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:14px;background:var(--bg1);border:1px solid rgba(0,0,0,.06);transition:border-color .2s}
-.cover-item:hover{border-color:rgba(37,99,235,.2)}
-.cover-check{width:24px;height:24px;border-radius:50%;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.cover-check svg{width:11px;height:11px;stroke:var(--pu3);stroke-width:2.5;fill:none}
+.cover-item:hover{border-color:rgba(162,204,53,.3)}
+.cover-check{width:24px;height:24px;border-radius:50%;background:rgba(162,204,53,.12);border:1px solid rgba(162,204,53,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cover-check svg{width:11px;height:11px;stroke:var(--navy);stroke-width:2.5;fill:none}
 .cover-item-text{font-size:16px;color:var(--t1);line-height:1.55}
 @media(max-width:760px){
   .cover-section{padding:50px 0}
@@ -183,6 +207,18 @@ const CONFIG = {
 .pg-foot-links a:hover{color:var(--t0)}
 @media(max-width:760px){.pg-foot-inner{padding:0 24px;flex-direction:column;text-align:center}}
 </style>
+
+<header class="c-header">
+  <div class="c-header-inner">
+    <a class="c-header-logo" href="/">
+      <img src="/chalik-logo.svg" alt="Chalik and Chalik" style="filter:brightness(0) invert(1)" />
+    </a>
+    <div class="c-header-funnel">
+      <span class="c-header-approved">You're Booked! Watch This Video</span>
+      <span class="c-header-approved-sm">You're Booked!</span>
+    </div>
+  </div>
+</header>
 
 <!-- VIDEO CONFIRM -->
 <section class="vid-confirm">
@@ -212,7 +248,7 @@ const CONFIG = {
           ></iframe>
           <div id="guide-click-catch" style="position:absolute;left:0;right:0;top:0;bottom:140px;z-index:1;cursor:pointer;display:none"></div>
           <div id="guide-overlay" style="position:absolute;inset:-4px;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,.3);transition:opacity .3s" role="button" tabindex="0" aria-label="Play video with sound">
-            <span style="font-family:'Inter',system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px">
+            <span style="font-family:'Source Sans 3',system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
               Click To Play With Sound
             </span>
