@@ -73,15 +73,10 @@ const bookAnywayLink = `/watch/${CONFIG.verticalSlug}`;
 #nav-bg{display:none!important}
 #nav{display:none!important}
 
-.c-header{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.06)}
-.c-header-inner{display:flex;align-items:center;justify-content:center;height:72px;max-width:1200px;margin:0 auto;padding:0 48px}
-.c-header-logo img{height:60px;width:auto;display:block}
-@media(max-width:640px){.c-header-inner{padding:0 20px;height:64px}.c-header-logo img{height:50px}}
-
 .uq-page{min-height:100vh;display:flex;flex-direction:column}
-.uq-wrap{flex:1;width:100%;max-width:760px;margin:0 auto;padding:104px 32px 56px;text-align:center;display:flex;flex-direction:column;justify-content:center}
-@media(max-width:1024px){.uq-page{min-height:0}.uq-wrap{display:block;padding:104px 32px 60px}}
-@media(max-width:640px){.uq-wrap{padding:96px 24px 56px}}
+.uq-wrap{flex:1;width:100%;max-width:760px;margin:0 auto;padding:56px 32px 56px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:1024px){.uq-page{min-height:0}.uq-wrap{display:block;padding:48px 32px 60px}}
+@media(max-width:640px){.uq-wrap{padding:40px 24px 56px}}
 
 .uq-eyebrow{display:inline-block;font-size:22px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:20px;font-family:'Open Sans Condensed','Source Sans 3',sans-serif}
 .uq-h1{font-size:clamp(28px,4vw,46px);font-weight:700;line-height:1.08;letter-spacing:-.035em;color:var(--t0);margin:0 0 18px}
@@ -109,14 +104,6 @@ const bookAnywayLink = `/watch/${CONFIG.verticalSlug}`;
 .pg-foot-links a:hover{color:var(--t0)}
 @media(max-width:760px){.pg-foot-inner{padding:0 24px;flex-direction:column;text-align:center}}
 </style>
-
-<header class="c-header">
-  <div class="c-header-inner">
-    <a class="c-header-logo" href="/">
-      <img src="/chalik-logo.svg" alt="Chalik and Chalik" style="filter:brightness(0) invert(1)" />
-    </a>
-  </div>
-</header>
 
 <div class="uq-page">
 <section class="uq-wrap">
