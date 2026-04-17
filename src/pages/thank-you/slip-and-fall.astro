@@ -57,6 +57,11 @@ const CONFIG = {
   noChat={true}
 >
 <meta slot="head" name="robots" content="noindex, nofollow" />
+<meta slot="head" property="og:title" content="You're Booked | Chalik and Chalik" />
+<meta slot="head" property="og:image" content="https://chaliklaw.com/og-walmart-slip-and-fall.jpg" />
+<meta slot="head" property="og:type" content="website" />
+<link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link slot="head" rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
 <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
 <link slot="head" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link slot="head" href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Source+Sans+3:wght@400;600;700;900&display=swap" rel="stylesheet" />
@@ -87,21 +92,9 @@ const CONFIG = {
 #nav{display:none!important}
 
 .c-header{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.06)}
-.c-header-inner{display:flex;align-items:center;gap:20px;height:72px;max-width:1200px;margin:0 auto;padding:0 48px}
-.c-header-logo{flex-shrink:0}
+.c-header-inner{display:flex;align-items:center;justify-content:center;height:72px;max-width:1200px;margin:0 auto;padding:0 48px}
 .c-header-logo img{height:60px;width:auto;display:block}
-.c-header-funnel{flex:1;display:flex;align-items:center;justify-content:flex-end}
-.c-header-approved{display:flex;align-items:center;gap:10px;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;font-size:17px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;white-space:nowrap}
-.c-header-approved::before{content:'';width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--green);box-shadow:0 0 8px var(--green);animation:hdr-blink 2s ease-in-out infinite}
-@keyframes hdr-blink{0%,100%{opacity:1}50%{opacity:.3}}
-.c-header-approved-sm{display:none}
-@media(max-width:640px){
-  .c-header-inner{padding:0 20px;height:64px}
-  .c-header-logo img{height:50px}
-  .c-header-approved{display:none}
-  .c-header-approved-sm{display:flex;align-items:center;gap:6px;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;white-space:nowrap}
-  .c-header-approved-sm::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--green);box-shadow:0 0 6px var(--green);animation:hdr-blink 2s ease-in-out infinite}
-}
+@media(max-width:640px){.c-header-inner{padding:0 20px;height:64px}.c-header-logo img{height:50px}}
 
 .container{max-width:1200px;margin:0 auto;padding:0 56px}
 @media(max-width:1024px){.container{padding:0 32px}}
@@ -213,11 +206,7 @@ const CONFIG = {
     <a class="c-header-logo" href="/">
       <img src="/chalik-logo.svg" alt="Chalik and Chalik" style="filter:brightness(0) invert(1)" />
     </a>
-    <div class="c-header-funnel">
-      <span class="c-header-approved">You're Booked! Watch This Video</span>
-      <span class="c-header-approved-sm">You're Booked!</span>
     </div>
-  </div>
 </header>
 
 <!-- VIDEO CONFIRM -->
