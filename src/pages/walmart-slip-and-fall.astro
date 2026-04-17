@@ -783,7 +783,7 @@ const media = [
     /* ─── FOOTER ────────────────────────────────────────────── */
     .site-footer { background: #020b14; padding: 64px 0 0; }
     .footer-top {
-      display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 56px; align-items: start;
+      display: grid; grid-template-columns: auto 1fr 1.6fr; gap: 56px; align-items: start;
       padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,.07);
     }
     .footer-logo img { height: 70px; width: auto; display: block; filter: brightness(0) invert(1); opacity: .7; margin-bottom: 18px; }
@@ -811,11 +811,8 @@ const media = [
     .footer-links a { font-size: 14px; color: rgba(255,255,255,.38); text-decoration: none; padding: 0 8px; transition: color .15s; }
     .footer-links a:hover { color: rgba(255,255,255,.85); }
     .footer-links span { color: rgba(255,255,255,.15); font-size: 11px; }
-    @media (max-width: 900px) {
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
-    }
-    @media (max-width: 640px) {
-      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr; gap: 36px; }
       .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
 
@@ -1209,24 +1206,14 @@ const media = [
   <footer class="site-footer">
     <div class="container">
       <div class="footer-top">
-        <!-- Col 1: Brand -->
+        <!-- Col 1: Logo -->
+        <div class="footer-logo">
+          <img src="/chalik-logo.svg" alt="Chalik and Chalik" />
+        </div>
+        <!-- Col 2: Phone + tagline -->
         <div>
-          <div class="footer-logo">
-            <img src="/chalik-logo.svg" alt="Chalik and Chalik" />
-          </div>
           <a href={phoneHref} class="footer-phone">{phone}</a>
           <p class="footer-tag">Our family working with your family to get you the compensation you are owed.</p>
-        </div>
-        <!-- Col 2: Links -->
-        <div>
-          <p class="footer-col-head">Practice Areas</p>
-          <div class="footer-col-links">
-            <a href="https://www.chaliklaw.com/florida-slip-and-fall-accident-lawyer/" target="_blank" rel="noopener">Slip &amp; Fall Injuries</a>
-            <a href="https://www.chaliklaw.com/car-accident-lawyer/" target="_blank" rel="noopener">Car Accidents</a>
-            <a href="https://www.chaliklaw.com/truck-accident-lawyer/" target="_blank" rel="noopener">Truck Accidents</a>
-            <a href="https://www.chaliklaw.com/wrongful-death-lawyer/" target="_blank" rel="noopener">Wrongful Death</a>
-            <a href="https://chaliklaw.com" target="_blank" rel="noopener">View All Practice Areas</a>
-          </div>
         </div>
         <!-- Col 3: Disclaimer -->
         <div>
