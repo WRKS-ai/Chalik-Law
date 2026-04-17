@@ -329,7 +329,7 @@ const media = [
     .intro-section { background: #f4f6f9; padding: 96px 0 0; }
     .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: end; }
     .intro-text { padding-bottom: 96px; }
-    .intro-img-wrap { position: relative; padding-right: 6%; }
+    .intro-img-wrap { position: relative; }
     /* Stage card — right side inset so Debi overhangs for layered depth */
     .intro-img-wrap::before {
       content: ''; position: absolute;
@@ -382,7 +382,7 @@ const media = [
       .intro-grid { grid-template-columns: 1fr; gap: 20px; }
       .intro-text { padding-bottom: 60px; }
       .intro-img-wrap { border-radius: 0 0 20px 20px; overflow: hidden; }
-      .intro-img-wrap img { height: auto; }
+      .intro-img-wrap img { height: auto; width: 88%; max-width: 88%; }
     }
 
     /* ─── SECTION 2-COL HEADER ──────────────────────────────── */
