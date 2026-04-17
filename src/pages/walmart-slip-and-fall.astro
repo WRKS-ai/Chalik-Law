@@ -401,48 +401,44 @@ const media = [
       font-family: 'Open Sans Condensed', 'Source Sans 3', sans-serif;
       font-size: 20px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
       color: var(--green); margin-bottom: 10px;
-      display: flex; align-items: center; gap: 10px;
+      display: inline-flex; align-items: center; gap: 10px;
     }
     .sec-tag::before { content: ''; width: 20px; height: 2px; background: var(--green); border-radius: 2px; }
     .sec-h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 900; letter-spacing: -.04em; line-height: 1.05; margin-bottom: 12px; color: var(--navy); }
     .sec-h2 em { font-style: normal; color: var(--blue); }
     .sec-sub { font-size: 18px; line-height: 1.72; max-width: 600px; color: #374151; }
 
-    .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px; }
-    .result-card {
-      padding: 32px 28px;
-      background: #fff;
-      border: 1px solid #d4def0;
-      border-radius: var(--r); position: relative; overflow: hidden;
-      box-shadow: 0 2px 16px rgba(0,40,100,.07);
-      transition: all .3s var(--ease);
+    .results-list { margin-top: 44px; }
+    .result-row {
+      display: grid; grid-template-columns: 200px 180px 1fr; align-items: center; gap: 32px;
+      padding: 28px 0; border-bottom: 1px solid rgba(0,55,97,.1);
     }
-    .result-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--navy), var(--blue));
-    }
-    .result-card:hover {
-      border-color: #93b8f0;
-      box-shadow: 0 16px 48px rgba(0,115,229,.15);
-      transform: translateY(-4px);
-    }
-    .result-card.big { background: #e8f0fe; border-color: #93b8f0; }
-    .result-card.big::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+    .result-row:first-child { border-top: 1px solid rgba(0,55,97,.1); }
     .result-amount {
-      font-size: clamp(32px, 3.4vw, 46px); font-weight: 900; color: var(--navy);
-      letter-spacing: -.045em; line-height: 1; margin-bottom: 12px;
-      font-variant-numeric: tabular-nums;
+      font-size: clamp(28px, 2.8vw, 40px); font-weight: 900; color: var(--navy);
+      letter-spacing: -.045em; line-height: 1; font-variant-numeric: tabular-nums;
     }
-    .result-card.big .result-amount { color: var(--blue); }
+    .result-row.big .result-amount { color: var(--blue); }
     .result-type {
-      display: inline-block; font-size: 16px; font-weight: 700; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--blue); background: rgba(0,115,229,.08);
-      padding: 3px 10px; border-radius: 100px; margin-bottom: 9px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--blue); background: rgba(0,115,229,.08); border: 1px solid rgba(0,115,229,.18);
+      padding: 5px 14px; border-radius: 100px;
     }
-    .result-detail { font-size: 16px; color: #374151; line-height: 1.5; }
+    .result-row.big .result-type { color: var(--blue); background: rgba(0,115,229,.12); }
+    .result-detail { font-size: 17px; color: #374151; line-height: 1.5; }
     .results-note { margin-top: 32px; font-size: 15px; color: #64748b; line-height: 1.7; text-align: center; max-width: 560px; margin-left: auto; margin-right: auto; }
-    @media (max-width: 768px) { .results-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 480px) { .results-grid { grid-template-columns: 1fr; gap: 10px; } }
+    @media (max-width: 768px) {
+      .result-row { grid-template-columns: 1fr 1fr; gap: 12px 16px; padding: 22px 0; }
+      .result-amount { grid-column: 1; }
+      .result-type { grid-column: 2; justify-self: start; align-self: center; }
+      .result-detail { grid-column: 1 / -1; font-size: 15px; color: #4b5563; }
+    }
+    @media (max-width: 480px) {
+      .result-row { grid-template-columns: 1fr; gap: 6px; }
+      .result-type { justify-self: start; }
+      .result-detail { grid-column: 1; }
+    }
 
     /* ─── TESTIMONIALS ──────────────────────────────────────── */
     .testi-head { margin-top: 72px; margin-bottom: 32px; text-align: center; }
@@ -1139,9 +1135,9 @@ const media = [
           <p>Verified results from actual cases. Every dollar below was won for a real Florida client. Our fee comes out of the settlement, never out of your pocket.</p>
         </div>
       </div>
-      <div class="results-grid">
+      <div class="results-list">
         {results.map((r, i) => (
-          <div class={`result-card rev${r.suffix === 'M' ? ' big' : ''}`} data-d={String(i * 40)}>
+          <div class={`result-row rev${r.suffix === 'M' ? ' big' : ''}`} data-d={String(i * 40)}>
             <div class="result-amount" data-raw={r.raw} data-suffix={r.suffix}>$0</div>
             <span class="result-type">{r.type}</span>
             <p class="result-detail">{r.detail}</p>
