@@ -403,7 +403,7 @@ const media = [
       color: var(--green); margin-bottom: 10px;
       display: inline-flex; align-items: center; gap: 10px;
     }
-    .sec-tag::before { content: ''; width: 20px; height: 2px; background: var(--green); border-radius: 2px; }
+    .sec-tag::before { display: none; }
     .sec-h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 900; letter-spacing: -.04em; line-height: 1.05; margin-bottom: 12px; color: var(--navy); }
     .sec-h2 em { font-style: normal; color: var(--blue); }
     .sec-sub { font-size: 18px; line-height: 1.72; max-width: 600px; color: #374151; }
@@ -433,7 +433,7 @@ const media = [
       .result-amount { font-size: 20px; min-width: 0; }
       .result-type { width: auto; font-size: 13px; }
       .result-sep { display: none; }
-      .result-detail { font-size: 15px; flex: 0 0 100%; padding-top: 2px; color: #6b7280; text-align: center; }
+      .result-detail { font-size: 16px; flex: 0 0 100%; padding-top: 2px; color: #6b7280; text-align: center; }
     }
 
     /* ─── TESTIMONIALS ──────────────────────────────────────── */
@@ -951,7 +951,7 @@ const media = [
           <div class="hero-eyebrow">Florida Walmart Slip and Fall Victims:</div>
           <h1>Get the Compensation You Are Owed.</h1>
           <p class="hero-promise">You Pay Nothing Unless We Win.</p>
-          <p class="hero-sub">Injured at a Florida Walmart? Chalik &amp; Chalik handles every step of your case. We preserve the evidence, deal with Walmart's insurance company, and fight for every dollar you are owed. If you cannot make it to our office, we come to you. No fee unless we win.</p>
+          <p class="hero-sub">Injured at a Florida Walmart? Chalik &amp; Chalik handles every step of your case. We preserve the evidence, deal with Walmart's insurance company, and fight for every dollar you are owed. No fee unless we win.</p>
           <div class="btn-wrap">
             <a href={phoneHref} class="btn-call">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
