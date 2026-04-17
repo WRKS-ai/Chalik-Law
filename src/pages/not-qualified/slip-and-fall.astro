@@ -72,9 +72,10 @@ const bookAnywayLink = `/watch/${CONFIG.verticalSlug}`;
 }
 #nav-bg{display:none!important}
 #nav{display:none!important}
+body{background:#f0f4fb}
 html,body{overflow-x:hidden;max-width:100vw}
 
-.uq-page{min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+.uq-page{min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;background:#f0f4fb}
 .uq-wrap{flex:1;width:100%;max-width:760px;margin:0 auto;padding:56px 32px 56px;text-align:center;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box}
 @media(max-width:1024px){.uq-page{min-height:0}.uq-wrap{display:block;padding:48px 32px 60px}}
 @media(max-width:640px){.uq-wrap{padding:40px 24px 56px}}
@@ -97,16 +98,24 @@ html,body{overflow-x:hidden;max-width:100vw}
 .uq-second-link{display:inline-block;padding:12px 22px;background:transparent;border:1px solid var(--navy);color:var(--navy);border-radius:100px;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;transition:all .15s}
 .uq-second-link:hover{background:var(--navy);color:#fff}
 
+.uq-logobar{padding:28px 24px 0;text-align:center;flex-shrink:0}
+.uq-logobar img{height:110px;width:auto;display:inline-block}
+@media(max-width:640px){.uq-logobar img{height:80px}.uq-logobar{padding:20px 20px 0}}
+
 .pg-foot{padding:24px 0;border-top:1px solid rgba(0,0,0,.1)}
 .pg-foot-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1200px;margin:0 auto;padding:0 56px;width:100%;box-sizing:border-box}
 .pg-foot-legal{font-size:12px;color:rgba(0,0,0,.5)}
 .pg-foot-links{display:flex;align-items:center;gap:20px}
 .pg-foot-links a{font-size:12px;color:rgba(0,0,0,.5);text-decoration:none;transition:color .15s}
 .pg-foot-links a:hover{color:var(--t0)}
-@media(max-width:760px){.pg-foot-inner{padding:0 24px;flex-direction:column;text-align:center}}
+@media(max-width:1024px){.pg-foot-inner{padding:0 32px}}
+@media(max-width:640px){.pg-foot-inner{padding:0 20px;gap:12px}.pg-foot-links{gap:12px}}
 </style>
 
 <div class="uq-page">
+<div class="uq-logobar">
+  <img src="/chalik-logo.svg" alt="Chalik and Chalik" />
+</div>
 <section class="uq-wrap">
   <span class="uq-eyebrow">{CONFIG.eyebrow}</span>
   <h1 class="uq-h1">{CONFIG.h1}</h1>
@@ -135,7 +144,7 @@ html,body{overflow-x:hidden;max-width:100vw}
 
 <footer class="pg-foot">
   <div class="pg-foot-inner">
-    <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik. All Rights Reserved.</p>
+    <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik.</p>
     <div class="pg-foot-links">
       <a href="/privacy-policy">Privacy</a>
       <a href="/terms">Terms</a>
