@@ -734,20 +734,19 @@ const media = [
     .cta-h2 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(30px, 4vw, 54px); font-weight: 900; letter-spacing: -.04em; color: var(--navy); line-height: 1.04; margin-bottom: 16px; }
     .cta-sub { font-size: 18px; color: #374151; line-height: 1.72; margin-bottom: 0; max-width: 440px; }
 
-    /* Phone card — hangs below the section into the footer */
+    /* Phone card — footer slides over its bottom */
     .cta-card {
       position: relative;
       background: #fff;
       border: 1px solid rgba(0,0,0,.08);
-      border-radius: 24px; padding: 40px 36px;
+      border-radius: 24px; padding: 40px 36px 100px;
       box-shadow:
         0 36px 80px rgba(0,35,100,.18),
         0 8px 24px rgba(0,35,100,.1),
         inset 0 1px 0 rgba(255,255,255,.95);
       overflow: hidden;
       text-align: center;
-      transform: translateY(60px); /* hangs 60px into the footer */
-      z-index: 10;
+      z-index: 1;
     }
     .cta-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
@@ -780,21 +779,19 @@ const media = [
     .btn-band:hover { background: #b8df3e; transform: translateY(-2px); box-shadow: 0 20px 52px rgba(162,204,53,.5); }
     .cta-card-fine { margin-top: 14px; font-size: 16px; color: #374151; line-height: 1.6; }
 
-    /* Footer needs top padding to make room for the hanging card */
-    .site-footer { padding-top: 120px !important; }
+    /* Footer slides up over the card's bottom */
+    .site-footer { position: relative; z-index: 2; margin-top: -80px; }
 
     @media (max-width: 960px) {
       .cta-grid { grid-template-columns: 1fr; gap: 40px; align-items: start; }
       .cta-left { padding-bottom: 0; }
-      .cta-card { max-width: 480px; transform: translateY(50px); }
+      .cta-card { max-width: 480px; }
       .cta-section { padding: 72px 0 0; }
-      .site-footer { padding-top: 110px !important; }
     }
     @media (max-width: 640px) {
       .cta-h2 { font-size: clamp(28px, 8vw, 40px); }
       .cta-section { padding: 52px 0 0; }
-      .cta-card { max-width: 100%; transform: translateY(40px); border-radius: 20px; }
-      .site-footer { padding-top: 100px !important; }
+      .cta-card { max-width: 100%; border-radius: 20px; }
     }
 
     /* ─── FOOTER ────────────────────────────────────────────── */
