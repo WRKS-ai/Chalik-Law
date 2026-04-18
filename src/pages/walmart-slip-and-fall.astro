@@ -704,6 +704,7 @@ const media = [
 
     @media (max-width: 900px) { .atty-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
     @media (max-width: 480px)  { .atty-card { aspect-ratio: 3/4; } }
+    @media (max-width: 900px)  { .atty-overlay { display: none !important; } }
 
     /* ─── CTA BAND ──────────────────────────────────────────── */
     .cta-section { position: relative; overflow: hidden; background: #f0f4fb; padding: 100px 0; }
@@ -786,6 +787,26 @@ const media = [
     }
     @media (max-width: 640px) {
       .cta-h2 { font-size: clamp(28px, 8vw, 40px); }
+      .cta-section { padding: 60px 0 0; }
+      .cta-card {
+        max-width: 100%;
+        margin: 0 -20px;
+        width: calc(100% + 40px);
+        border-radius: 0;
+        background: var(--green);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+        padding: 36px 28px 52px;
+      }
+      .cta-card::before { display: none; }
+      .cta-live { color: var(--navy); opacity: .7; }
+      .cta-num { color: var(--navy3); font-size: clamp(32px, 9vw, 44px); }
+      .cta-num:hover { color: var(--navy3); }
+      .cta-fine { color: var(--navy3); opacity: .75; }
+      .cta-card-fine { color: var(--navy3); opacity: .75; }
+      .btn-band { background: var(--navy); color: #fff; border-radius: 12px; }
+      .btn-band:hover { background: var(--navy2); }
     }
 
     /* ─── FOOTER ────────────────────────────────────────────── */
@@ -1155,7 +1176,7 @@ const media = [
     <div class="container">
       <span class="sec-tag rev">Your Legal Team</span>
       <h2 class="sec-h2 rev" data-d="50">Meet the team who will <em>fight for you</em></h2>
-      <p class="sec-sub rev" data-d="90">The team behind every result on this page. No call centers. No runaround. Jason and Debi will come to your home or hospital to start.</p>
+      <p class="sec-sub rev" data-d="90">The team behind every result on this page.</p>
       <div class="atty-grid">
         {attorneys.map((a, i) => (
           <div class="atty-card rev" data-d={String(i * 60)}>
