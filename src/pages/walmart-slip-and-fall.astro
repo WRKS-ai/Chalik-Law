@@ -19,8 +19,8 @@ const testimonials = [
     type: "Slip and Fall",
   },
   {
-    quote: "I found Chalik & Chalik by googling them. Mr. Chalik came out to my home to discuss my case and even referred me to a chiropractor next to where I live. I have dealt with both Chalik brothers and found them to be responsive and sympathetic. Jason explained everything to me step by step. I am very happy with the results.",
-    name: "Kelly Burns",
+    quote: "I had a slip and fall incident and didn't know what to do. So I found Chalik and Chalik. I am very happy I did.",
+    name: "Anthony Swanson",
     type: "Slip and Fall",
   },
   {
@@ -34,20 +34,20 @@ const results = [
   { raw: 400000, suffix: "",  type: "Slip and Fall",   detail: "Spinal injury at retail location" },
   { raw: 280000, suffix: "",  type: "Slip and Fall",   detail: "Back surgery required after fall" },
   { raw: 250000, suffix: "",  type: "Slip and Fall",   detail: "Slip and fall injury verdict" },
-  { raw: 100000, suffix: "",  type: "Slip and Fall",   detail: "Gas station fall, serious injuries" },
+  { raw: 100000, suffix: "",  type: "Slip and Fall",   detail: "Slip and fall at a gas station" },
   { raw: 22.1,   suffix: "M", type: "Brain Injury",    detail: "Defective product, catastrophic injury" },
   { raw: 6.5,    suffix: "M", type: "Personal Injury", detail: "Catastrophic injury, federal court" },
 ];
 
 const attorneys = [
   { name: "Jason Chalik",     title: "Founding Partner", photo: "/img/att-jason.webp",
-    bio: "Jason spent years on the defense side representing insurance companies. He knows exactly how Walmart's legal team operates and how to beat them. He personally handles every case and comes to you." },
+    bio: "Jason is a founding partner of Chalik & Chalik, specializing in personal injury law since establishing the firm in 2003. A University of Florida law graduate, he handles motor vehicle accidents, slip-and-fall cases, and wrongful death claims across Florida." },
   { name: "Debi Chalik",      title: "Founding Partner", photo: "/img/att-debi.webp",
-    bio: "Debi co-founded the firm with one belief: every Florida injury victim deserves the same aggressive representation big corporations get. She works directly with every client from day one." },
-  { name: "Lorija Carbonaro", title: "Attorney",         photo: "/img/att-lorgia.webp",
-    bio: "Lorija brings a client-first approach to every case and ensures no detail goes unnoticed. She is fluent in Spanish and has successfully handled personal injury matters across Florida." },
-  { name: "Suzy Spivack",     title: "Attorney",         photo: "/img/att-suzy.webp",
-    bio: "Suzy guides injured Floridians through every step of the legal process with care and urgency. She works directly with clients from the first consultation through settlement or trial." },
+    bio: "Debi founded the firm's Litigation Division and is admitted to practice in Florida, D.C., Kentucky, Texas, and Federal Court. A Nova Southeastern University graduate (Magna Cum Laude), she handles premises liability, medical malpractice, and complex litigation." },
+  { name: "Lorgia Carbonaro", title: "Paralegal & Legal Assistant", photo: "/img/att-lorgia.webp",
+    bio: "Lorgia has worked in the personal injury field since 1986 and is bilingual in English and Spanish. She joined Chalik & Chalik in 2011 and brings decades of experience helping injured clients navigate their cases." },
+  { name: "Suzy Spivack",     title: "Legal Assistant",  photo: "/img/att-suzy.webp",
+    bio: "Suzy has been with Chalik & Chalik since 1996. Bilingual in English and Spanish, she keeps communication open between attorneys and clients and is dedicated to providing the highest level of service." },
 ];
 
 const media = [
@@ -227,12 +227,12 @@ const media = [
       color: var(--green); margin-bottom: 20px;
     }
     .hero h1 {
-      font-family: 'Open Sans Condensed', 'Source Sans 3', sans-serif;
+      font-family: Georgia, 'Times New Roman', serif;
       font-size: clamp(44px, 6.5vw, 82px); font-weight: 700;
       line-height: 1.02; letter-spacing: .01em; color: #fff; margin-bottom: 16px;
     }
     .hero-promise {
-      font-family: 'Open Sans Condensed', 'Source Sans 3', sans-serif;
+      font-family: Georgia, 'Times New Roman', serif;
       font-size: clamp(24px, 3.2vw, 44px); font-weight: 700;
       color: var(--green); letter-spacing: .01em; line-height: 1.15;
       margin-bottom: 28px;
@@ -405,7 +405,7 @@ const media = [
       display: inline-flex; align-items: center; gap: 10px;
     }
     .sec-tag::before { display: none; }
-    .sec-h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 900; letter-spacing: -.04em; line-height: 1.05; margin-bottom: 12px; color: var(--navy); }
+    .sec-h2 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(28px, 3.8vw, 46px); font-weight: 900; letter-spacing: -.04em; line-height: 1.05; margin-bottom: 12px; color: var(--navy); }
     .sec-h2 em { font-style: normal; color: var(--blue); }
     .sec-sub { font-size: 18px; line-height: 1.72; max-width: 600px; color: #374151; }
 
@@ -721,7 +721,7 @@ const media = [
       color: var(--green); display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
     }
     .cta-tag::before { display: none; }
-    .cta-h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 900; letter-spacing: -.04em; color: var(--navy); line-height: 1.04; margin-bottom: 16px; }
+    .cta-h2 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(30px, 4vw, 54px); font-weight: 900; letter-spacing: -.04em; color: var(--navy); line-height: 1.04; margin-bottom: 16px; }
     .cta-sub { font-size: 18px; color: #374151; line-height: 1.72; margin-bottom: 32px; max-width: 440px; }
     .cta-bullets { display: flex; flex-direction: column; gap: 12px; }
     .cta-bullet {
@@ -897,7 +897,7 @@ const media = [
     .midcta-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
     .midcta-text { flex: 1; }
     .midcta-text h3 {
-      font-family: 'Open Sans Condensed', 'Source Sans 3', sans-serif;
+      font-family: Georgia, 'Times New Roman', serif;
       font-size: clamp(26px, 3.5vw, 40px); font-weight: 700; color: #fff;
       letter-spacing: .01em; line-height: 1.1; margin-bottom: 8px;
     }
@@ -1010,8 +1010,8 @@ const media = [
           <img src="/img/about-team-cutout.webp" alt="Jason and Debi Chalik, founding partners" loading="lazy" />
           <div class="intro-badge">
             <div class="intro-badge-text">
-              <strong>Top 100 Trial Lawyers</strong>
-              <span>30+ years serving Florida</span>
+              <strong>Chalik &amp; Chalik</strong>
+              <span>Founded 2003 · Fort Lauderdale, FL</span>
             </div>
           </div>
         </div>
@@ -1088,7 +1088,7 @@ const media = [
       <div class="testi-row">
         {[
           { t: testimonials[1], initials: "MH", cls: "av-blue"   },
-          { t: testimonials[2], initials: "KB", cls: "av-teal"   },
+          { t: testimonials[2], initials: "AS", cls: "av-teal"   },
           { t: testimonials[3], initials: "RC", cls: "av-purple" },
         ].map(({ t, initials, cls }, i) => (
           <div class="testi-mini rev" data-d={String(120 + i * 60)}>
@@ -1154,8 +1154,8 @@ const media = [
   <section class="atty-section">
     <div class="container">
       <span class="sec-tag rev">Your Legal Team</span>
-      <h2 class="sec-h2 rev" data-d="50">Meet the attorneys who will <em>fight for you</em></h2>
-      <p class="sec-sub rev" data-d="90">When you call, these are the people who personally handle your case. No call centers. No junior associates. The four faces below. They will come to your home or hospital to start.</p>
+      <h2 class="sec-h2 rev" data-d="50">Meet the team who will <em>fight for you</em></h2>
+      <p class="sec-sub rev" data-d="90">When you call, these are the people handling your case. No call centers. No runaround. Jason and Debi will come to your home or hospital to start.</p>
       <div class="atty-grid">
         {attorneys.map((a, i) => (
           <div class="atty-card rev" data-d={String(i * 60)}>
@@ -1231,7 +1231,7 @@ const media = [
             No attorney-client relationship is formed by viewing this page.
             Past results do not guarantee future outcomes. Every case is different.
             Chalik and Chalik does not accept representation until a written agreement is signed.
-            Florida &middot; 23720 US State Road, Fort Lauderdale, FL 33068.
+            Florida &middot; 721 SE 17th St, Fort Lauderdale, FL 33316.
           </p>
         </div>
       </div>
