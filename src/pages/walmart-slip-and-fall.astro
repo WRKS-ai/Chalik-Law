@@ -723,8 +723,8 @@ const media = [
     .cta-inner { position: relative; z-index: 1; }
 
     /* Split layout */
-    .cta-grid { display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: center; }
-    .cta-left { }
+    .cta-grid { display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: start; }
+    .cta-left { padding-top: 12px; }
     .cta-tag {
       font-family: 'Open Sans Condensed', 'Source Sans 3', sans-serif;
       font-size: 20px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
@@ -740,7 +740,7 @@ const media = [
       background: #fff;
       border: 1px solid rgba(0,0,0,.08);
       border-radius: 24px; padding: 40px 36px 40px;
-      margin-bottom: -160px;
+      margin-bottom: -280px;
       box-shadow:
         0 36px 80px rgba(0,35,100,.18),
         0 8px 24px rgba(0,35,100,.1),
