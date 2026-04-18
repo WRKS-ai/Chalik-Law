@@ -866,6 +866,11 @@ const media = [
       .site-footer    { padding-top: 44px; }
     }
 
+    /* ─── GREEN CTA SECTION (mobile) — must come after spacing overrides ── */
+    @media (max-width: 640px) {
+      .cta-section { padding: 0 !important; background: var(--green) !important; }
+    }
+
     /* ─── TOP BAR ──────────────────────────────────────────── */
     .top-bar { background: var(--navy3); border-bottom: 1px solid rgba(255,255,255,.1); padding: 10px 0; }
     .top-bar-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
