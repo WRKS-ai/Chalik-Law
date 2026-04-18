@@ -713,7 +713,8 @@ const media = [
     /* ─── CTA BAND ──────────────────────────────────────────── */
     .cta-section {
       position: relative; overflow: visible; background: #f0f4fb;
-      padding: 96px 0;
+      /* bottom padding = top(96) + footer-overlap(180) → equal visual space above & below */
+      padding: 96px 0 276px;
       z-index: 1;
     }
     .cta-photo { display: none; }
@@ -722,9 +723,9 @@ const media = [
     .cta-dots { display: none; }
     .cta-inner { position: relative; z-index: 1; }
 
-    /* Split layout */
+    /* Split layout — center aligns left copy against card's natural height */
     .cta-grid { display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: center; }
-    .cta-left { max-width: 460px; }
+    .cta-left { max-width: 400px; }
     .cta-tag {
       font-family: 'Open Sans Condensed', 'Source Sans 3', sans-serif;
       font-size: 20px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
@@ -734,17 +735,35 @@ const media = [
     .cta-h2 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(30px, 3.4vw, 50px); font-weight: 900; letter-spacing: -.04em; color: var(--navy); line-height: 1.04; margin-bottom: 16px; }
     .cta-sub { font-size: 18px; color: #374151; line-height: 1.72; margin-bottom: 0; max-width: 600px; }
 
-    /* Phone card — extends below section, footer slides over it */
+    /* Card wrapper — drop-shadow wraps card + ::after tail as one shape */
+    .cta-card-wrap {
+      position: relative;
+      filter:
+        drop-shadow(0 28px 64px rgba(0,35,100,.18))
+        drop-shadow(0 6px 20px rgba(0,35,100,.10));
+    }
+    /* The hanging tail: absolutely positioned so it doesn't affect grid row height */
+    .cta-card-wrap::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      height: 220px;
+      background: #fff;
+      border-left: 1px solid rgba(0,0,0,.08);
+      border-right: 1px solid rgba(0,0,0,.08);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      border-radius: 0 0 24px 24px;
+    }
+
+    /* Phone card — natural height, flat bottom to connect to tail */
     .cta-card {
       position: relative;
       background: #fff;
       border: 1px solid rgba(0,0,0,.08);
-      border-radius: 24px; padding: 40px 36px 220px;
-      margin-bottom: 0;
-      box-shadow:
-        0 36px 80px rgba(0,35,100,.18),
-        0 8px 24px rgba(0,35,100,.1),
-        inset 0 1px 0 rgba(255,255,255,.95);
+      border-bottom: none;
+      border-radius: 24px 24px 0 0;
+      padding: 40px 36px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.95);
       overflow: hidden;
       text-align: center;
       z-index: 1;
@@ -777,18 +796,22 @@ const media = [
     .btn-band:hover { background: #b8df3e; transform: translateY(-2px); box-shadow: 0 20px 52px rgba(162,204,53,.5); }
     .cta-card-fine { margin-top: 14px; font-size: 16px; color: #374151; line-height: 1.6; }
 
-    /* Footer slides up over the card's tall bottom */
+    /* Footer slides up over the card's hanging tail */
     .site-footer { position: relative; z-index: 2; margin-top: -180px; }
 
+    /* ── Mobile: disable hanging tail, restore normal footer spacing ── */
     @media (max-width: 960px) {
       .cta-grid { grid-template-columns: 1fr; gap: 40px; align-items: start; }
-      .cta-card { max-width: 480px; margin-bottom: -120px; }
+      .cta-card-wrap { max-width: 480px; filter: drop-shadow(0 12px 32px rgba(0,35,100,.14)); }
+      .cta-card-wrap::after { display: none; }
+      .cta-card { border-bottom: 1px solid rgba(0,0,0,.08); border-radius: 24px; }
       .cta-section { padding: 72px 0; }
+      .site-footer { margin-top: 0; }
     }
     @media (max-width: 640px) {
       .cta-h2 { font-size: clamp(28px, 8vw, 40px); }
-      .cta-section { padding: 52px 0; }
-      .cta-card { max-width: 100%; border-radius: 20px; padding-bottom: 160px; }
+      .cta-section { padding: 52px 0 72px; }
+      .cta-card-wrap { max-width: 100%; }
     }
 
     /* ─── FOOTER ────────────────────────────────────────────── */
@@ -1195,15 +1218,17 @@ const media = [
           </div>
 
           <!-- Right: phone card -->
-          <div class="cta-card">
-            <span class="cta-live">Lines Open 24/7 · Call Now</span>
-            <a href={phoneHref} class="cta-num">{phone}</a>
-            <span class="cta-fine">Free consultation. No obligation.</span>
-            <a href={phoneHref} class="btn-band">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              Call Now. It Is Free.
-            </a>
-            <p class="cta-card-fine">Hablamos Español. Available 24 hours a day,<br/>7 days a week, including holidays.</p>
+          <div class="cta-card-wrap">
+            <div class="cta-card">
+              <span class="cta-live">Lines Open 24/7 · Call Now</span>
+              <a href={phoneHref} class="cta-num">{phone}</a>
+              <span class="cta-fine">Free consultation. No obligation.</span>
+              <a href={phoneHref} class="btn-band">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Call Now. It Is Free.
+              </a>
+              <p class="cta-card-fine">Hablamos Español. Available 24 hours a day,<br/>7 days a week, including holidays.</p>
+            </div>
           </div>
 
         </div>
