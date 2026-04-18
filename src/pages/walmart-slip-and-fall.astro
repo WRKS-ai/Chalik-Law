@@ -308,7 +308,7 @@ const media = [
     /* ─── MEDIA BAR ─────────────────────────────────────────── */
     .media-bar { background: #fff; padding: 28px 0; border-bottom: 1px solid #f0f0f0; }
     .media-label { font-size: 16px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #c4c9d4; text-align: center; margin-bottom: 18px; }
-    .marquee-wrap { max-width: 840px; margin: 0 auto; position: relative; overflow: hidden; }
+    .marquee-wrap { max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; }
     .marquee-wrap::before,
     .marquee-wrap::after {
       content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none;
@@ -318,6 +318,7 @@ const media = [
     .marquee-inner { display: flex; align-items: center; gap: 56px; width: max-content; animation: marquee 30s linear infinite; }
     @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
     .marquee-logo img { height: 48px; width: auto; opacity: 1; filter: none; display: block; }
+    .marquee-logo img[alt="CNN"] { height: 30px; }
     @media (max-width: 640px) {
       .marquee-inner { gap: 28px; }
       .marquee-logo img { height: 28px; }
