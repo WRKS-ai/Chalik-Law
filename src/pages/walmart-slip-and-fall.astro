@@ -565,12 +565,11 @@ const media = [
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border-radius: 16px; padding: 28px 24px;
       box-shadow: 0 8px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07);
-      transition: background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
     }
     .testi-mini:hover {
-      background: rgba(255,255,255,.1);
-      border-color: rgba(255,255,255,.18);
-      box-shadow: 0 16px 48px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
     }
     .testi-mini-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
     .testi-mini-avatar {
@@ -704,7 +703,12 @@ const media = [
 
     @media (max-width: 900px) { .atty-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
     @media (max-width: 480px)  { .atty-card { aspect-ratio: 3/4; } }
-    @media (max-width: 900px)  { .atty-overlay { display: none !important; } }
+    @media (max-width: 900px)  {
+      .atty-overlay { display: none !important; }
+      .atty-card { cursor: default; pointer-events: none; }
+      .atty-card .atty-photo { transform: none !important; transition: none !important; }
+      .atty-foot { opacity: 1 !important; }
+    }
 
     /* ─── CTA BAND ──────────────────────────────────────────── */
     .cta-section { position: relative; overflow: hidden; background: #f0f4fb; padding: 100px 0; }
@@ -787,17 +791,20 @@ const media = [
     }
     @media (max-width: 640px) {
       .cta-h2 { font-size: clamp(28px, 8vw, 40px); }
-      .cta-section { padding: 60px 0 0; }
+      .cta-section { padding: 0; background: var(--green); }
+      .cta-left { padding: 52px 20px 40px; }
+      .cta-tag { color: var(--navy); }
+      .cta-h2 { color: var(--navy3); }
+      .cta-sub { color: var(--navy3); opacity: .8; }
       .cta-card {
         max-width: 100%;
-        margin: 0 -20px;
-        width: calc(100% + 40px);
+        width: 100%;
         border-radius: 0;
-        background: var(--green);
+        background: transparent;
         backdrop-filter: none; -webkit-backdrop-filter: none;
-        border: none;
+        border: none; border-top: 1px solid rgba(0,0,0,.1);
         box-shadow: none;
-        padding: 36px 28px 52px;
+        padding: 32px 20px 56px;
       }
       .cta-card::before { display: none; }
       .cta-live { color: var(--navy); opacity: .7; }
@@ -1259,9 +1266,9 @@ const media = [
       <div class="footer-bottom">
         <p class="footer-copy">&copy; {year} Chalik &amp; Chalik. All Rights Reserved.</p>
         <div class="footer-links">
-          <a href="/privacy-policy">Privacy</a>
+          <a href="https://www.chaliklaw.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a>
           <span>&middot;</span>
-          <a href="/terms-of-use">Terms</a>
+          <a href="https://www.chaliklaw.com/terms-of-use/" target="_blank" rel="noopener">Terms</a>
         </div>
       </div>
     </div>
