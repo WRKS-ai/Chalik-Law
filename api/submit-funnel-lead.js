@@ -4,6 +4,7 @@
 
 import { submitToGHL }     from './crm/ghl.js';
 import { submitToHubSpot } from './crm/hubspot.js';
+import { submitToInspree } from './crm/inspree.js';
 import { submitViaEmail }  from './crm/email.js';
 
 // Fall timing values that route to the unqualified page
@@ -38,6 +39,7 @@ export default async function handler(req, res) {
   try {
     if      (provider === 'ghl')     await submitToGHL(payload);
     else if (provider === 'hubspot') await submitToHubSpot(payload);
+    else if (provider === 'inspree') await submitToInspree(payload);
     else if (provider === 'email')   await submitViaEmail(payload);
     else throw new Error(`Unknown CRM_PROVIDER: ${provider}`);
 

@@ -1,10 +1,12 @@
 ---
-// LANDING PAGE — Walmart Slip and Fall (VSL-ready)
-// Route: /walmart-slip-and-fall
+// LANDING PAGE — Slip and Fall (form-qualification variant)
+// Route: /slip-and-fall
+// Split-test B variant of walmart-slip-and-fall.astro. All CTAs open the
+// qualification form instead of dialing the tracking number. Phone number
+// is not displayed anywhere on this page — form is the only path forward.
+// Qualified submissions route to /approved/slip-and-fall (pixel fires there).
 
-const phone     = "866-333-1209";
-const phoneHref = "tel:+18663331209";
-const year      = new Date().getFullYear();
+const year = new Date().getFullYear();
 
 const testimonials = [
   {
@@ -66,31 +68,20 @@ const media = [
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Florida Walmart Slip and Fall Attorney | Chalik and Chalik</title>
-  <meta name="description" content="Injured in a Florida Walmart slip and fall? Chalik and Chalik comes to your home or hospital, fights Walmart's legal team, and wins you what you are owed. No fee unless we win. Call 24/7: 866-333-1209." />
-  <meta name="robots" content="index, follow" />
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://chaliklaw.com/walmart-slip-and-fall" />
+  <title>Florida Slip and Fall Attorney | Chalik and Chalik</title>
+  <meta name="description" content="Injured in a Florida slip and fall? Chalik and Chalik handles every step of your case. No fee unless we win. Check if you qualify for a free case review in 60 seconds." />
+  <meta name="robots" content="noindex, nofollow" />
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-  <!-- Meta Pixel -->
-  <script is:inline>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','4675544149340474');fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4675544149340474&ev=PageView&noscript=1" /></noscript>
-  <!-- End Meta Pixel -->
-
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://chaliklaw.com/walmart-slip-and-fall" />
-  <meta property="og:title" content="Florida Walmart Slip and Fall Attorney | Chalik and Chalik" />
-  <meta property="og:description" content="Injured in a Florida Walmart? Chalik and Chalik comes to you. No fee unless we win. Call 24/7: 866-333-1209." />
+  <meta property="og:url" content="https://chaliklaw.com/slip-and-fall" />
+  <meta property="og:title" content="Florida Slip and Fall Attorney | Chalik and Chalik" />
+  <meta property="og:description" content="Injured in a Florida slip and fall? No fee unless we win. Check if you qualify in 60 seconds." />
   <meta property="og:image" content="https://chalik-law.vercel.app/og-walmart-slip-and-fall.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -99,8 +90,8 @@ const media = [
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Florida Walmart Slip and Fall Attorney | Chalik and Chalik" />
-  <meta name="twitter:description" content="Injured in a Florida Walmart? Chalik and Chalik comes to you. No fee unless we win. Call 24/7: 866-333-1209." />
+  <meta name="twitter:title" content="Florida Slip and Fall Attorney | Chalik and Chalik" />
+  <meta name="twitter:description" content="Injured in a Florida slip and fall? No fee unless we win. Check if you qualify in 60 seconds." />
   <meta name="twitter:image" content="https://chalik-law.vercel.app/og-walmart-slip-and-fall.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -951,6 +942,47 @@ const media = [
     .rev { opacity: 0; transform: translateY(22px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
     .rev.in { opacity: 1; transform: translateY(0); }
     @media (max-width: 768px) { .rev { opacity: 1; transform: none; transition: none; } }
+
+    /* ─── QUALIFICATION MODAL (shared styles with VSL page) ─── */
+    .qf-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .2s}
+    .qf-modal.open{display:flex;opacity:1}
+    .qf-card{position:relative;width:100%;max-width:540px;background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:18px;padding:38px 36px 32px;text-align:left;box-shadow:0 20px 60px rgba(0,0,0,.15);transform:translateY(12px);transition:transform .25s var(--ease);max-height:calc(100vh - 48px);overflow-y:auto;font-family:'Source Sans 3','Open Sans',system-ui,sans-serif;color:#0d0d0d}
+    .qf-modal.open .qf-card{transform:translateY(0)}
+    .qf-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);color:#0d0d0d;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;padding:0;line-height:1;font-family:inherit}
+    .qf-close:hover{background:rgba(0,0,0,.1);transform:rotate(90deg)}
+    @media(max-width:640px){.qf-card{padding:30px 22px 26px}}
+    .qf-prog{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-right:38px}
+    .qf-prog-bar{flex:1;height:5px;background:rgba(0,0,0,.08);border-radius:100px;overflow:hidden}
+    .qf-prog-fill{height:100%;width:50%;background:var(--green);border-radius:100px;transition:width .3s var(--ease)}
+    .qf-prog-txt{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#888;white-space:nowrap}
+    .qf-h{font-size:24px;font-weight:700;line-height:1.1;letter-spacing:-.02em;color:#0d0d0d;margin:0 0 8px}
+    .qf-sub{font-size:15px;color:#444;line-height:1.6;margin:0 0 22px}
+    .qf-step{display:none;flex-direction:column;gap:14px}
+    .qf-step.active{display:flex}
+    .qf-form{display:flex;flex-direction:column;gap:14px}
+    .qf-field{display:flex;flex-direction:column;gap:7px}
+    .qf-field label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#888}
+    .qf-field input{appearance:none;background:#f7f7f8;border:1px solid rgba(0,0,0,.15);color:#0d0d0d;font-family:inherit;font-size:16px;padding:14px 16px;border-radius:10px;outline:none;transition:border-color .15s,background .15s}
+    .qf-field input::placeholder{color:#888}
+    .qf-field input:focus{border-color:var(--green);background:#fff}
+    .qf-q-label{font-size:13px;font-weight:700;color:#0d0d0d;margin-bottom:2px}
+    .qf-radio-group{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+    .qf-radio{position:relative;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 16px;background:#f7f7f8;border:1px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;transition:all .15s;font-size:15px;font-weight:500;color:#0d0d0d}
+    .qf-radio:hover{border-color:rgba(162,204,53,.5);background:rgba(162,204,53,.04)}
+    .qf-radio input{position:absolute;opacity:0;pointer-events:none}
+    .qf-radio .qf-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(0,0,0,.3);position:relative;flex-shrink:0;transition:all .15s}
+    .qf-radio input:checked + .qf-dot{border-color:var(--green)}
+    .qf-radio input:checked + .qf-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--green)}
+    .qf-radio:has(input:checked){border-color:var(--green);background:rgba(162,204,53,.06)}
+    .qf-step-actions{display:flex;gap:10px;margin-top:10px}
+    .qf-submit{flex:1;padding:16px 22px;border:0;border-radius:12px;background:var(--green);color:var(--navy3);font-family:inherit;font-size:15px;font-weight:700;letter-spacing:-.005em;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 8px 24px rgba(162,204,53,.3)}
+    .qf-submit:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(162,204,53,.45)}
+    .qf-submit:disabled{opacity:.6;cursor:wait;transform:none}
+    .qf-back{padding:16px 22px;border:1px solid rgba(0,0,0,.15);border-radius:12px;background:transparent;color:#444;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+    .qf-back:hover{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.25);color:#0d0d0d}
+    .qf-submit-hint{margin-top:10px;font-size:12px;color:#888;text-align:center;letter-spacing:.04em}
+    .qf-error{margin-top:10px;color:#d93025;font-size:13px;text-align:center;display:none}
+    body.qf-locked{overflow:hidden}
   </style>
 </head>
 <body>
@@ -961,11 +993,11 @@ const media = [
       <div class="header-inner">
         <a href="/"><img src="/chalik-logo.svg" alt="Chalik and Chalik" style="height:110px;width:auto;display:block;filter:brightness(0) invert(1)" /></a>
         <div class="header-funnel">
-          <span class="header-approved">Approved! Final Step: Call Us Now</span>
+          <span class="header-approved">Check If You Qualify · 60 Seconds</span>
           <div class="header-track">
             <div class="header-fill"></div>
           </div>
-          <span class="header-approved-sm">Final Step: Call Now</span>
+          <span class="header-approved-sm">Check If You Qualify</span>
         </div>
       </div>
     </div>
@@ -986,10 +1018,9 @@ const media = [
           <p class="hero-promise">You Pay Nothing Unless We Win.</p>
           <p class="hero-sub">Injured at a Florida Walmart? Chalik &amp; Chalik handles every step of your case. We preserve the evidence, deal with Walmart's insurance company, and fight for every dollar you are owed. No fee unless <span style="white-space:nowrap">we win.</span></p>
           <div class="btn-wrap">
-            <a href={phoneHref} class="btn-call">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              Call {phone}
-            </a>
+            <button type="button" class="btn-call" data-open-form>
+              Start My Free Case Review
+            </button>
           </div>
           <p class="hero-fine">Free consultation · Available 24/7 · Hablamos Español</p>
         </div>
@@ -1108,12 +1139,11 @@ const media = [
       <div class="testi-cta rev" data-d="80">
         <div class="testi-cta-text">
           <strong>Ready to find out what your case is worth?</strong>
-          <span>The call is free. You pay nothing unless we win.</span>
+          <span>The review is free. You pay nothing unless we win.</span>
         </div>
-        <a href={phoneHref} class="testi-cta-btn">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call {phone}
-        </a>
+        <button type="button" class="testi-cta-btn" data-open-form>
+          Get My Free Case Review
+        </button>
       </div>
 
       {/* Supporting testimonials */}
@@ -1172,12 +1202,11 @@ const media = [
       <div class="midcta-inner">
         <div class="midcta-text">
           <h3>Florida has a 2-year deadline to file.</h3>
-          <p>Walmart's legal team is building their case right now. One call costs you nothing.</p>
+          <p>Walmart's legal team is building their case right now. Checking yours costs nothing.</p>
         </div>
-        <a href={phoneHref} class="btn-midcta">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call {phone} · Free
-        </a>
+        <button type="button" class="btn-midcta" data-open-form>
+          Check If I Qualify · Free
+        </button>
       </div>
     </div>
   </section>
@@ -1222,20 +1251,18 @@ const media = [
           <div class="cta-left">
             <span class="cta-tag">Free 24/7 Consultation</span>
             <h2 class="cta-h2">Do not face Walmart's legal team alone.</h2>
-            <p class="cta-sub">Walmart has attorneys working right now to minimize what they owe you. We come to you, handle every step, and fight for every dollar. The call is free. You only pay if we win.</p>
+            <p class="cta-sub">Walmart has attorneys working right now to minimize what they owe you. We come to you, handle every step, and fight for every dollar. The review is free. You only pay if we win.</p>
           </div>
 
-          <!-- Right: phone card -->
+          <!-- Right: form-open card -->
           <div class="cta-card-wrap">
             <div class="cta-card">
-              <span class="cta-live">Lines Open 24/7 · Call Now</span>
-              <a href={phoneHref} class="cta-num">{phone}</a>
-              <span class="cta-fine">Free consultation. No obligation.</span>
-              <a href={phoneHref} class="btn-band">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                Call Now. It Is Free.
-              </a>
-              <p class="cta-card-fine">Hablamos Español. Available 24 hours a day,<br/>7 days a week, including holidays.</p>
+              <span class="cta-live">Free Case Review · No Obligation</span>
+              <p class="cta-card-lead">Answer two quick questions to see if we can take your case.</p>
+              <button type="button" class="btn-band" data-open-form>
+                Start Free Case Review
+              </button>
+              <p class="cta-card-fine">Hablamos Español. Reviews available 24 hours a day,<br/>7 days a week, including holidays.</p>
             </div>
           </div>
 
@@ -1252,9 +1279,8 @@ const media = [
         <div class="footer-logo">
           <img src="/chalik-logo.svg" alt="Chalik and Chalik" />
         </div>
-        <!-- Col 2: Phone + tagline -->
+        <!-- Col 2: Tagline -->
         <div>
-          <a href={phoneHref} class="footer-phone">{phone}</a>
           <p class="footer-tag">Our family working with your family to get you the compensation you are owed.</p>
         </div>
         <!-- Col 3: Disclaimer -->
@@ -1302,6 +1328,197 @@ const media = [
         entries.forEach(function(e){ if(!e.isIntersecting)return; anim(e.target); cio.unobserve(e.target); });
       },{threshold:.25});
       document.querySelectorAll('.result-amount[data-raw]').forEach(function(el){ cio.observe(el); });
+    })();
+  </script>
+
+  <!-- QUALIFICATION MODAL -->
+  <div class="qf-modal" id="qf-modal" role="dialog" aria-modal="true" aria-labelledby="qf-modal-title">
+    <div class="qf-card">
+      <button type="button" class="qf-close" id="qf-close" aria-label="Close">&#x2715;</button>
+
+      <div class="qf-prog">
+        <div class="qf-prog-bar"><div class="qf-prog-fill" id="qf-prog-fill"></div></div>
+        <span class="qf-prog-txt" id="qf-prog-txt">Step 1 of 2</span>
+      </div>
+
+      <form id="qf-form" class="qf-form" novalidate>
+
+        <!-- STEP 1: Qualification questions -->
+        <div class="qf-step active" data-step="1">
+          <h2 class="qf-h" id="qf-modal-title">Tell us about your case</h2>
+          <p class="qf-sub">Answer two quick questions so we can review your situation.</p>
+
+          <div>
+            <p class="qf-q-label">When did the fall happen?</p>
+            <div class="qf-radio-group">
+              <label class="qf-radio">
+                <span>Within the last 2 years</span>
+                <input type="radio" name="fallTiming" value="within-2-years" />
+                <span class="qf-dot"></span>
+              </label>
+              <label class="qf-radio">
+                <span>2 to 4 years ago</span>
+                <input type="radio" name="fallTiming" value="2-to-4-years" />
+                <span class="qf-dot"></span>
+              </label>
+              <label class="qf-radio">
+                <span>More than 4 years ago</span>
+                <input type="radio" name="fallTiming" value="more-than-4-years" />
+                <span class="qf-dot"></span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <p class="qf-q-label">Did you get medical care for your injuries?</p>
+            <div class="qf-radio-group">
+              <label class="qf-radio">
+                <span>Yes, ER or ambulance</span>
+                <input type="radio" name="medicalCare" value="yes-er" />
+                <span class="qf-dot"></span>
+              </label>
+              <label class="qf-radio">
+                <span>Yes, saw a doctor</span>
+                <input type="radio" name="medicalCare" value="yes-doctor" />
+                <span class="qf-dot"></span>
+              </label>
+              <label class="qf-radio">
+                <span>Not yet</span>
+                <input type="radio" name="medicalCare" value="not-yet" />
+                <span class="qf-dot"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="qf-step-actions">
+            <button type="button" class="qf-submit" id="qf-next">Continue</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Contact info -->
+        <div class="qf-step" data-step="2">
+          <h2 class="qf-h">Get your free case review</h2>
+          <p class="qf-sub">Enter your contact info and we will be in touch shortly.</p>
+
+          <div class="qf-field">
+            <label for="qf-name">Full Name</label>
+            <input id="qf-name" name="name" type="text" required autocomplete="name" placeholder="Jane Smith" />
+          </div>
+          <div class="qf-field">
+            <label for="qf-email">Email</label>
+            <input id="qf-email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+          </div>
+          <div class="qf-field">
+            <label for="qf-phone">Phone Number</label>
+            <input id="qf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(555) 555-5555" />
+          </div>
+
+          <div class="qf-step-actions">
+            <button type="button" class="qf-back" id="qf-back">Back</button>
+            <button type="submit" class="qf-submit">Get My Free Case Review</button>
+          </div>
+          <p class="qf-submit-hint">No fee unless we win.</p>
+        </div>
+
+        <div id="qf-err" class="qf-error">Something went wrong. Please try again.</div>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function(){
+      var modal    = document.getElementById('qf-modal');
+      var closeBtn = document.getElementById('qf-close');
+      var form     = document.getElementById('qf-form');
+      var err      = document.getElementById('qf-err');
+      var nextBtn  = document.getElementById('qf-next');
+      var backBtn  = document.getElementById('qf-back');
+      var progFill = document.getElementById('qf-prog-fill');
+      var progTxt  = document.getElementById('qf-prog-txt');
+      var steps    = form.querySelectorAll('.qf-step');
+      var TOTAL    = steps.length;
+
+      function openModal(){
+        modal.classList.add('open');
+        document.body.classList.add('qf-locked');
+        setTimeout(function(){ var f=form.querySelector('.qf-step.active input[type="radio"], .qf-step.active input:not([type="radio"])'); if(f) f.focus(); }, 120);
+      }
+      function closeModal(){
+        modal.classList.remove('open');
+        document.body.classList.remove('qf-locked');
+      }
+      document.querySelectorAll('[data-open-form]').forEach(function(btn){
+        btn.addEventListener('click', openModal);
+      });
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&modal.classList.contains('open')) closeModal(); });
+
+      function showStep(n){
+        steps.forEach(function(s){ s.classList.toggle('active', Number(s.dataset.step)===n); });
+        progFill.style.width = (n/TOTAL*100)+'%';
+        progTxt.textContent  = 'Step '+n+' of '+TOTAL;
+        err.style.display    = 'none';
+        modal.querySelector('.qf-card').scrollTop = 0;
+      }
+
+      function validateEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+      nextBtn.addEventListener('click', function(){
+        var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
+        var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
+        if (!fallTiming || !medicalCare) { err.textContent='Please answer both questions.'; err.style.display='block'; return; }
+        showStep(2);
+      });
+
+      backBtn.addEventListener('click', function(){ showStep(1); });
+
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        err.style.display = 'none';
+
+        var name        = form.name.value.trim();
+        var email       = form.email.value.trim();
+        var phone       = form.phone.value.trim();
+        var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
+        var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
+
+        if (!name||!email||!phone){ err.textContent='Please fill in every field.'; err.style.display='block'; return; }
+        if (!validateEmail(email)){ err.textContent='Please enter a valid email address.'; err.style.display='block'; return; }
+        if (phone.replace(/\D/g,'').length<7){ err.textContent='Please enter a valid phone number.'; err.style.display='block'; return; }
+
+        var btn = form.querySelector('.qf-step[data-step="2"] button[type="submit"]');
+        var orig = btn.textContent;
+        btn.disabled = true; btn.textContent = 'Submitting...';
+
+        try {
+          var res = await fetch('/api/submit-funnel-lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name:name, email:email, phone:phone, fallTiming:fallTiming, medicalCare:medicalCare, vertical:'slip-and-fall' })
+          });
+          var data = await res.json().catch(function(){ return {}; });
+
+          if (!res.ok) {
+            btn.disabled=false; btn.textContent=orig;
+            err.textContent=data.error||'Something went wrong. Please try again.';
+            err.style.display='block'; return;
+          }
+
+          if (data.qualified) {
+            window.location.href = '/approved/slip-and-fall';
+          } else {
+            window.location.href = '/not-qualified/slip-and-fall';
+          }
+        } catch(ex) {
+          btn.disabled=false; btn.textContent=orig;
+          err.textContent='Network error. Please try again.';
+          err.style.display='block';
+          console.error(ex);
+        }
+      });
+
+      showStep(1);
     })();
   </script>
 

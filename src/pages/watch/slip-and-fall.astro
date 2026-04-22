@@ -11,15 +11,18 @@ const CONFIG = {
   clientName:   "Chalik and Chalik",
   fbPixelId:    "",
 
-  vimeoPreconnect: true,
-
   // Headline
   eyebrow:   "Florida Residents Who Have Slipped and Fell In a Walmart",
   h1Part1:   "We Win Your Case,",
   h1Accent:  "or You Don't Pay",
   h1Part2:   "a Dime.",
-  // Video
-  vimeoId: "PLACEHOLDER",
+
+  // VSL video — DISABLED while the VSL is being produced.
+  // Flipping `videoEnabled: true` restores the iframe, Vimeo preconnects,
+  // player.js script, and the tap/seek controller — no other code changes needed.
+  // Don't forget to replace vimeoId with the real Vimeo ID when re-enabling.
+  videoEnabled: false,
+  vimeoId:      "PLACEHOLDER",
 
   // CTA
   ctaBtnText: "Contact Us Now",
@@ -78,7 +81,7 @@ const CONFIG = {
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Source+Sans+3:wght@400;600;700;900&display=swap" rel="stylesheet" />
 </Fragment>
 
-{CONFIG.vimeoPreconnect && (
+{CONFIG.videoEnabled && (
   <Fragment slot="head">
     <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
     <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
@@ -223,25 +226,27 @@ body.vsl-locked{overflow:hidden}
   <span class="vsl-eyebrow">{CONFIG.eyebrow}</span>
   <h1 class="vsl-h1">{CONFIG.h1Part1}<br /><em>{CONFIG.h1Accent}</em> {CONFIG.h1Part2}</h1>
 
-  <div class="vsl-video">
-    <iframe
-      id="vsl-vimeo"
-      src={`https://player.vimeo.com/video/${CONFIG.vimeoId}?autoplay=1&muted=1&loop=1&controls=1&playsinline=1&dnt=1&badge=0&byline=0&title=0&speed=0&color=a2cc35&airplay=0&chromecast=0&pip=0&vimeo_logo=0&share=0&like=0&watchlater=0`}
-      allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-      allowfullscreen
-      playsinline
-      webkit-playsinline
-      title="Case Review Video"
-      loading="eager"
-    ></iframe>
-    <div class="vsl-click-catch" id="vsl-click-catch" aria-hidden="true"></div>
-    <div class="vsl-video-overlay" id="vsl-video-overlay" role="button" tabindex="0" aria-label="Play video with sound">
-      <span class="vsl-overlay-txt">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        Click To Play With Sound
-      </span>
+  {CONFIG.videoEnabled && (
+    <div class="vsl-video">
+      <iframe
+        id="vsl-vimeo"
+        src={`https://player.vimeo.com/video/${CONFIG.vimeoId}?autoplay=1&muted=1&loop=1&controls=1&playsinline=1&dnt=1&badge=0&byline=0&title=0&speed=0&color=a2cc35&airplay=0&chromecast=0&pip=0&vimeo_logo=0&share=0&like=0&watchlater=0`}
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        allowfullscreen
+        playsinline
+        webkit-playsinline
+        title="Case Review Video"
+        loading="eager"
+      ></iframe>
+      <div class="vsl-click-catch" id="vsl-click-catch" aria-hidden="true"></div>
+      <div class="vsl-video-overlay" id="vsl-video-overlay" role="button" tabindex="0" aria-label="Play video with sound">
+        <span class="vsl-overlay-txt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          Click To Play With Sound
+        </span>
+      </div>
     </div>
-  </div>
+  )}
 
   <button type="button" class="vsl-cta-btn" id="vsl-open">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -339,63 +344,67 @@ body.vsl-locked{overflow:hidden}
 </footer>
 </div>
 
-<script src="https://player.vimeo.com/api/player.js" is:inline></script>
-<script is:inline>
-(function(){
-  var iframe  = document.getElementById('vsl-vimeo');
-  var overlay = document.getElementById('vsl-video-overlay');
-  var catcher = document.getElementById('vsl-click-catch');
-  if (!iframe || !overlay || !catcher) return;
+{CONFIG.videoEnabled && (
+  <Fragment>
+    <script src="https://player.vimeo.com/api/player.js" is:inline></script>
+    <script is:inline>
+      {`(function(){
+        var iframe  = document.getElementById('vsl-vimeo');
+        var overlay = document.getElementById('vsl-video-overlay');
+        var catcher = document.getElementById('vsl-click-catch');
+        if (!iframe || !overlay || !catcher) return;
 
-  var activated = false;
-  var player = null;
+        var activated = false;
+        var player = null;
 
-  function initPlayer(){
-    if (player) return;
-    if (!window.Vimeo) return;
-    try { player = new Vimeo.Player(iframe); } catch(e){}
-  }
-  initPlayer();
-  if (!player) { iframe.addEventListener('load', initPlayer, { once: true }); }
+        function initPlayer(){
+          if (player) return;
+          if (!window.Vimeo) return;
+          try { player = new Vimeo.Player(iframe); } catch(e){}
+        }
+        initPlayer();
+        if (!player) { iframe.addEventListener('load', initPlayer, { once: true }); }
 
-  function activate(){
-    if (activated) return;
-    activated = true;
-    overlay.classList.add('hidden');
-    if (player) {
-      player.setVolume(1);
-      player.setCurrentTime(0);
-      player.setLoop(false);
-      player.play();
-    }
-    catcher.classList.add('active');
-  }
+        function activate(){
+          if (activated) return;
+          activated = true;
+          overlay.classList.add('hidden');
+          if (player) {
+            player.setVolume(1);
+            player.setCurrentTime(0);
+            player.setLoop(false);
+            player.play();
+          }
+          catcher.classList.add('active');
+        }
 
-  var lastTap = 0, lastSide = '', tapTimeout = null;
-  catcher.addEventListener('click', function(e){
-    if (!player) return;
-    var rect = catcher.getBoundingClientRect();
-    var x = (e.clientX - rect.left) / rect.width;
-    var side = x < 0.3 ? 'left' : x > 0.7 ? 'right' : 'center';
-    var now = Date.now();
-    if (side === 'center') {
-      player.getPaused().then(function(p){ if(p) player.play(); else player.pause(); }).catch(function(){});
-      return;
-    }
-    if (now - lastTap < 400 && side === lastSide) {
-      clearTimeout(tapTimeout);
-      player.getCurrentTime().then(function(t){ player.setCurrentTime(Math.max(0, t + (side==='left'?-10:10))).catch(function(){}); }).catch(function(){});
-      lastTap = 0;
-    } else {
-      lastTap = now; lastSide = side;
-      tapTimeout = setTimeout(function(){ lastTap = 0; }, 400);
-    }
-  });
+        var lastTap = 0, lastSide = '', tapTimeout = null;
+        catcher.addEventListener('click', function(e){
+          if (!player) return;
+          var rect = catcher.getBoundingClientRect();
+          var x = (e.clientX - rect.left) / rect.width;
+          var side = x < 0.3 ? 'left' : x > 0.7 ? 'right' : 'center';
+          var now = Date.now();
+          if (side === 'center') {
+            player.getPaused().then(function(p){ if(p) player.play(); else player.pause(); }).catch(function(){});
+            return;
+          }
+          if (now - lastTap < 400 && side === lastSide) {
+            clearTimeout(tapTimeout);
+            player.getCurrentTime().then(function(t){ player.setCurrentTime(Math.max(0, t + (side==='left'?-10:10))).catch(function(){}); }).catch(function(){});
+            lastTap = 0;
+          } else {
+            lastTap = now; lastSide = side;
+            tapTimeout = setTimeout(function(){ lastTap = 0; }, 400);
+          }
+        });
 
-  overlay.addEventListener('click', activate);
-  overlay.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); } });
-})();
-</script>
+        overlay.addEventListener('click', activate);
+        overlay.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); } });
+      })();`}
+    </script>
+  </Fragment>
+)}
 
 <script is:inline>
 (function(){
@@ -480,11 +489,7 @@ body.vsl-locked{overflow:hidden}
       }
 
       if (data.qualified) {
-        var params = new URLSearchParams();
-        if (name)  params.set('name',  name);
-        if (email) params.set('email', email);
-        if (phone) params.set('phone', phone);
-        window.location.href = '/booking/slip-and-fall?'+params.toString();
+        window.location.href = '/walmart-slip-and-fall';
       } else {
         window.location.href = '/not-qualified/slip-and-fall';
       }
