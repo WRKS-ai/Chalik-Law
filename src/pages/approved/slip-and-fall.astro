@@ -83,25 +83,19 @@ html,body{overflow-x:hidden;max-width:100vw}
 .ap-sub{font-size:18px;color:var(--t1);line-height:1.55;margin:0 auto 36px;max-width:520px}
 @media(max-width:640px){.ap-h1{font-size:clamp(28px,7vw,36px);margin:4px 0 12px}.ap-sub{font-size:16px;margin-bottom:28px}}
 
-/* Loading bar (final step progress) */
-.ap-loader{max-width:480px;margin:0 auto 28px;width:100%}
-.ap-loader-lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--t1)}
-.ap-loader-lbl .ap-loader-pct{color:var(--navy);font-variant-numeric:tabular-nums}
-.ap-loader-bar{height:10px;background:rgba(0,0,0,.06);border-radius:100px;overflow:hidden;position:relative}
-.ap-loader-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green) 0%,#b8df3e 100%);border-radius:100px;transition:width .1s linear;box-shadow:0 0 12px rgba(162,204,53,.5)}
-.ap-loader-fill::after{content:'';position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:apShine 1.4s ease-in-out infinite}
-@keyframes apShine{0%{transform:translateX(-120%)}100%{transform:translateX(340%)}}
+/* Step progress — qualified → call now (last step) */
+.ap-progress{display:flex;max-width:480px;margin:0 auto 32px;width:100%;height:52px;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.08);background:#fff}
+.ap-progress-seg{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;white-space:nowrap;padding:0 12px}
+.ap-progress-done{background:var(--green);color:var(--navy3)}
+.ap-progress-done svg{width:18px;height:18px;flex-shrink:0}
+.ap-progress-now{background:#fff;color:var(--navy);position:relative;overflow:hidden;border-left:1px solid rgba(0,0,0,.06)}
+.ap-progress-now::before{content:'';position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,rgba(0,56,97,.08),transparent);animation:apShine 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes apShine{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+@media(max-width:640px){.ap-progress{height:46px;margin-bottom:26px}.ap-progress-seg{font-size:11px;letter-spacing:.08em;gap:6px;padding:0 8px}.ap-progress-done svg{width:15px;height:15px}}
 
-/* Approved complete state (after loader fills) */
-.ap-complete{display:none;opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease),transform .35s var(--ease);flex-direction:column;align-items:center;gap:6px}
-.ap-complete.show{display:flex;opacity:1;transform:translateY(0)}
-.ap-complete-head{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;letter-spacing:.05em;color:var(--navy);text-transform:uppercase;font-family:'Open Sans Condensed','Source Sans 3',sans-serif}
-.ap-complete-head svg{width:22px;height:22px;color:var(--green)}
-
-/* Call CTA button (revealed after loading) */
-.ap-cta-wrap{display:none;opacity:0;transform:translateY(12px);transition:opacity .45s var(--ease),transform .45s var(--ease);flex-direction:column;align-items:center;gap:14px;margin-top:8px}
-.ap-cta-wrap.show{display:flex;opacity:1;transform:translateY(0)}
-.ap-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:26px 56px;min-width:340px;border:0;border-radius:14px;background:var(--green);color:var(--navy3);font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 14px 40px rgba(162,204,53,.35)}
+/* Call CTA */
+.ap-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
+.ap-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:26px 56px;min-width:320px;border:0;border-radius:14px;background:var(--green);color:var(--navy3);font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 14px 40px rgba(162,204,53,.35)}
 .ap-cta-btn:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(162,204,53,.5)}
 .ap-cta-btn svg{width:22px;height:22px}
 .ap-cta-num{font-size:14px;font-weight:600;letter-spacing:.05em;color:var(--t1)}
@@ -110,7 +104,7 @@ html,body{overflow-x:hidden;max-width:100vw}
 .ap-cta-num strong{color:var(--navy);font-size:17px;letter-spacing:-.005em;font-weight:700;transition:color .15s}
 .ap-cta-hint{font-size:13px;color:var(--t2);letter-spacing:.04em;font-weight:500}
 @media(max-width:640px){
-  .ap-cta-btn{min-width:0;width:100%;padding:22px 24px;font-size:19px}
+  .ap-cta-btn{min-width:260px;padding:22px 32px;font-size:19px}
   .ap-cta-btn svg{width:20px;height:20px}
 }
 
@@ -139,25 +133,19 @@ html,body{overflow-x:hidden;max-width:100vw}
     <h1 class="ap-h1">Final step: <em>call now</em> to claim your free case review.</h1>
     <p class="ap-sub">A team member is ready to take your call. This is the fastest way to get your case moving.</p>
 
-    <!-- Loading bar -->
-    <div class="ap-loader" id="ap-loader">
-      <div class="ap-loader-lbl">
-        <span id="ap-loader-txt">Verifying your case&hellip;</span>
-        <span class="ap-loader-pct" id="ap-loader-pct">0%</span>
-      </div>
-      <div class="ap-loader-bar"><div class="ap-loader-fill" id="ap-loader-fill"></div></div>
-    </div>
-
-    <!-- Approved complete state (shown after loader fills) -->
-    <div class="ap-complete" id="ap-complete">
-      <span class="ap-complete-head">
+    <!-- Step progress: qualified ✓  →  call (last step) -->
+    <div class="ap-progress" aria-label="Funnel progress: step 1 of 2 complete, calling is the last step">
+      <div class="ap-progress-seg ap-progress-done">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-        Approved · Ready To Connect
-      </span>
+        <span>Qualified</span>
+      </div>
+      <div class="ap-progress-seg ap-progress-now">
+        <span>Last Step · Call Now</span>
+      </div>
     </div>
 
-    <!-- Call CTA (revealed after loader fills) -->
-    <div class="ap-cta-wrap" id="ap-cta">
+    <!-- Call CTA -->
+    <div class="ap-cta-wrap">
       <a href={CONFIG.phoneHref} class="ap-cta-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Tap to Call Now
@@ -177,44 +165,5 @@ html,body{overflow-x:hidden;max-width:100vw}
     </div>
   </footer>
 </div>
-
-<script is:inline>
-  (function(){
-    var fill     = document.getElementById('ap-loader-fill');
-    var pct      = document.getElementById('ap-loader-pct');
-    var txt      = document.getElementById('ap-loader-txt');
-    var loader   = document.getElementById('ap-loader');
-    var complete = document.getElementById('ap-complete');
-    var cta      = document.getElementById('ap-cta');
-    if (!fill || !pct || !txt || !loader || !complete || !cta) return;
-
-    var DURATION = 2000; // ms to fill from 0 to 100
-    var start    = null;
-
-    function step(ts){
-      if (!start) start = ts;
-      var p = Math.min((ts - start) / DURATION, 1);
-      var v = Math.round(p * 100);
-      fill.style.width = v + '%';
-      pct.textContent  = v + '%';
-      if (p < 1) {
-        requestAnimationFrame(step);
-      } else {
-        // fade out loader, reveal "Approved" header + call CTA
-        txt.textContent = 'Approved!';
-        setTimeout(function(){
-          loader.style.transition = 'opacity .3s var(--ease)';
-          loader.style.opacity    = '0';
-          setTimeout(function(){
-            loader.style.display = 'none';
-            complete.classList.add('show');
-            setTimeout(function(){ cta.classList.add('show'); }, 180);
-          }, 280);
-        }, 260);
-      }
-    }
-    requestAnimationFrame(step);
-  })();
-</script>
 
 </BaseLayout>
