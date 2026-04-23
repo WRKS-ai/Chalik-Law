@@ -34,7 +34,10 @@ const CONFIG = {
   year:               new Date().getFullYear(),
 };
 
-const bookAnywayLink = `/watch/${CONFIG.verticalSlug}`;
+// Send the "request anyway" user straight to the approved page so they
+// land on the phone CTA instead of bouncing back through the qualification
+// form (where they may answer wrong again).
+const bookAnywayLink = `/approved/${CONFIG.verticalSlug}`;
 ---
 
 <BaseLayout
