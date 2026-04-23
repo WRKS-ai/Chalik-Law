@@ -2,10 +2,10 @@
 // Captures VSL form submission, returns { qualified: bool }
 // CRM provider controlled by CRM_PROVIDER env var (ghl | hubspot | email)
 
-import { submitToGHL }     from './crm/ghl.js';
-import { submitToHubSpot } from './crm/hubspot.js';
-import { submitToInspree } from './crm/inspree.js';
-import { submitViaEmail }  from './crm/email.js';
+import { submitToGHL }      from './crm/ghl.js';
+import { submitToHubSpot }  from './crm/hubspot.js';
+import { submitToHQIntake } from './crm/hqintake.js';
+import { submitViaEmail }   from './crm/email.js';
 
 // Fall timing values that route to the unqualified page
 // Must match the radio value used in the catalyst page form
@@ -37,10 +37,10 @@ export default async function handler(req, res) {
   };
 
   try {
-    if      (provider === 'ghl')     await submitToGHL(payload);
-    else if (provider === 'hubspot') await submitToHubSpot(payload);
-    else if (provider === 'inspree') await submitToInspree(payload);
-    else if (provider === 'email')   await submitViaEmail(payload);
+    if      (provider === 'ghl')       await submitToGHL(payload);
+    else if (provider === 'hubspot')   await submitToHubSpot(payload);
+    else if (provider === 'hqintake')  await submitToHQIntake(payload);
+    else if (provider === 'email')     await submitViaEmail(payload);
     else throw new Error(`Unknown CRM_PROVIDER: ${provider}`);
 
     return res.status(200).json({ success: true, qualified });
