@@ -85,6 +85,10 @@ html,body{overflow-x:hidden;max-width:100vw}
 
 /* Call CTA */
 .ap-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
+.ap-live{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:100px;background:rgba(162,204,53,.12);border:1px solid rgba(162,204,53,.45);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);font-family:'Open Sans Condensed','Source Sans 3',sans-serif}
+.ap-live::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:apBlink 2s ease-in-out infinite;flex-shrink:0}
+@keyframes apBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+@media(max-width:640px){.ap-live{font-size:11px;letter-spacing:.14em;padding:7px 14px}}
 .ap-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:26px 56px;min-width:320px;border:0;border-radius:14px;background:var(--green);color:var(--navy3);font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 14px 40px rgba(162,204,53,.35)}
 .ap-cta-btn:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(162,204,53,.5)}
 .ap-cta-btn svg{width:22px;height:22px}
@@ -125,12 +129,13 @@ html,body{overflow-x:hidden;max-width:100vw}
 
     <!-- Call CTA -->
     <div class="ap-cta-wrap">
+      <span class="ap-live">Lines Open Now · 24/7</span>
       <a href={CONFIG.phoneHref} class="ap-cta-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Tap to Call Now
       </a>
       <p class="ap-cta-num"><a href={CONFIG.phoneHref}><strong>{CONFIG.phone}</strong></a> · Free &middot; No obligation</p>
-      <p class="ap-cta-hint">Hablamos Español. Available 24/7.</p>
+      <p class="ap-cta-hint">Hablamos Español. Available every day, including holidays.</p>
     </div>
   </section>
 
