@@ -1,9 +1,11 @@
 ---
 // LANDING PAGE — Slip and Fall (form-qualification variant)
 // Route: /slip-and-fall
-// Split-test B variant of walmart-slip-and-fall.astro. All CTAs open the
-// qualification form instead of dialing the tracking number. Phone number
-// is not displayed anywhere on this page — form is the only path forward.
+// Generic store-agnostic landing page (form-gated). Single entry point for
+// all store-targeted ad creatives (Walmart, Target, Costco, Publix, etc.) so
+// the Meta pixel learning loop and conversion funnel stay unified.
+// All CTAs open the qualification form instead of dialing the tracking number.
+// Phone number is not displayed anywhere on this page — form is the only path.
 // Qualified submissions route to /approved/slip-and-fall (pixel fires there).
 
 const year = new Date().getFullYear();
@@ -1021,10 +1023,10 @@ const media = [
     <div class="hero-body">
       <div class="container">
         <div class="hero-inner">
-          <div class="hero-eyebrow">Florida Walmart Slip and Fall Victims:</div>
+          <div class="hero-eyebrow">Florida Slip and Fall Victims:</div>
           <h1>Get the Compensation You Are Owed.</h1>
           <p class="hero-promise">You Pay Nothing Unless We Win.</p>
-          <p class="hero-sub">Injured at a Florida Walmart? Chalik &amp; Chalik handles every step of your case. We preserve the evidence, deal with Walmart's insurance company, and fight for every dollar you are owed. No fee unless <span style="white-space:nowrap">we win.</span></p>
+          <p class="hero-sub">Injured at a Florida store? Chalik &amp; Chalik handles every step of your case. We preserve the evidence, deal with the store's insurance company, and fight for every dollar you are owed. No fee unless <span style="white-space:nowrap">we win.</span></p>
           <div class="btn-wrap">
             <button type="button" class="btn-call" data-open-form>
               Start My Free Case Review
@@ -1104,7 +1106,7 @@ const media = [
               85% of all funds paid out by insurance companies go to clients who had an attorney fighting for them. (Insurance Research Council)
             </div>
           </div>
-          <p class="intro-closing rev" data-d="210">Walmart has a team of lawyers. Without one of your own, you are negotiating against professionals trained to pay you as little as possible.</p>
+          <p class="intro-closing rev" data-d="210">Big retailers have teams of lawyers. Without one of your own, you are negotiating against professionals trained to pay you as little as possible.</p>
         </div>
       </div>
     </div>
@@ -1210,7 +1212,7 @@ const media = [
       <div class="midcta-inner">
         <div class="midcta-text">
           <h3>Florida has a 2-year deadline to file.</h3>
-          <p>Walmart's legal team is building their case right now. Checking yours costs nothing.</p>
+          <p>Their legal team is building their case right now. Checking yours costs nothing.</p>
         </div>
         <button type="button" class="btn-midcta" data-open-form>
           Check If I Qualify · Free
@@ -1258,8 +1260,8 @@ const media = [
           <!-- Left: copy -->
           <div class="cta-left">
             <span class="cta-tag">Free 24/7 Consultation</span>
-            <h2 class="cta-h2">Do not face Walmart's legal team alone.</h2>
-            <p class="cta-sub">Walmart has attorneys working right now to minimize what they owe you. We come to you, handle every step, and fight for every dollar. The review is free. You only pay if we win.</p>
+            <h2 class="cta-h2">Do not face their legal team alone.</h2>
+            <p class="cta-sub">They have attorneys working right now to minimize what they owe you. We come to you, handle every step, and fight for every dollar. The review is free. You only pay if we win.</p>
           </div>
 
           <!-- Right: form-open card -->
