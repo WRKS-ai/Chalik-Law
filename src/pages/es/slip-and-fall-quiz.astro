@@ -1,19 +1,20 @@
 ---
-// QUESTIONNAIRE-FIRST LANDING PAGE — slip-and-fall
-// Route: /slip-and-fall-quiz
-// Minimal form-first conversion lander for cold ad traffic. User lands
-// directly on the qualification form — no scroll, no buttons to click
-// before engagement. Same Meta Pixel + same /api/submit-funnel-lead
-// endpoint as the other slip-and-fall funnels, so all submissions land
-// in the same vendor queue + Sheet log + Meta conversion event
-// (PageView on /approved/slip-and-fall).
-import BaseLayout from '../layouts/BaseLayout.astro';
+// QUESTIONNAIRE-FIRST LANDING PAGE — slip-and-fall (Spanish)
+// Route: /es/slip-and-fall-quiz
+// Spanish-language clone of /slip-and-fall-quiz. Same Meta Pixel, same
+// /api/submit-funnel-lead endpoint, same vendor + lead-log destinations.
+// Submits with vertical: 'slip-and-fall-es' so Spanish leads can be
+// distinguished in the Sheet and downstream reporting.
+//
+// NOTE: qualified → /approved/slip-and-fall and unqualified →
+// /not-qualified/slip-and-fall are still English. If we want a fully-
+// Spanish funnel, those need translated counterparts at /es/.
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const CONFIG = {
-  metaTitle:    "Florida Slip and Fall Case Review | Chalik and Chalik",
-  metaDesc:     "Injured at a Florida Walmart, Publix, Target, or other store? Answer 2 quick questions and see if you qualify for a free case review. No fee unless we win.",
+  metaTitle:    "Revisión de Caso de Resbalón y Caída en Florida | Chalik and Chalik",
+  metaDesc:     "¿Se lesionó en un Walmart, Publix, Target u otra tienda en Florida? Responda 2 preguntas rápidas para ver si califica para una revisión gratuita de su caso. Sin honorarios a menos que ganemos.",
   clientDomain: "https://chaliklaw.com",
-  verticalSlug: "slip-and-fall",
   fbPixelId:    "4675544149340474",
   year:         new Date().getFullYear(),
 };
@@ -22,7 +23,7 @@ const CONFIG = {
 <BaseLayout
   title={CONFIG.metaTitle}
   description={CONFIG.metaDesc}
-  canonical={`${CONFIG.clientDomain}/slip-and-fall-quiz`}
+  canonical={`${CONFIG.clientDomain}/es/slip-and-fall-quiz`}
   minimalNav={true}
   minimalFooter={true}
   noChat={true}
@@ -31,6 +32,7 @@ const CONFIG = {
 <meta slot="head" property="og:title" content={CONFIG.metaTitle} />
 <meta slot="head" property="og:description" content={CONFIG.metaDesc} />
 <meta slot="head" property="og:type" content="website" />
+<meta slot="head" property="og:locale" content="es_US" />
 <meta slot="head" name="twitter:card" content="summary_large_image" />
 <link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link slot="head" rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
@@ -130,35 +132,35 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
   </div>
 
   <main class="qz-wrap">
-    <span class="qz-eyebrow">Free Case Review · 60 Seconds</span>
-    <h1 class="qz-h1">We Win Your Case, <em>or You Don't Pay</em> a Dime.</h1>
-    <p class="qz-sub">Injured at a Florida Walmart, Publix, Target, or other store? Get a free case review.</p>
+    <span class="qz-eyebrow">Revisión Gratis · 60 Segundos</span>
+    <h1 class="qz-h1">Ganamos su caso, <em>o usted no paga</em> ni un centavo.</h1>
+    <p class="qz-sub">¿Se lesionó en un Walmart, Publix, Target u otra tienda en Florida? Obtenga una revisión gratuita de su caso.</p>
 
     <div class="qz-card">
       <div class="qz-prog">
         <div class="qz-prog-bar"><div class="qz-prog-fill" id="qz-prog-fill"></div></div>
-        <span class="qz-prog-txt" id="qz-prog-txt">Step 1 of 2</span>
+        <span class="qz-prog-txt" id="qz-prog-txt">Paso 1 de 2</span>
       </div>
 
       <form id="qz-form" novalidate>
 
-        <!-- STEP 1: Qualification questions -->
+        <!-- PASO 1: Preguntas de calificación -->
         <div class="qz-step active" data-step="1">
           <div>
-            <p class="qz-q-label">When did the fall happen?</p>
+            <p class="qz-q-label">¿Cuándo ocurrió la caída?</p>
             <div class="qz-radio-group">
               <label class="qz-radio">
-                <span>Within the last 2 years</span>
+                <span>Dentro de los últimos 2 años</span>
                 <input type="radio" name="fallTiming" value="within-2-years" />
                 <span class="qz-dot"></span>
               </label>
               <label class="qz-radio">
-                <span>2 to 4 years ago</span>
+                <span>Hace 2 a 4 años</span>
                 <input type="radio" name="fallTiming" value="2-to-4-years" />
                 <span class="qz-dot"></span>
               </label>
               <label class="qz-radio">
-                <span>More than 4 years ago</span>
+                <span>Hace más de 4 años</span>
                 <input type="radio" name="fallTiming" value="more-than-4-years" />
                 <span class="qz-dot"></span>
               </label>
@@ -166,20 +168,20 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
           </div>
 
           <div>
-            <p class="qz-q-label">Did you get medical care for your injuries?</p>
+            <p class="qz-q-label">¿Recibió atención médica por sus lesiones?</p>
             <div class="qz-radio-group">
               <label class="qz-radio">
-                <span>Yes, ER or ambulance</span>
+                <span>Sí, sala de emergencias o ambulancia</span>
                 <input type="radio" name="medicalCare" value="yes-er" />
                 <span class="qz-dot"></span>
               </label>
               <label class="qz-radio">
-                <span>Yes, saw a doctor</span>
+                <span>Sí, vi a un médico</span>
                 <input type="radio" name="medicalCare" value="yes-doctor" />
                 <span class="qz-dot"></span>
               </label>
               <label class="qz-radio">
-                <span>Not yet</span>
+                <span>Aún no</span>
                 <input type="radio" name="medicalCare" value="not-yet" />
                 <span class="qz-dot"></span>
               </label>
@@ -187,41 +189,41 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
           </div>
 
           <div class="qz-actions">
-            <button type="button" class="qz-submit" id="qz-next">Continue &rarr;</button>
+            <button type="button" class="qz-submit" id="qz-next">Continuar &rarr;</button>
           </div>
         </div>
 
-        <!-- STEP 2: Contact info -->
+        <!-- PASO 2: Información de contacto -->
         <div class="qz-step" data-step="2">
           <div class="qz-field">
-            <label for="qz-name">Full Name</label>
-            <input id="qz-name" name="name" type="text" required autocomplete="name" placeholder="Jane Smith" />
+            <label for="qz-name">Nombre completo</label>
+            <input id="qz-name" name="name" type="text" required autocomplete="name" placeholder="Juana García" />
           </div>
           <div class="qz-field">
-            <label for="qz-email">Email</label>
-            <input id="qz-email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+            <label for="qz-email">Correo electrónico</label>
+            <input id="qz-email" name="email" type="email" required autocomplete="email" placeholder="juana@ejemplo.com" />
           </div>
           <div class="qz-field">
-            <label for="qz-phone">Phone Number</label>
+            <label for="qz-phone">Número de teléfono</label>
             <input id="qz-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(555) 555-5555" />
           </div>
 
           <div class="qz-actions">
-            <button type="button" class="qz-back" id="qz-back">&larr; Back</button>
-            <button type="submit" class="qz-submit">Get My Free Case Review</button>
+            <button type="button" class="qz-back" id="qz-back">&larr; Atrás</button>
+            <button type="submit" class="qz-submit">Obtener mi revisión gratis</button>
           </div>
         </div>
 
-        <div id="qz-err" class="qz-error">Something went wrong. Please try again.</div>
+        <div id="qz-err" class="qz-error">Algo salió mal. Por favor intente de nuevo.</div>
       </form>
     </div>
 
     <div class="qz-trust">
       <span>Hablamos Español</span>
       <span class="qz-trust-sep">·</span>
-      <span>No fee unless we win</span>
+      <span>Sin honorarios a menos que ganemos</span>
       <span class="qz-trust-sep">·</span>
-      <span>Available 24/7</span>
+      <span>Disponible 24/7</span>
     </div>
   </main>
 
@@ -229,8 +231,8 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
     <div class="pg-foot-inner">
       <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik.</p>
       <div class="pg-foot-links">
-        <a href="https://www.chaliklaw.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a>
-        <a href="https://www.chaliklaw.com/terms-of-service" target="_blank" rel="noopener">Terms</a>
+        <a href="https://www.chaliklaw.com/privacy-policy/" target="_blank" rel="noopener">Privacidad</a>
+        <a href="https://www.chaliklaw.com/terms-of-service" target="_blank" rel="noopener">Términos</a>
       </div>
     </div>
   </footer>
@@ -250,7 +252,7 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
     function showStep(n){
       steps.forEach(function(s){ s.classList.toggle('active', Number(s.dataset.step) === n); });
       progFill.style.width = (n/TOTAL*100) + '%';
-      progTxt.textContent  = 'Step ' + n + ' of ' + TOTAL;
+      progTxt.textContent  = 'Paso ' + n + ' de ' + TOTAL;
       err.style.display    = 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(function(){
@@ -265,7 +267,7 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
       var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
       var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
       if (!fallTiming || !medicalCare) {
-        err.textContent  = 'Please answer both questions.';
+        err.textContent  = 'Por favor responda ambas preguntas.';
         err.style.display = 'block';
         return;
       }
@@ -284,13 +286,13 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
       var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
       var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
 
-      if (!name || !email || !phone) { err.textContent='Please fill in every field.'; err.style.display='block'; return; }
-      if (!validateEmail(email))     { err.textContent='Please enter a valid email address.'; err.style.display='block'; return; }
-      if (phone.replace(/\D/g,'').length < 7) { err.textContent='Please enter a valid phone number.'; err.style.display='block'; return; }
+      if (!name || !email || !phone) { err.textContent='Por favor complete todos los campos.'; err.style.display='block'; return; }
+      if (!validateEmail(email))     { err.textContent='Por favor ingrese un correo electrónico válido.'; err.style.display='block'; return; }
+      if (phone.replace(/\D/g,'').length < 7) { err.textContent='Por favor ingrese un número de teléfono válido.'; err.style.display='block'; return; }
 
       var btn  = form.querySelector('.qz-step[data-step="2"] button[type="submit"]');
       var orig = btn.textContent;
-      btn.disabled = true; btn.textContent = 'Submitting...';
+      btn.disabled = true; btn.textContent = 'Enviando...';
 
       try {
         var res = await fetch('/api/submit-funnel-lead', {
@@ -299,14 +301,14 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
           body: JSON.stringify({
             name: name, email: email, phone: phone,
             fallTiming: fallTiming, medicalCare: medicalCare,
-            vertical: 'slip-and-fall'
+            vertical: 'slip-and-fall-es'
           })
         });
         var data = await res.json().catch(function(){ return {}; });
 
         if (!res.ok) {
           btn.disabled = false; btn.textContent = orig;
-          err.textContent = data.error || 'Something went wrong. Please try again.';
+          err.textContent = data.error || 'Algo salió mal. Por favor intente de nuevo.';
           err.style.display = 'block';
           return;
         }
@@ -318,7 +320,7 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
         }
       } catch (ex) {
         btn.disabled = false; btn.textContent = orig;
-        err.textContent  = 'Network error. Please try again.';
+        err.textContent  = 'Error de red. Por favor intente de nuevo.';
         err.style.display = 'block';
         console.error(ex);
       }
