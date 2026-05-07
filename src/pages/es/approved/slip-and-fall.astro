@@ -1,0 +1,145 @@
+---
+// APPROVED / THANK-YOU PAGE — slip-and-fall funnel (Spanish)
+// Route: /es/approved/slip-and-fall
+// User lands here after the qualification form returns { qualified: true }
+// from the Spanish lander. Meta Pixel fires PageView here as the conversion
+// event for ads optimization (same pixel ID as the English page).
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const CONFIG = {
+  metaTitle:    "Aprobado · Último Paso: Llame Ahora | Chalik and Chalik",
+  metaDesc:     "Su caso ha sido pre-aprobado. Llame ahora para hablar con nuestro equipo.",
+  clientDomain: "https://chaliklaw.com",
+  verticalSlug: "slip-and-fall",
+  fbPixelId:    "4675544149340474",
+
+  phone:     "866-333-1209",
+  phoneHref: "tel:+18663331209",
+
+  year: new Date().getFullYear(),
+};
+---
+
+<BaseLayout
+  title={CONFIG.metaTitle}
+  description={CONFIG.metaDesc}
+  canonical={`${CONFIG.clientDomain}/es/approved/${CONFIG.verticalSlug}`}
+  minimalNav={true}
+  minimalFooter={true}
+  noChat={true}
+>
+<meta slot="head" name="robots" content="noindex, nofollow" />
+<meta slot="head" property="og:title" content={CONFIG.metaTitle} />
+<meta slot="head" property="og:description" content={CONFIG.metaDesc} />
+<meta slot="head" property="og:type" content="website" />
+<meta slot="head" property="og:locale" content="es_US" />
+<meta slot="head" name="twitter:card" content="summary_large_image" />
+<link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link slot="head" rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
+
+<Fragment slot="head">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Source+Sans+3:wght@400;600;700;900&display=swap" rel="stylesheet" />
+</Fragment>
+
+{CONFIG.fbPixelId && (
+  <script slot="head" is:inline define:vars={{ pid: CONFIG.fbPixelId }}>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init',pid);fbq('track','PageView');
+  </script>
+)}
+
+<style is:global>
+:root{
+  --bg:#ffffff;--bg1:#f7f7f8;
+  --t0:#0d0d0d;--t1:#444444;--t2:#888888;
+  --navy:#003861;--navy2:#002347;--navy3:#001529;
+  --green:#a2cc35;--blue:#0073e5;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sans:'Source Sans 3',system-ui,sans-serif;
+}
+#nav-bg{display:none!important}
+#nav{display:none!important}
+body{background:#f0f4fb}
+html,body{overflow-x:hidden;max-width:100vw}
+
+.ap-page{min-height:100vh;display:flex;flex-direction:column;width:100%;max-width:100%;overflow-x:hidden;background:#f0f4fb}
+
+.ap-logobar{padding:28px 24px 0;text-align:center;flex-shrink:0}
+.ap-logobar img{height:110px;width:auto;display:inline-block}
+@media(max-width:640px){.ap-logobar img{height:80px}.ap-logobar{padding:20px 20px 0}}
+
+.ap-wrap{flex:1;width:100%;max-width:760px;margin:0 auto;padding:40px 48px 56px;text-align:center;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box}
+@media(max-width:1024px){.ap-page{min-height:auto}.ap-wrap{display:block;padding:36px 32px 56px}}
+@media(max-width:640px){.ap-wrap{padding:32px 20px 48px}}
+
+.ap-badge{display:inline-flex;align-self:center;align-items:center;gap:10px;padding:10px 20px;border-radius:100px;background:rgba(162,204,53,.15);border:1px solid rgba(162,204,53,.4);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);font-family:'Open Sans Condensed','Source Sans 3',sans-serif;margin-bottom:22px}
+.ap-badge svg{width:16px;height:16px;color:var(--green)}
+
+.ap-h1{font-size:clamp(32px,4.4vw,52px);font-weight:700;line-height:1.08;letter-spacing:-.038em;color:var(--navy);margin:6px 0 14px;overflow-wrap:break-word;word-break:break-word}
+.ap-h1 em{font-style:normal;color:var(--green)}
+.ap-sub{font-size:18px;color:var(--t1);line-height:1.55;margin:0 auto 36px;max-width:520px}
+@media(max-width:640px){.ap-h1{font-size:clamp(28px,7vw,36px);margin:4px 0 12px}.ap-sub{font-size:16px;margin-bottom:28px}}
+
+.ap-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
+.ap-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:26px 56px;min-width:320px;border:0;border-radius:14px;background:var(--green);color:var(--navy3);font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 14px 40px rgba(162,204,53,.35)}
+.ap-cta-btn:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(162,204,53,.5)}
+.ap-cta-btn svg{width:22px;height:22px}
+.ap-cta-num{font-size:14px;font-weight:600;letter-spacing:.05em;color:var(--t1)}
+.ap-cta-num a{text-decoration:none;transition:color .15s}
+.ap-cta-num a:hover strong{color:var(--green)}
+.ap-cta-num strong{color:var(--navy);font-size:17px;letter-spacing:-.005em;font-weight:700;transition:color .15s}
+.ap-cta-hint{font-size:13px;color:var(--t2);letter-spacing:.04em;font-weight:500}
+@media(max-width:640px){
+  .ap-cta-btn{min-width:260px;padding:22px 32px;font-size:19px}
+  .ap-cta-btn svg{width:20px;height:20px}
+}
+
+.pg-foot{padding:24px 0;border-top:1px solid rgba(0,0,0,.1)}
+.pg-foot-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1200px;margin:0 auto;padding:0 56px;width:100%;box-sizing:border-box}
+.pg-foot-legal{font-size:12px;color:rgba(0,0,0,.4)}
+.pg-foot-links{display:flex;align-items:center;gap:20px}
+.pg-foot-links a{font-size:12px;color:rgba(0,0,0,.4);text-decoration:none;transition:color .15s}
+.pg-foot-links a:hover{color:var(--navy)}
+@media(max-width:1024px){.pg-foot-inner{padding:0 32px}}
+@media(max-width:640px){.pg-foot-inner{padding:0 20px;gap:12px}.pg-foot-links{gap:12px}}
+</style>
+
+<div class="ap-page">
+  <div class="ap-logobar">
+    <img src="https://www.chaliklaw.com/wp-content/themes/chalik-genesis/images/chalik-injury-accident-logo.svg" alt="Chalik and Chalik" />
+  </div>
+
+  <section class="ap-wrap">
+    <span class="ap-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      Usted Está Pre-Aprobado
+    </span>
+
+    <h1 class="ap-h1">Último paso: <em>llame ahora</em> para reclamar su revisión gratuita.</h1>
+    <p class="ap-sub">Un miembro del equipo está listo para tomar su llamada. Esta es la forma más rápida de avanzar con su caso.</p>
+
+    <!-- Call CTA -->
+    <div class="ap-cta-wrap">
+      <a href={CONFIG.phoneHref} class="ap-cta-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Toque para llamar ahora
+      </a>
+      <p class="ap-cta-num"><a href={CONFIG.phoneHref}><strong>{CONFIG.phone}</strong></a> &middot; Disponible 24/7</p>
+      <p class="ap-cta-hint">Hablamos Español. Sin compromiso. Incluyendo fines de semana y feriados.</p>
+    </div>
+  </section>
+
+  <footer class="pg-foot">
+    <div class="pg-foot-inner">
+      <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik.</p>
+      <div class="pg-foot-links">
+        <a href="https://www.chaliklaw.com/privacy-policy/" target="_blank" rel="noopener">Privacidad</a>
+        <a href="https://www.chaliklaw.com/terms-of-service" target="_blank" rel="noopener">Términos</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</BaseLayout>
