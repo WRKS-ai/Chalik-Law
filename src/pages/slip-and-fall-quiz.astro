@@ -1,0 +1,330 @@
+---
+// QUESTIONNAIRE-FIRST LANDING PAGE — slip-and-fall
+// Route: /slip-and-fall-quiz
+// Minimal form-first conversion lander for cold ad traffic. User lands
+// directly on the qualification form — no scroll, no buttons to click
+// before engagement. Same Meta Pixel + same /api/submit-funnel-lead
+// endpoint as the other slip-and-fall funnels, so all submissions land
+// in the same vendor queue + Sheet log + Meta conversion event
+// (PageView on /approved/slip-and-fall).
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const CONFIG = {
+  metaTitle:    "Florida Slip and Fall Case Review | Chalik and Chalik",
+  metaDesc:     "Injured at a Florida Walmart, Publix, Target, or other store? Answer 2 quick questions and see if you qualify for a free case review. No fee unless we win.",
+  clientDomain: "https://chaliklaw.com",
+  verticalSlug: "slip-and-fall",
+  fbPixelId:    "4675544149340474",
+  year:         new Date().getFullYear(),
+};
+---
+
+<BaseLayout
+  title={CONFIG.metaTitle}
+  description={CONFIG.metaDesc}
+  canonical={`${CONFIG.clientDomain}/slip-and-fall-quiz`}
+  minimalNav={true}
+  minimalFooter={true}
+  noChat={true}
+>
+<meta slot="head" name="robots" content="noindex, nofollow" />
+<meta slot="head" property="og:title" content={CONFIG.metaTitle} />
+<meta slot="head" property="og:description" content={CONFIG.metaDesc} />
+<meta slot="head" property="og:type" content="website" />
+<meta slot="head" name="twitter:card" content="summary_large_image" />
+<link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link slot="head" rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
+
+<Fragment slot="head">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Source+Sans+3:wght@400;600;700;900&display=swap" rel="stylesheet" />
+</Fragment>
+
+{CONFIG.fbPixelId && (
+  <script slot="head" is:inline define:vars={{ pid: CONFIG.fbPixelId }}>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init',pid);fbq('track','PageView');
+  </script>
+)}
+
+<style is:global>
+:root{
+  --bg:#ffffff;--bg1:#f7f7f8;
+  --t0:#0d0d0d;--t1:#444444;--t2:#888888;
+  --navy:#003861;--navy2:#002347;--navy3:#001529;
+  --green:#a2cc35;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sans:'Source Sans 3',system-ui,sans-serif;
+}
+#nav-bg{display:none!important}
+#nav{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100vw}
+body{background:#f0f4fb;margin:0;font-family:var(--sans);color:var(--t0);-webkit-font-smoothing:antialiased}
+
+.qz-page{min-height:100vh;display:flex;flex-direction:column;width:100%}
+.qz-logobar{padding:24px 24px 0;text-align:center}
+.qz-logobar img{height:80px;width:auto;display:inline-block}
+@media(max-width:640px){.qz-logobar img{height:64px}.qz-logobar{padding:18px 16px 0}}
+
+.qz-wrap{flex:1;width:100%;max-width:560px;margin:0 auto;padding:32px 24px 32px;display:flex;flex-direction:column}
+@media(max-width:640px){.qz-wrap{padding:22px 16px 28px}}
+
+.qz-eyebrow{display:inline-flex;align-self:center;align-items:center;gap:9px;padding:6px 14px;border-radius:100px;background:rgba(162,204,53,.12);border:1px solid rgba(162,204,53,.45);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);font-family:'Open Sans Condensed','Source Sans 3',sans-serif;margin-bottom:18px}
+.qz-h1{font-size:clamp(26px,4vw,36px);font-weight:700;line-height:1.18;letter-spacing:-.025em;color:var(--navy);text-align:center;margin:0 0 12px}
+.qz-sub{font-size:15px;color:var(--t1);line-height:1.55;text-align:center;margin:0 auto 24px;max-width:460px}
+@media(max-width:640px){.qz-h1{font-size:24px}.qz-sub{font-size:14px;margin-bottom:20px}}
+
+.qz-card{background:#fff;border-radius:18px;padding:26px 26px 22px;box-shadow:0 12px 40px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.05)}
+@media(max-width:640px){.qz-card{padding:20px 18px 18px;border-radius:14px}}
+
+.qz-prog{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.qz-prog-bar{flex:1;height:5px;background:rgba(0,0,0,.08);border-radius:100px;overflow:hidden}
+.qz-prog-fill{height:100%;width:50%;background:var(--green);border-radius:100px;transition:width .3s var(--ease)}
+.qz-prog-txt{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--t2);white-space:nowrap}
+
+.qz-step{display:none;flex-direction:column;gap:18px}
+.qz-step.active{display:flex}
+
+.qz-q-label{font-size:14px;font-weight:700;color:var(--navy);margin:0 0 8px}
+.qz-radio-group{display:flex;flex-direction:column;gap:9px}
+.qz-radio{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:#f7f7f8;border:1px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;transition:all .15s;font-size:15px;font-weight:500;color:var(--t0)}
+.qz-radio:hover{border-color:rgba(162,204,53,.5);background:rgba(162,204,53,.04)}
+.qz-radio input{position:absolute;opacity:0;pointer-events:none}
+.qz-radio .qz-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(0,0,0,.3);position:relative;flex-shrink:0;transition:all .15s}
+.qz-radio input:checked + .qz-dot{border-color:var(--green)}
+.qz-radio input:checked + .qz-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--green)}
+.qz-radio:has(input:checked){border-color:var(--green);background:rgba(162,204,53,.06)}
+
+.qz-field{display:flex;flex-direction:column;gap:6px}
+.qz-field label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--t2)}
+.qz-field input{appearance:none;background:#f7f7f8;border:1px solid rgba(0,0,0,.15);color:var(--t0);font-family:inherit;font-size:16px;padding:14px 16px;border-radius:10px;outline:none;transition:border-color .15s,background .15s;width:100%}
+.qz-field input::placeholder{color:#aaa}
+.qz-field input:focus{border-color:var(--green);background:#fff}
+
+.qz-actions{display:flex;gap:10px;margin-top:6px}
+.qz-submit{flex:1;padding:16px 22px;border:0;border-radius:12px;background:var(--green);color:var(--navy3);font-family:inherit;font-size:15px;font-weight:700;letter-spacing:-.005em;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 8px 24px rgba(162,204,53,.3)}
+.qz-submit:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(162,204,53,.45)}
+.qz-submit:disabled{opacity:.6;cursor:wait;transform:none}
+.qz-back{padding:16px 20px;border:1px solid rgba(0,0,0,.15);border-radius:12px;background:transparent;color:var(--t1);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.qz-back:hover{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.25);color:var(--t0)}
+.qz-error{margin-top:8px;color:#d93025;font-size:13px;text-align:center;display:none}
+
+.qz-trust{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:18px;font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--t2)}
+.qz-trust-sep{color:rgba(0,0,0,.18)}
+
+.pg-foot{padding:20px 0;border-top:1px solid rgba(0,0,0,.08)}
+.pg-foot-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin:0 auto;padding:0 36px;width:100%}
+.pg-foot-legal{font-size:11px;color:rgba(0,0,0,.4)}
+.pg-foot-links{display:flex;align-items:center;gap:16px}
+.pg-foot-links a{font-size:11px;color:rgba(0,0,0,.4);text-decoration:none;transition:color .15s}
+.pg-foot-links a:hover{color:var(--navy)}
+@media(max-width:640px){.pg-foot-inner{padding:0 16px;gap:10px}.pg-foot-links{gap:10px}}
+</style>
+
+<div class="qz-page">
+  <div class="qz-logobar">
+    <img src="https://www.chaliklaw.com/wp-content/themes/chalik-genesis/images/chalik-injury-accident-logo.svg" alt="Chalik and Chalik" />
+  </div>
+
+  <main class="qz-wrap">
+    <span class="qz-eyebrow">Free Case Review · 60 Seconds</span>
+    <h1 class="qz-h1">Injured at a Florida Walmart, Publix, Target, or other store?</h1>
+    <p class="qz-sub">Answer 2 quick questions and see if you qualify for a free case review. No fee unless we win.</p>
+
+    <div class="qz-card">
+      <div class="qz-prog">
+        <div class="qz-prog-bar"><div class="qz-prog-fill" id="qz-prog-fill"></div></div>
+        <span class="qz-prog-txt" id="qz-prog-txt">Step 1 of 2</span>
+      </div>
+
+      <form id="qz-form" novalidate>
+
+        <!-- STEP 1: Qualification questions -->
+        <div class="qz-step active" data-step="1">
+          <div>
+            <p class="qz-q-label">When did the fall happen?</p>
+            <div class="qz-radio-group">
+              <label class="qz-radio">
+                <span>Within the last 2 years</span>
+                <input type="radio" name="fallTiming" value="within-2-years" />
+                <span class="qz-dot"></span>
+              </label>
+              <label class="qz-radio">
+                <span>2 to 4 years ago</span>
+                <input type="radio" name="fallTiming" value="2-to-4-years" />
+                <span class="qz-dot"></span>
+              </label>
+              <label class="qz-radio">
+                <span>More than 4 years ago</span>
+                <input type="radio" name="fallTiming" value="more-than-4-years" />
+                <span class="qz-dot"></span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <p class="qz-q-label">Did you get medical care for your injuries?</p>
+            <div class="qz-radio-group">
+              <label class="qz-radio">
+                <span>Yes, ER or ambulance</span>
+                <input type="radio" name="medicalCare" value="yes-er" />
+                <span class="qz-dot"></span>
+              </label>
+              <label class="qz-radio">
+                <span>Yes, saw a doctor</span>
+                <input type="radio" name="medicalCare" value="yes-doctor" />
+                <span class="qz-dot"></span>
+              </label>
+              <label class="qz-radio">
+                <span>Not yet</span>
+                <input type="radio" name="medicalCare" value="not-yet" />
+                <span class="qz-dot"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="qz-actions">
+            <button type="button" class="qz-submit" id="qz-next">Continue &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Contact info -->
+        <div class="qz-step" data-step="2">
+          <div class="qz-field">
+            <label for="qz-name">Full Name</label>
+            <input id="qz-name" name="name" type="text" required autocomplete="name" placeholder="Jane Smith" />
+          </div>
+          <div class="qz-field">
+            <label for="qz-email">Email</label>
+            <input id="qz-email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+          </div>
+          <div class="qz-field">
+            <label for="qz-phone">Phone Number</label>
+            <input id="qz-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(555) 555-5555" />
+          </div>
+
+          <div class="qz-actions">
+            <button type="button" class="qz-back" id="qz-back">&larr; Back</button>
+            <button type="submit" class="qz-submit">Get My Free Case Review</button>
+          </div>
+        </div>
+
+        <div id="qz-err" class="qz-error">Something went wrong. Please try again.</div>
+      </form>
+    </div>
+
+    <div class="qz-trust">
+      <span>Hablamos Español</span>
+      <span class="qz-trust-sep">·</span>
+      <span>No fee unless we win</span>
+      <span class="qz-trust-sep">·</span>
+      <span>Available 24/7</span>
+    </div>
+  </main>
+
+  <footer class="pg-foot">
+    <div class="pg-foot-inner">
+      <p class="pg-foot-legal">&copy; {CONFIG.year} Chalik &amp; Chalik.</p>
+      <div class="pg-foot-links">
+        <a href="https://www.chaliklaw.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a>
+        <a href="https://www.chaliklaw.com/terms-of-service" target="_blank" rel="noopener">Terms</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script is:inline>
+  (function(){
+    var form     = document.getElementById('qz-form');
+    var err      = document.getElementById('qz-err');
+    var nextBtn  = document.getElementById('qz-next');
+    var backBtn  = document.getElementById('qz-back');
+    var progFill = document.getElementById('qz-prog-fill');
+    var progTxt  = document.getElementById('qz-prog-txt');
+    var steps    = form.querySelectorAll('.qz-step');
+    var TOTAL    = steps.length;
+
+    function showStep(n){
+      steps.forEach(function(s){ s.classList.toggle('active', Number(s.dataset.step) === n); });
+      progFill.style.width = (n/TOTAL*100) + '%';
+      progTxt.textContent  = 'Step ' + n + ' of ' + TOTAL;
+      err.style.display    = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(function(){
+        var f = form.querySelector('.qz-step.active input:not([type="radio"])');
+        if (f) f.focus();
+      }, 120);
+    }
+
+    function validateEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+    nextBtn.addEventListener('click', function(){
+      var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
+      var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
+      if (!fallTiming || !medicalCare) {
+        err.textContent  = 'Please answer both questions.';
+        err.style.display = 'block';
+        return;
+      }
+      showStep(2);
+    });
+
+    backBtn.addEventListener('click', function(){ showStep(1); });
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      err.style.display = 'none';
+
+      var name        = form.name.value.trim();
+      var email       = form.email.value.trim();
+      var phone       = form.phone.value.trim();
+      var fallTiming  = (form.querySelector('input[name="fallTiming"]:checked')  || {}).value || '';
+      var medicalCare = (form.querySelector('input[name="medicalCare"]:checked') || {}).value || '';
+
+      if (!name || !email || !phone) { err.textContent='Please fill in every field.'; err.style.display='block'; return; }
+      if (!validateEmail(email))     { err.textContent='Please enter a valid email address.'; err.style.display='block'; return; }
+      if (phone.replace(/\D/g,'').length < 7) { err.textContent='Please enter a valid phone number.'; err.style.display='block'; return; }
+
+      var btn  = form.querySelector('.qz-step[data-step="2"] button[type="submit"]');
+      var orig = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Submitting...';
+
+      try {
+        var res = await fetch('/api/submit-funnel-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name, email: email, phone: phone,
+            fallTiming: fallTiming, medicalCare: medicalCare,
+            vertical: 'slip-and-fall'
+          })
+        });
+        var data = await res.json().catch(function(){ return {}; });
+
+        if (!res.ok) {
+          btn.disabled = false; btn.textContent = orig;
+          err.textContent = data.error || 'Something went wrong. Please try again.';
+          err.style.display = 'block';
+          return;
+        }
+
+        if (data.qualified) {
+          window.location.href = '/approved/slip-and-fall';
+        } else {
+          window.location.href = '/not-qualified/slip-and-fall';
+        }
+      } catch (ex) {
+        btn.disabled = false; btn.textContent = orig;
+        err.textContent  = 'Network error. Please try again.';
+        err.style.display = 'block';
+        console.error(ex);
+      }
+    });
+
+    showStep(1);
+  })();
+</script>
+
+</BaseLayout>
