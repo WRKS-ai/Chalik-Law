@@ -71,7 +71,9 @@ body{background:#f0f4fb;margin:0;font-family:var(--sans);color:#111827;-webkit-f
 .qz-wrap{flex:1;width:100%;max-width:600px;margin:0 auto;padding:36px 24px 36px;display:flex;flex-direction:column}
 @media(max-width:640px){.qz-wrap{padding:24px 18px 30px}}
 
-.qz-eyebrow{display:inline-block;align-self:center;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;font-size:18px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:20px}
+.qz-eyebrow{display:inline-flex;align-self:center;align-items:center;gap:10px;font-family:'Open Sans Condensed','Source Sans 3',sans-serif;font-size:18px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:20px}
+.qz-eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(162,204,53,.8);animation:qzPulse 2.5s ease-in-out infinite;flex-shrink:0}
+@keyframes qzPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.55)}}
 .qz-h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(34px,5vw,52px);font-weight:700;line-height:1.06;letter-spacing:.005em;color:var(--navy);text-align:center;margin:0 0 18px}
 .qz-h1 em{font-style:normal;color:var(--green)}
 .qz-sub{font-size:20px;color:#374151;line-height:1.5;text-align:center;margin:0 auto 28px;max-width:520px;font-weight:500}
