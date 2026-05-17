@@ -301,6 +301,7 @@ const media = [
     .hstat-label { font-size: 16px; font-weight: 500; color: rgba(255,255,255,.72); line-height: 1.4; }
 
     @media (max-width: 768px) {
+      .hero-photo { display: none; }
       .hero-inner { padding: 56px 0 52px; }
       .hero h1 { font-size: clamp(32px, 9.5vw, 48px); }
       .btn-call { font-size: 18px; padding: 19px 28px; width: 100%; }
@@ -803,7 +804,8 @@ const media = [
       transition: background .2s, transform .15s, box-shadow .2s; text-decoration: none;
     }
     .btn-band:hover { background: #b8df3e; transform: translateY(-2px); box-shadow: 0 20px 52px rgba(162,204,53,.5); }
-    .cta-card-fine { margin-top: 14px; font-size: 16px; color: #374151; line-height: 1.6; }
+    .cta-card-lead { font-size: 18px; color: #1f2937; line-height: 1.5; margin-bottom: 22px; }
+    .cta-card-fine { margin-top: 16px; font-size: 15px; color: #6b7280; line-height: 1.5; letter-spacing: .01em; }
 
     /* Footer slides up over the card's hanging tail */
     .site-footer { position: relative; z-index: 2; margin-top: -180px; }
@@ -1267,12 +1269,11 @@ const media = [
           <!-- Right: form-open card -->
           <div class="cta-card-wrap">
             <div class="cta-card">
-              <span class="cta-live">Free Case Review · No Obligation</span>
-              <p class="cta-card-lead">Answer two quick questions to see if we can take your case.</p>
+              <p class="cta-card-lead">Answer 2 quick questions to see if you qualify.</p>
               <button type="button" class="btn-band" data-open-form>
                 Start Free Case Review
               </button>
-              <p class="cta-card-fine">Hablamos Español. Reviews available 24 hours a day,<br/>7 days a week, including holidays.</p>
+              <p class="cta-card-fine">Free consultation · Available 24/7 · Hablamos Español</p>
             </div>
           </div>
 
